@@ -17,8 +17,12 @@
 
 package com.example.android.marsrealestate.overview
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.imagi.app.R
@@ -55,11 +59,15 @@ class OverviewFragment : Fragment() {
         return binding.root
     }
 
-    /**
-     * Inflates the overflow menu that contains filtering options.
-     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.navigation, menu)
+        inflater.inflate(R.menu.option_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+
+//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        (menu.findItem(R.id.search).actionView as SearchView).apply {
+//            val componentName : ComponentName
+//            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//        }
     }
+
 }

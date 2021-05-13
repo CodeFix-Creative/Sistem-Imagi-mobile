@@ -8,5 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="blackSoft">#FF404040</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparants">#84040404</color>
     <color name="primaryColor">#FC9449</color>
 </resources>

@@ -14,12 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        try{
-            this.supportActionBar?.hide()
-        }catch (e : NullPointerException ){
-
-        }
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -28,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                val fragment = HomePage.newInstance()
+                val fragment = MarketFragment.newInstance()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -49,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
+//            .setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
             .replace(R.id.content, fragment, fragment.javaClass.getSimpleName())
             .addToBackStack(null)
             .commit()

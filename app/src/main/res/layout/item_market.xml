@@ -23,6 +23,7 @@
 
             <TextView
                 android:id="@+id/marketName"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
@@ -30,6 +31,7 @@
 
             <TextView
                 android:id="@+id/productPrice"
+                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"

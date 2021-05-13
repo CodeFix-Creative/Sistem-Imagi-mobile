@@ -1,12 +1,15 @@
 package com.imagi.app.adapter
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.imagi.app.DetailMarket
 import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.item_market.view.*
 import com.imagi.app.R
+import com.imagi.app.ui.market.DetailMarketFragment
 
 class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
 
@@ -36,6 +39,8 @@ class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<Mark
 
         override fun onClick(v: View?) {
             Toast.makeText(view.context, "${market.name} OnCLicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(view.context, DetailMarket::class.java)
+            view.context.startActivity(intent)
         }
 
         fun bindData(market: Market){
