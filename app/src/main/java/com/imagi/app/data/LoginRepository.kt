@@ -1,6 +1,13 @@
 package com.imagi.app.data
 
+import android.util.Log
 import com.imagi.app.data.model.LoggedInUser
+import com.imagi.app.model.UserLogin
+import com.imagi.app.model.UserResponse
+import com.imagi.app.network.ImageApi
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -27,15 +34,25 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(form : UserLogin, onResult: (UserResponse?)-> Unit) {
         // handle login
-        val result = dataSource.login(username, password)
+        ImageApi.retrofitService.login(form).enqueue(
+            object : Callback, retrofit2.Callback<UserResponse>{
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
+                    onResult(response.body())
+                }
 
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
-        }
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    onResult(null)
+                    Log.d("API_CAUSE", t.cause.toString())
+                    Log.d("API_MESSAGE", t.message.toString())
+                }
 
-        return result
+            }
+        )
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

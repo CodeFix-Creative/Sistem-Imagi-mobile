@@ -1,7 +1,5 @@
 package com.imagi.app.ui.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +9,10 @@ import com.imagi.app.data.LoginRepository
 import com.imagi.app.data.Result
 
 import com.imagi.app.R
-import java.util.prefs.Preferences
+import com.imagi.app.model.User
+import com.imagi.app.model.UserLogin
+import com.imagi.app.model.UserResponse
+import timber.log.Timber
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -22,16 +23,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginResult: LiveData<LoginResult> = _loginResult
 
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
-        }
-    }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {

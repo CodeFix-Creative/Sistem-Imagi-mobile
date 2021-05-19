@@ -9,10 +9,11 @@ import android.view.ViewGroup
 
 class ProfilePage : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_profile_page, container, false)
+        inflater.inflate(R.layout.activity_main_profile, container, false)
 
 
     companion object {
         fun newInstance(): ProfilePage = ProfilePage()
     }
+
 }

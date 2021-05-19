@@ -33,4 +33,5 @@
     <string name="login_failed">"Login failed"</string>
     <string name="search">"Search"</string>
     <string name="search_product">"Search Product"</string>
+    <string name="title_activity_main__profile">Main_Profile</string>
 </resources>
