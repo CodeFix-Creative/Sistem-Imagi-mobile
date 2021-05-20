@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,8 @@ class DetailMarketFragment : Fragment() {
     private var enableScrolling = true
 
     var markets = ArrayList<Market>()
+
+    var marchentName = this?.activity?.findViewById<TextView>(R.id.marchentName)
 
     fun isEnableScrolling(): Boolean {
         return enableScrolling
@@ -42,6 +45,7 @@ class DetailMarketFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.title = "Detail Produk"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+
         return inflater.inflate(R.layout.detail_market_fragment, container, false)
     }
 
