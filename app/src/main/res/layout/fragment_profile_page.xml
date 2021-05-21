@@ -7,174 +7,188 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:overScrollMode="always"
         android:layout_height="wrap_content">
-        <ScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".MainProfile">
-
-                <RelativeLayout
-                    android:id="@+id/profileContent"
+                android:layout_height="wrap_content">
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp">
+                    android:layout_height="match_parent"
+                    tools:context=".MainProfile">
 
                     <RelativeLayout
+                        android:id="@+id/profileContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="240dp"
-                        android:background="@color/primaryColor"
-                        android:id="@+id/header_user">
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true">
+                        android:paddingBottom="8dp">
 
-                            <ImageView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:padding="16dp"
-                                android:id="@+id/userImageData"
-                                android:background="@color/primaryColor"
-                                android:src="@drawable/img"
-                                />
-                            <TextView
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="240dp"
+                            android:background="@color/primaryColor"
+                            android:id="@+id/header_user">
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/userImageData"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginTop="15sp"
-                                android:layout_marginBottom="8sp"
-                                android:fontFamily="sans-serif-condensed-light"
-                                android:text="@string/sampleName"
-                                android:id="@+id/nameOfUser"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                />
+                                android:layout_centerVertical="true">
 
+                                <ImageView
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:padding="16dp"
+                                    android:id="@+id/userImageData"
+                                    android:background="@color/primaryColor"
+                                    android:src="@drawable/img"
+                                    />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/userImageData"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="15sp"
+                                    android:layout_marginBottom="8sp"
+                                    android:fontFamily="sans-serif-condensed-light"
+                                    android:text="@string/sampleName"
+                                    android:id="@+id/nameOfUser"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp"
+                                    />
+
+                            </RelativeLayout>
                         </RelativeLayout>
-                    </RelativeLayout>
-                    <ProgressBar
-                        android:id="@+id/loadingProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_below="@id/header_user"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="64dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginBottom="64dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.3" />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/side_user"
-                        android:layout_below="@id/header_user">
-                        <LinearLayout
+                        <ProgressBar
+                            android:id="@+id/loadingProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_below="@id/header_user"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="64dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginBottom="64dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.3" />
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
+                            android:layout_height="wrap_content"
+                            android:id="@+id/side_user"
+                            android:layout_below="@id/header_user">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="24dp"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Nama"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/primaryColor"
-                                    />
-                                <EditText
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/nameEditProfile"
-                                    android:text=""
-                                    android:hint="@string/sampleName"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/blackSoft"
-                                    />
+                                    android:padding="24dp"
+                                    android:orientation="vertical">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Nama"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/primaryColor"
+                                        />
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/nameEditProfile"
+                                        android:text=""
+                                        android:hint="@string/sampleName"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/blackSoft"
+                                        />
 
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Phone Number"
-                                    android:layout_marginTop="16dp"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/primaryColor"
-                                    />
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/phoneNumberEditProfile"
-                                    android:hint="+6281353968677"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/blackSoft"
-                                    />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Phone Number"
+                                        android:layout_marginTop="16dp"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/primaryColor"
+                                        />
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/phoneNumberEditProfile"
+                                        android:hint="+6281353968677"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/blackSoft"
+                                        />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Address"
-                                    android:layout_marginTop="16dp"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/primaryColor"
-                                    />
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/addressEditProfile"
-                                    android:hint="Panjer, Denpasar Selatan"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/blackSoft"
-                                    />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Address"
+                                        android:layout_marginTop="16dp"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/primaryColor"
+                                        />
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/addressEditProfile"
+                                        android:hint="Panjer, Denpasar Selatan"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/blackSoft"
+                                        />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Password"
-                                    android:layout_marginTop="16dp"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/primaryColor"
-                                    />
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/passwordEditProfile"
-                                    android:hint=""
-                                    android:textSize="14sp"
-                                    android:textColor="@color/blackSoft"
-                                    />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Password"
+                                        android:layout_marginTop="16dp"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/primaryColor"
+                                        />
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/passwordEditProfile"
+                                        android:hint=""
+                                        android:textSize="14sp"
+                                        android:textColor="@color/blackSoft"
+                                        />
 
-                                <Button
-                                    android:layout_marginTop="16dp"
-                                    android:id="@+id/editButton"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Save Change"
-                                    />
+                                    <Button
+                                        android:layout_marginTop="16dp"
+                                        android:id="@+id/editButton"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Save Change"
+                                        />
+
+                                    <Button
+                                        android:layout_marginTop="16dp"
+                                        android:id="@+id/logout"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Logout"
+                                        />
 
 
+                                </LinearLayout>
                             </LinearLayout>
-                        </LinearLayout>
+                        </RelativeLayout>
                     </RelativeLayout>
-                </RelativeLayout>
 
-            </LinearLayout>
-        </ScrollView>
+                </LinearLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

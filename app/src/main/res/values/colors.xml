@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparants">#84040404</color>
     <color name="primaryColor">#FC9449</color>
+    <color name="red">#f54260</color>
 </resources>
