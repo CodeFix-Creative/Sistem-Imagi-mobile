@@ -26,37 +26,42 @@
 
            <LinearLayout
                android:layout_width="match_parent"
+               android:layout_height="wrap_content"
                android:orientation="vertical"
-               android:layout_height="wrap_content">
+               android:paddingLeft="@dimen/activity_horizontal_margin"
+               android:paddingTop="@dimen/activity_horizontal_margin">
+
                <TextView
+                   android:id="@+id/marchentName"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="@string/market_name"
-                   android:id="@+id/marchentName"
-                   android:textFontWeight="16"
-                   />
+                   android:textFontWeight="16" />
 
                <TextView
-                   android:layout_marginTop="4dp"
                    android:layout_width="wrap_content"
-                   android:textAlignment="textEnd"
                    android:layout_height="wrap_content"
+                   android:layout_marginTop="4dp"
+                   android:layout_marginBottom="8dp"
                    android:text="@string/sampleNameRetail"
-                   />
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
                    android:textAlignment="textEnd"
-                   android:text="@string/market_location"
-                   />
+                   android:textSize="18sp"
+                   android:textStyle="bold" />
 
                <TextView
-                   android:layout_marginTop="4dp"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:textAlignment="textEnd"
+                   android:text="@string/market_location"
+                   android:textAlignment="textEnd" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="4dp"
                    android:text="@string/sampleAddressRetail"
-                   />
+                   android:textAlignment="textEnd"
+                   android:textSize="18sp"
+                   android:textStyle="bold" />
            </LinearLayout>
            <LinearLayout
                android:paddingHorizontal="16dp"
