@@ -1,5 +1,6 @@
 package com.imagi.app.adapter
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<Mark
     }
 
     override fun getItemCount(): Int {
+        Log.d("Jumlah data" , "${market?.size}")
         return market.size
     }
 

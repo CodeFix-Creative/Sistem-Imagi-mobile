@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,10 +45,22 @@ class MarketFragment : Fragment() {
     private fun initializeFragment(inflateView : View){
         recyclerView = inflateView.findViewById(R.id.rvMarket)
         progressBar = inflateView.findViewById(R.id.progressBarHome)
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
 
-        progressBar.visibility = View.GONE
+    }
 
-        recyclerView.layoutManager = GridLayoutManager(inflateView.context, 2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        Log.d("HAIII", "hello")
+
+        super.onViewCreated(view, savedInstanceState)
+        Handler().postDelayed(Runnable {
+            recyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+        }, 1000)
+
+        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         var price = 12000
         for (i in 1..10){
             price += i * 10
@@ -59,13 +72,6 @@ class MarketFragment : Fragment() {
             layoutManager = this.layoutManager
             adapter = MarketAdapter(markets)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        print("HAIII")
-
-        super.onViewCreated(view, savedInstanceState)
 
     }
 
