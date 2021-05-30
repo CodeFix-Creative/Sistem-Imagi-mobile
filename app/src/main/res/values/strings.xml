@@ -13,6 +13,7 @@
     <string name="product">Produk</string>
     <string name="seeAll">Lihat Semua</string>
     <string name="give_feedback">Berikan Tanggapan</string>
+    <string name="check_location">Cek Lokasi Toko</string>
     <string name="market_location">Lokasi Toko</string>
     <string name="sampleNameRetail">Bu Endang</string>
     <string name="sampleAddressRetail">Lt. 2, No 6, Pasar Badung, Badung</string>
@@ -34,4 +35,7 @@
     <string name="search">"Search"</string>
     <string name="search_product">"Search Product"</string>
     <string name="title_activity_main__profile">Main_Profile</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="merchant_map">MerchantMap</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
