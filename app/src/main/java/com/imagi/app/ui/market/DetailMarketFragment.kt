@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.imagi.app.FeedbackActivity
 import com.imagi.app.MapsActivity
 import com.imagi.app.R
 import com.imagi.app.adapter.MarketAdapter
@@ -24,6 +25,8 @@ class DetailMarketFragment : Fragment() {
     private var enableScrolling = true
 
     lateinit var buttonLocation : Button
+
+    lateinit var buttonFeedback : Button
 
     var markets = ArrayList<Market>()
 
@@ -58,6 +61,12 @@ class DetailMarketFragment : Fragment() {
             startActivity(intent)
         }
 
+        buttonFeedback = myInflatedView.findViewById(R.id.buttonFeedbackToMarket)
+        buttonFeedback.setOnClickListener {
+            val intent = Intent(myInflatedView.context, FeedbackActivity::class.java)
+            startActivity(intent)
+        }
+
         return myInflatedView
     }
 
@@ -82,11 +91,11 @@ class DetailMarketFragment : Fragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//        // TODO: Use the ViewModel
+//    }
 
 
 }

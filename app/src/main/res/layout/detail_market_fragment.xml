@@ -104,6 +104,7 @@
                android:layout_marginHorizontal="24dp"
                android:layout_width="match_parent"
                android:text="@string/give_feedback"
+               android:id="@+id/buttonFeedbackToMarket"
                android:layout_height="wrap_content"/>
 
        </LinearLayout>
