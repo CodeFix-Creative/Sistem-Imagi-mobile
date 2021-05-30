@@ -22,12 +22,12 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                val fragment = MarketFragment.newInstance()
+                val fragment = MerchantPage.newInstance()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_merchant -> {
-                val fragment = MerchantPage.newInstance()
+                val fragment = MarketFragment.newInstance()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

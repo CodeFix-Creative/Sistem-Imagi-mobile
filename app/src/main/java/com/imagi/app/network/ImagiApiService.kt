@@ -16,7 +16,7 @@ import retrofit2.http.*
 
 //private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
 
-private const val BASE_URL = "http://192.168.1.22:8000/api/v1/"
+private const val BASE_URL = "http://192.168.1.14:8000/api/v1/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())

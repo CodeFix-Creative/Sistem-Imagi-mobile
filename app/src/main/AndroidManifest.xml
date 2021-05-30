@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".FeedbackActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,7 +36,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -46,7 +47,7 @@
 
         <activity
             android:name=".MerchantMap"
-            android:label="@string/merchant_map"></activity>
+            android:label="@string/merchant_map" />
         <activity android:name=".MainProfile" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld

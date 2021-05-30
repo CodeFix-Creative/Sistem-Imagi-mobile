@@ -45,8 +45,8 @@ class MarketFragment : Fragment() {
     private fun initializeFragment(inflateView : View){
         recyclerView = inflateView.findViewById(R.id.rvMarket)
         progressBar = inflateView.findViewById(R.id.progressBarHome)
-//        progressBar.visibility = View.VISIBLE
-//        recyclerView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
 
     }
 
