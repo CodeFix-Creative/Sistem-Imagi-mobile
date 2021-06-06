@@ -32,8 +32,8 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
+        val idView: TextView = view.findViewById(R.id.item_on_market_name)
+        val contentView: TextView = view.findViewById(R.id.item_on_market_address)
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
