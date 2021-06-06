@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.imagi.app.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.imagi.app.ui.home.ItemFragment
 import java.lang.NullPointerException
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                val fragment = MerchantPage.newInstance()
+                val fragment = ItemFragment()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

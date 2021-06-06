@@ -14,6 +14,9 @@
     <string name="seeAll">Lihat Semua</string>
     <string name="give_feedback">Berikan Tanggapan</string>
     <string name="give">Kirim</string>
+    <string name="action_geolocate">Pick Place</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No place found, becouse location permission is disable</string>
     <string name="check_location">Cek Lokasi Toko</string>
     <string name="market_location">Lokasi Toko</string>
     <string name="sampleNameRetail">Bu Endang</string>
