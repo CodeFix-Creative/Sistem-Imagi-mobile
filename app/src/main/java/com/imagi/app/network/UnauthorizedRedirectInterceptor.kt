@@ -1,6 +1,7 @@
 package com.imagi.app.network
 
 import android.content.Intent
+import com.imagi.app.ImagiApp
 import com.imagi.app.ui.login.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Response

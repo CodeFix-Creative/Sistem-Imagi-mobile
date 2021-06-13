@@ -3,7 +3,6 @@ package com.imagi.app.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.imagi.app.network.ImageApi
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.imagi.app.network.MarsProperty
@@ -27,8 +26,8 @@ class OverviewViewModel : ViewModel() {
     private  fun getRealEstateProperties(){
         viewModelScope.launch {
             try {
-                val listResult = ImageApi.retrofitService.getProperties()
-                _response.value = "Success: ${listResult.size} Mars properties retrieved"
+//                val listResult = ImageApi.retrofitService.getProperties()
+//                _response.value = "Success: ${listResult.size} Mars properties retrieved"
             } catch (e: Exception) {
                 _response.value = "Failure: ${e.message}"
             }

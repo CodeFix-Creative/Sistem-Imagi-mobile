@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
@@ -15,10 +16,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.imagi.app.MainActivity
 import com.imagi.app.R
@@ -26,9 +25,29 @@ import com.imagi.app.data.LoginDataSource
 import com.imagi.app.data.LoginRepository
 import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
+import com.imagi.app.ui.base.CoreViewModel
+import com.imagi.app.util.AppUtils
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import timber.log.Timber
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_login.*
+import javax.inject.Inject
+import dagger.android.HasActivityInjector
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
+    }
+
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: CoreViewModel
 
 //    private lateinit var loginViewModel: LoginViewModel
 
@@ -44,8 +63,11 @@ class LoginActivity : AppCompatActivity() {
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_login)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
+        viewModel.isShowLoader.value = false
 
         try {
             this.supportActionBar!!.hide()
@@ -59,25 +81,31 @@ class LoginActivity : AppCompatActivity() {
             }
         }catch (e : Exception){}
 
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-        val image = findViewById<ImageView>(R.id.background_login)
+
+        btn_login.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            Log.d("TESTING", "s")
+            Timber.i("TESTING")
+            print(username.text.toString())
+
+            if(validationForm(this,username.text.toString(), password.text.toString())){
+                var data : UserLogin = UserLogin(username.text.toString(), password.text.toString())
+                viewModel.postLogin(data)
+            }
+        }
+
+        viewModel.errorMessage.observe(this, {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
 
         if(loadUser()){
             goToMenuPage()
         }
-
-//
-//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-//                .get(LoginViewModel::class.java)
-
         loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+//            login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
@@ -92,12 +120,10 @@ class LoginActivity : AppCompatActivity() {
 
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
                 goToMenuPage()
 //                finish()
             }
@@ -121,30 +147,35 @@ class LoginActivity : AppCompatActivity() {
                     password.text.toString()
                 )
             }
+        }
 
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginUser(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
-                }
-                false
+        viewModel.isShowLoader.observe(this, {
+            if(it){
+                loading?.visibility = View.VISIBLE
+            }else{
+                loading?.visibility = View.GONE
             }
+        })
+    }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                Timber.d("TESTING")
-                Timber.i("TESTING")
-                print(username.text.toString())
-
-                loginUser(username.text.toString(), password.text.toString())
-            }
+    private fun validationForm(ctx:Context, email:String, password: String): Boolean {
+        Log.d("Check user", "UWU")
+        return if(TextUtils.isEmpty(email)){
+            AppUtils.showAlert(ctx,"Mohon mengisi email anda")
+            false
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            AppUtils.showAlert(ctx,"Mohon mengisi dengan email yang valid")
+            false
+        }else if(TextUtils.isEmpty(password)){
+            AppUtils.showAlert(ctx,"Mohon mengisi password anda")
+            false
+        }else{
+            Log.d("Check user", "VALID")
+            true
         }
     }
 
-    fun loginUser(username: String, password: String){
+    private fun loginUser(username: String, password: String){
         // can be launched in a separate asynchronous job
         val user = UserLogin(username, password)
         Log.d("tes", "UWU 01")
@@ -158,7 +189,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun loginDataChanged(username: String, password: String) {
+    private fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
 
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
@@ -183,7 +214,7 @@ class LoginActivity : AppCompatActivity() {
         return password.length > 5
     }
 
-    fun saveUser(@NonNull user : UserResponse) {
+    private fun saveUser(@NonNull user : UserResponse) {
 
 //        Log.d("USER_RESPONSE" , user.token)
 //        Log.d("USER_RESPONSE" , user.data.alamat)
@@ -211,17 +242,6 @@ class LoginActivity : AppCompatActivity() {
     private fun goToMenuPage(){
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-//        Toast.makeText(
-//            applicationContext,
-//            "$welcome $displayName",
-//            Toast.LENGTH_LONG
-//        ).show()
     }
 
 //    private fun showLoginFailed(@StringRes errorString: Int) {

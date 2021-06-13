@@ -4,7 +4,6 @@ import android.util.Log
 import com.imagi.app.data.model.LoggedInUser
 import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
-import com.imagi.app.network.ImageApi
 import retrofit2.Call
 import retrofit2.Response
 import javax.security.auth.callback.Callback
@@ -36,23 +35,23 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     fun login(form : UserLogin, onResult: (UserResponse?)-> Unit) {
         // handle login
-        ImageApi.retrofitService.login(form).enqueue(
-            object : Callback, retrofit2.Callback<UserResponse>{
-                override fun onResponse(
-                    call: Call<UserResponse>,
-                    response: Response<UserResponse>
-                ) {
-                    onResult(response.body())
-                }
-
-                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    onResult(null)
-                    Log.d("API_CAUSE", t.cause.toString())
-                    Log.d("API_MESSAGE", t.message.toString())
-                }
-
-            }
-        )
+//        ImageApi.retrofitService.login(form).enqueue(
+//            object : Callback, retrofit2.Callback<UserResponse>{
+//                override fun onResponse(
+//                    call: Call<UserResponse>,
+//                    response: Response<UserResponse>
+//                ) {
+//                    onResult(response.body())
+//                }
+//
+//                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+//                    onResult(null)
+//                    Log.d("API_CAUSE", t.cause.toString())
+//                    Log.d("API_MESSAGE", t.message.toString())
+//                }
+//
+//            }
+//        )
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

@@ -1,9 +1,9 @@
+package com.imagi.app
+
 import android.content.Context
-import com.imagi.app.BuildConfig
+import com.imagi.app.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import com.imagi.app.component.AppComponent
-import com.imagi.app.component.DaggerAppComponent
 import timber.log.Timber
 
 class ImagiApp : DaggerApplication() {
@@ -16,10 +16,10 @@ class ImagiApp : DaggerApplication() {
         instance = this
     }
 
-    companion object {
-        private  var instance: ImagiApp? = null
+    companion object{
+        private var instance: ImagiApp? = null
 
-        fun applicationContext() : Context {
+        fun applicationContext() : Context{
             return instance!!.applicationContext
         }
     }
@@ -27,14 +27,15 @@ class ImagiApp : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         appComponent.inject(this)
+
         if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
         }
+
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return appComponent
     }
-
 
 }

@@ -21,6 +21,9 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String", "SERVER_URL", '"http://192.168.1.3:8000/api/v1/"'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -65,7 +68,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
@@ -94,10 +97,11 @@ dependencies {
 
     def daggerVer = 2.27 // or latest version
 
-    implementation "com.google.dagger:dagger:$daggerVer"
-    implementation "com.google.dagger:dagger-android-support:$daggerVer"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVer"
-    kapt "com.google.dagger:dagger-compiler:$daggerVer"
+    implementation "com.google.dagger:dagger:2.22.1"
+    implementation "com.google.dagger:dagger-android:2.22.1"
+    implementation "com.google.dagger:dagger-android-support:2.22.1"
+    kapt "com.google.dagger:dagger-compiler:2.22.1"
+    kapt "com.google.dagger:dagger-android-processor:2.22.1"
 
     //Recycle view
     implementation "androidx.recyclerview:recyclerview:1.2.0"
@@ -125,4 +129,5 @@ dependencies {
     apply plugin: 'kotlin-android'
     apply plugin: 'kotlin-android-extensions'
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
+
 }
