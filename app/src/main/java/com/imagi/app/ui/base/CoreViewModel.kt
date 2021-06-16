@@ -12,7 +12,7 @@ import javax.inject.Inject
 class CoreViewModel @Inject constructor(private val dataManager: DataManager) : ViewModel() {
 
     val userLiveData: MutableLiveData<User> = MutableLiveData()
-
+    var token : MutableLiveData<String> = MutableLiveData()
     val isShowLoader: MutableLiveData<Boolean> = MutableLiveData()
     val  errorMessage: MutableLiveData<String> = MutableLiveData()
 
@@ -33,6 +33,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                         res?.data.let {
                             userLiveData.value = it
                         }
+                        token.value = res?.token
                     } else {
                         errorMessage.value = res?.message
                     }

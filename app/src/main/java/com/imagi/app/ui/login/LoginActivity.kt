@@ -27,6 +27,7 @@ import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
+import com.imagi.app.util.Constant
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -74,8 +75,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         } catch (e: NullPointerException) {
         }
         try{
-            val sharedPreferences : SharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-            if(sharedPreferences.contains("authorization")){
+            val sharedPreferences : SharedPreferences = getSharedPreferences("${Constant.SP_USER}", Context.MODE_PRIVATE)
+            if(sharedPreferences.contains("${Constant.SP_TOKEN}")){
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
@@ -156,6 +157,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 loading?.visibility = View.GONE
             }
         })
+
+        observeViewModel()
     }
 
     private fun validationForm(ctx:Context, email:String, password: String): Boolean {
@@ -242,6 +245,27 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun goToMenuPage(){
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun observeViewModel(){
+        viewModel.token.observe(this,{
+            getSharedPreferences(Constant.SP_TOKEN, MODE_PRIVATE).edit()
+                .putString(Constant.SP_TOKEN, it)
+                .apply()
+        })
+
+        viewModel.userLiveData.observe(this,{
+            getSharedPreferences(Constant.SP_USER, MODE_PRIVATE).edit()
+                .putString(Constant.SP_USER, Gson().toJson(it))
+                .apply()
+        })
+
+        viewModel.errorMessage.observe(this, {
+            AppUtils.showAlert(this, it)
+        })
+
+        finish()
+        goToMenuPage()
     }
 
 //    private fun showLoginFailed(@StringRes errorString: Int) {
