@@ -10,21 +10,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
-import com.imagi.app.data.UserRepository
 import com.imagi.app.model.User
 import com.imagi.app.model.UserResponse
+import com.imagi.app.network.DbServices
+import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.fragment_profile_page.*
+import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
+import javax.inject.Inject
 
 
 class ProfilePage : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: CoreViewModel
+    private lateinit var dbServices: DbServices
 
     lateinit var address : EditText
     lateinit var name : EditText
@@ -50,8 +55,52 @@ class ProfilePage : Fragment() {
     ): View? {
         val myInflatedView: View = inflater.inflate(R.layout.fragment_profile_page, container, false)
         initializeFragment(myInflatedView)
+        dbServices.mContext  = context
         return myInflatedView
-//        return inflater.inflate(R.layout.fragment_profile_page, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        dbServices = DbServices(getContext())
+        observerViewModel()
+
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
+        dbServices = DbServices(getContext())
+
+        try{
+            viewModel.getProfile(dbServices.findBearerToken(), dbServices.getUser().id.toString())
+        }catch (e:Exception){
+            Timber.d("${e.message}")
+        }
+
+    }
+
+    private fun observerViewModel(){
+
+        viewModel.isShowLoader.observe(viewLifecycleOwner, {
+            if(it){
+                loading?.visibility = View.VISIBLE
+            }else{
+                loading?.visibility = View.GONE
+            }
+        })
+
+        viewModel.userLiveData.observe(viewLifecycleOwner, {
+            loading?.visibility = View.GONE
+//                        Log.d("- 2" , "BERHASIL")
+            address?.setText(viewModel.userLiveData.value?.alamat)
+            name?.setText(viewModel.userLiveData.value?.nama)
+            phone?.setText(viewModel.userLiveData.value?.no_telp)
+            nameHighlight.setText(viewModel.userLiveData.value?.nama)
+            frame?.visibility = View.VISIBLE
+        })
+
     }
 
 
@@ -70,7 +119,7 @@ class ProfilePage : Fragment() {
         frame = inflateView?.findViewById<RelativeLayout>(R.id.side_user)
         refreshProfile = inflateView?.findViewById<SwipeRefreshLayout>(R.id.refreshProfile)
         buttonLogout = inflateView?.findViewById(R.id.logout)
-        buttonLogout.setBackgroundColor(R.color.red)
+//        buttonLogout.setBackgroundColor(R.color.red)
 
         refreshProfile.setOnRefreshListener {
             frame?.visibility = View.GONE
@@ -83,15 +132,12 @@ class ProfilePage : Fragment() {
         }
 
         buttonLogout.setOnClickListener {
-            val sharedPreferences: SharedPreferences? = this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
-            sharedPreferences?.edit()?.remove("currentUser")?.apply()
-            sharedPreferences?.edit()?.remove("authorization")?.apply()
-            val intent = Intent(inflateView?.context,LoginActivity::class.java)
+            dbServices?.logout()
+            val intent = Intent (it.context, LoginActivity::class.java)
             startActivity(intent)
 
         }
-        frame?.visibility = View.GONE
-        loading?.visibility = View.VISIBLE
+
     }
 
     private fun callMyProfile() : Boolean {
@@ -119,12 +165,12 @@ class ProfilePage : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val userRepository: UserRepository = UserRepository()
-
-        userResult.observe(this@ProfilePage, Observer {
-            val userResult = it ?: return@Observer
-
-        })
+//        val userRepository: UserRepository = UserRepository()
+//
+//        userResult.observe(this@ProfilePage, Observer {
+//            val userResult = it ?: return@Observer
+//
+//        })
 
 //        if(refreshProfile.isNotEmpty()){
 //            if(refreshProfile?.isRefreshing){
@@ -151,38 +197,38 @@ class ProfilePage : Fragment() {
 
 
 
-        val sharedPreferences: SharedPreferences =
-            (this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE) ?: Log.d(
-                "ADA_USER",
-                "TES"
-            )) as SharedPreferences
-//        Log.d("ADA_USER", "TES")
-//        Log.d("ADA_USER", "${sharedPreferences.contains("currentUser")}")
-        if(sharedPreferences.contains("currentUser")
-        ){
-            val gson = Gson()
-            val userId = sharedPreferences.getString("currentUser", "")
-            val auth = sharedPreferences.getString("authorization", "")
-            val currentUser = gson.fromJson<User>(userId, User::class.java)
-            if (auth != null) {
-                userRepository.getDetailUser(currentUser.id, auth){
-//                    Log.d("OBSERVER" , "BERHASIL")
-                    Log.d("- 1", "${it}")
-                    if(it?.code == 200){
-                        loading?.visibility = View.GONE
-//                        Log.d("- 2" , "BERHASIL")
-                        address?.setText(it.data.alamat)
-                        name?.setText(it.data.nama)
-                        phone?.setText(it.data.no_telp)
-                        nameHighlight.setText(it.data.nama)
-                        frame?.visibility = View.VISIBLE
-                    }
-                    if(it?.code == 401){
-                        Toast.makeText(context, "Unauthorized", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
+//        val sharedPreferences: SharedPreferences =
+//            (this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE) ?: Log.d(
+//                "ADA_USER",
+//                "TES"
+//            )) as SharedPreferences
+////        Log.d("ADA_USER", "TES")
+////        Log.d("ADA_USER", "${sharedPreferences.contains("currentUser")}")
+//        if(sharedPreferences.contains(Constant.SP_USER)
+//        ){
+//            val gson = Gson()
+//            val userId = sharedPreferences.getString(Constant.SP_USER, "")
+//            val auth = sharedPreferences.getString(Constant.SP_TOKEN, "")
+//            val currentUser = gson.fromJson<User>(userId, User::class.java)
+//            if (auth != null) {
+//                userRepository.getDetailUser(currentUser.id, auth){
+////                    Log.d("OBSERVER" , "BERHASIL")
+//                    Log.d("- 1", "${it}")
+//                    if(it?.code == 200){
+//                        loading?.visibility = View.GONE
+////                        Log.d("- 2" , "BERHASIL")
+//                        address?.setText(it.data.alamat)
+//                        name?.setText(it.data.nama)
+//                        phone?.setText(it.data.no_telp)
+//                        nameHighlight.setText(it.data.nama)
+//                        frame?.visibility = View.VISIBLE
+//                    }
+//                    if(it?.code == 401){
+//                        Toast.makeText(context, "Unauthorized", Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//            }
+//        }
     }
 
 }

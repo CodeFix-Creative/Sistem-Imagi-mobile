@@ -52,7 +52,7 @@ interface ImagiApiService {
 
     @GET("users/{id}")
     fun getUser(@Header("Authorization") token: String, @Path("id") id: String) :
-            Call<UserResponse>
+            Single<Response<UserResponse>>
 }
 
 

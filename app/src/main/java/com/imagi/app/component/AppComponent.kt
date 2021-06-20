@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
-import com.imagi.app.di.module.AcitivyModule
+import com.imagi.app.di.module.ActivityModule
 import com.imagi.app.di.module.ViewModelModule
 import com.imagi.app.network.NetworkModule
 import dagger.BindsInstance
@@ -15,7 +15,7 @@ import dagger.android.DaggerApplication
 @Singleton
 @Component(modules = [
     AndroidInjectionModule::class,
-    AcitivyModule::class,
+    ActivityModule::class,
     ViewModelModule::class,
     NetworkModule::class
 ])

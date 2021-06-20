@@ -1,13 +1,13 @@
 package com.imagi.app.model
 
 data class User(
-    val alamat: String,
-    val device_id: Any,
-    val email: String,
-    val id: Int,
-    val jk: String,
-    val nama: String,
-    val no_telp: String,
-    val role: String,
-    val status_user: String
+    var alamat: String? = null,
+    val device_id: Any? = null,
+    val email: String? = null,
+    val id: Int? = null,
+    val jk: String? = null,
+    val nama: String? = null,
+    val no_telp: String? = null,
+    val role: String? = null,
+    val status_user: String? = null
 )

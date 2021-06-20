@@ -75,10 +75,9 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         } catch (e: NullPointerException) {
         }
         try{
-            val sharedPreferences : SharedPreferences = getSharedPreferences("${Constant.SP_USER}", Context.MODE_PRIVATE)
-            if(sharedPreferences.contains("${Constant.SP_TOKEN}")){
-                val intent = Intent(this,MainActivity::class.java)
-                startActivity(intent)
+            val sharedPreferences : SharedPreferences = getSharedPreferences(Constant.SP_TOKEN_USER, Context.MODE_PRIVATE)
+            if(sharedPreferences.contains(Constant.SP_TOKEN)){
+                goToMenuPage()
             }
         }catch (e : Exception){}
 
@@ -99,9 +98,6 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         })
 
-        if(loadUser()){
-            goToMenuPage()
-        }
         loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -124,10 +120,10 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
-            if (loginResult.success != null) {
-                goToMenuPage()
-//                finish()
-            }
+//            if (loginResult.success != null) {
+//                goToMenuPage()
+////                finish()
+//            }
             setResult(Activity.RESULT_OK)
             //Complete and destroy login activity once successful
 
@@ -178,20 +174,6 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun loginUser(username: String, password: String){
-        // can be launched in a separate asynchronous job
-        val user = UserLogin(username, password)
-        Log.d("tes", "UWU 01")
-        loginRepository.login(user) {
-            if (it?.code == 200) {
-                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
-                saveUser(it)
-            } else {
-                _loginResult.value = LoginResult(error = it?.message.toString())
-            }
-        }
-    }
-
     private fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
 
@@ -217,31 +199,6 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return password.length > 5
     }
 
-    private fun saveUser(@NonNull user : UserResponse) {
-
-//        Log.d("USER_RESPONSE" , user.token)
-//        Log.d("USER_RESPONSE" , user.data.alamat)
-        val sharedPreferences : SharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-        val editor : SharedPreferences.Editor? = sharedPreferences.edit()
-        Log.d("USER_DATA", Gson().toJson(user.data))
-        try{
-            editor?.apply {
-                putString("currentUser", Gson().toJson(user.data))
-                putString("authorization", user.token)
-            }?.apply()
-        }catch (e: Exception){
-            Log.d("EXCEPTION", "${e.message}")
-        }
-
-//        Log.d("USER_LOCAL" , sharedPreferences.contains("authorization").toString())
-
-    }
-
-    private fun loadUser(): Boolean {
-        val sharedPreferences : SharedPreferences =  getSharedPreferences("user", Context.MODE_PRIVATE)
-        return sharedPreferences.contains("user")
-    }
-
     private fun goToMenuPage(){
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
@@ -249,23 +206,25 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private fun observeViewModel(){
         viewModel.token.observe(this,{
-            getSharedPreferences(Constant.SP_TOKEN, MODE_PRIVATE).edit()
+            getSharedPreferences(Constant.SP_TOKEN_USER, MODE_PRIVATE).edit()
                 .putString(Constant.SP_TOKEN, it)
                 .apply()
-        })
 
-        viewModel.userLiveData.observe(this,{
-            getSharedPreferences(Constant.SP_USER, MODE_PRIVATE).edit()
-                .putString(Constant.SP_USER, Gson().toJson(it))
-                .apply()
+            viewModel.userLiveData.observe(this,{
+                getSharedPreferences(Constant.SP_NAME, MODE_PRIVATE).edit()
+                    .putString(Constant.SP_USER, Gson().toJson(it))
+                    .apply()
+            })
+
+            goToMenuPage()
+            finish()
         })
 
         viewModel.errorMessage.observe(this, {
             AppUtils.showAlert(this, it)
         })
 
-        finish()
-        goToMenuPage()
+
     }
 
 //    private fun showLoginFailed(@StringRes errorString: Int) {

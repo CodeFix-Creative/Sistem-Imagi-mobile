@@ -30,4 +30,20 @@ class DataManager
         return data
     }
 
+    fun getProfile(token:String, id:String) : Single<retrofit2.Response<UserResponse>>{
+        var data = api.getUser(token, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+        Timber.d("RESULT_API_PROFILE")
+        var resultSet:String = ""
+        data.subscribe {
+                result-> resultSet = result.message().toString()
+        }
+
+        Timber.d(resultSet)
+
+        return data
+
+    }
+
 }

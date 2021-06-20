@@ -17,6 +17,38 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val  errorMessage: MutableLiveData<String> = MutableLiveData()
 
     @Suppress("CheckResult")
+    fun getProfile(token:String, id:String){
+        isShowLoader.value = true
+        Timber.d("CALL_PROFILE")
+        dataManager.getProfile(token, id)
+            .subscribe({result ->
+                isShowLoader.value = false
+                if(result.isSuccessful) {
+                    Timber.d("Success")
+                    val res = result.body()
+                    Timber.d("${result.message()}")
+                    Log.d("Success","${result.message()}")
+                    Log.d("Success","${res?.data?.email}")
+                    if (res?.success == true) {
+                        res?.data.let {
+                            userLiveData.value = it
+                        }
+                    } else {
+                        errorMessage.value = res?.message
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            }, {
+                    error->
+                isShowLoader.value = false
+                errorMessage.value = "Email dan Password tidak valid. Mohon cek kembali"
+            })
+    }
+
+    @Suppress("CheckResult")
     fun postLogin(req: UserLogin){
         isShowLoader.value = true
         Timber.d("CALL_LOGIN")
