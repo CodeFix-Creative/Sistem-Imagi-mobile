@@ -25,19 +25,28 @@ public class DbServices {
 //                .edit()
 //                .putString(Constant.SP_TOKEN, null).apply();
         mContext.deleteSharedPreferences(Constant.SP_TOKEN_USER);
+        mContext.deleteSharedPreferences(Constant.SP_NAME);
 
     }
 
     public String findToken(){
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_NAME, 0);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_TOKEN_USER, 0);
                 return sharedPreferences.getString(Constant.SP_TOKEN, null);
     }
 
     public String findBearerToken(){
-        return "Bearer" + findToken();
+        return "Bearer " + findToken();
     }
 
     public User getUser() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
+        if(sharedPreferences.contains(Constant.SP_USER)){
+            Log.d("DATA_USER", "AVAILABLE");
+            Log.d("DATA_USER", sharedPreferences.getString(Constant.SP_USER, null).toString());
+
+        }
+
+
         String str = mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE)
                 .getString(Constant.SP_USER, null);
 

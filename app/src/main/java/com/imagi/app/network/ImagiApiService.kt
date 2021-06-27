@@ -1,6 +1,8 @@
 package com.imagi.app.network
 
 import com.google.gson.GsonBuilder
+import com.imagi.app.model.MerchantResponse
+import com.imagi.app.model.StoreResponse
 import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
 import com.squareup.moshi.Moshi
@@ -50,9 +52,18 @@ interface ImagiApiService {
             Single<Response<UserResponse>>
 
 
-    @GET("users/{id}")
-    fun getUser(@Header("Authorization") token: String, @Path("id") id: String) :
+    @GET("users/self")
+    fun getUser(@Header("Authorization") token: String) :
             Single<Response<UserResponse>>
+
+    @GET("toko")
+    fun getStore(@Header("Authorization") token: String):
+        Single<Response<StoreResponse>>
+
+    @GET("pedagang")
+    fun getMerchant(@Header("Authorization") token : String):
+            Single<Response<MerchantResponse>>
+
 }
 
 

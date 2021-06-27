@@ -74,7 +74,7 @@ class ProfilePage : Fragment() {
         dbServices = DbServices(getContext())
 
         try{
-            viewModel.getProfile(dbServices.findBearerToken(), dbServices.getUser().id.toString())
+            viewModel.getProfile(dbServices.findBearerToken(), dbServices.getUser().user_id.toString())
         }catch (e:Exception){
             Timber.d("${e.message}")
         }

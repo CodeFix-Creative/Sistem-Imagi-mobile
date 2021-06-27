@@ -24,7 +24,7 @@ class NetworkModule {
         .connectTimeout(5, TimeUnit.MINUTES)
         .readTimeout(20, TimeUnit.MINUTES)
         .writeTimeout(10, TimeUnit.MINUTES)
-        .addInterceptor(UnauthorizedRedirectInterceptor())
+//        .addInterceptor(UnauthorizedRedirectInterceptor())
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 

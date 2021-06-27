@@ -12,9 +12,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -28,14 +26,13 @@ import com.imagi.app.model.UserResponse
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
 import com.imagi.app.util.Constant
+import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import timber.log.Timber
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 import javax.inject.Inject
-import dagger.android.HasActivityInjector
 
 class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
@@ -75,28 +72,27 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         } catch (e: NullPointerException) {
         }
         try{
-            val sharedPreferences : SharedPreferences = getSharedPreferences(Constant.SP_TOKEN_USER, Context.MODE_PRIVATE)
+            val sharedPreferences : SharedPreferences = getSharedPreferences(
+                Constant.SP_TOKEN_USER,
+                Context.MODE_PRIVATE
+            )
             if(sharedPreferences.contains(Constant.SP_TOKEN)){
                 goToMenuPage()
             }
-        }catch (e : Exception){}
+        }catch (e: Exception){}
 
 
         btn_login.setOnClickListener {
-            loading.visibility = View.VISIBLE
+//            loading.visibility = View.VISIBLE
             Log.d("TESTING", "s")
             Timber.i("TESTING")
             print(username.text.toString())
 
-            if(validationForm(this,username.text.toString(), password.text.toString())){
+            if(validationForm(this, username.text.toString(), password.text.toString())){
                 var data : UserLogin = UserLogin(username.text.toString(), password.text.toString())
                 viewModel.postLogin(data)
             }
         }
-
-        viewModel.errorMessage.observe(this, {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-        })
 
         loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -146,27 +142,19 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             }
         }
 
-        viewModel.isShowLoader.observe(this, {
-            if(it){
-                loading?.visibility = View.VISIBLE
-            }else{
-                loading?.visibility = View.GONE
-            }
-        })
-
         observeViewModel()
     }
 
-    private fun validationForm(ctx:Context, email:String, password: String): Boolean {
+    private fun validationForm(ctx: Context, email: String, password: String): Boolean {
         Log.d("Check user", "UWU")
         return if(TextUtils.isEmpty(email)){
-            AppUtils.showAlert(ctx,"Mohon mengisi email anda")
+            AppUtils.showAlert(ctx, "Mohon mengisi email anda")
             false
         }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            AppUtils.showAlert(ctx,"Mohon mengisi dengan email yang valid")
+            AppUtils.showAlert(ctx, "Mohon mengisi dengan email yang valid")
             false
         }else if(TextUtils.isEmpty(password)){
-            AppUtils.showAlert(ctx,"Mohon mengisi password anda")
+            AppUtils.showAlert(ctx, "Mohon mengisi password anda")
             false
         }else{
             Log.d("Check user", "VALID")
@@ -200,20 +188,21 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     private fun goToMenuPage(){
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
     private fun observeViewModel(){
-        viewModel.token.observe(this,{
+        viewModel.token.observe(this, {
             getSharedPreferences(Constant.SP_TOKEN_USER, MODE_PRIVATE).edit()
                 .putString(Constant.SP_TOKEN, it)
                 .apply()
 
-            viewModel.userLiveData.observe(this,{
+            viewModel.userLiveData.observe(this, {
                 getSharedPreferences(Constant.SP_NAME, MODE_PRIVATE).edit()
                     .putString(Constant.SP_USER, Gson().toJson(it))
                     .apply()
+                Log.d("DATA_USER", "${Gson().toJson(it)}")
             })
 
             goToMenuPage()
@@ -221,17 +210,24 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         })
 
         viewModel.errorMessage.observe(this, {
+//            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             AppUtils.showAlert(this, it)
         })
 
-
+        viewModel.isShowLoader.observe(this, {
+            if (it) {
+                loading?.visibility = View.VISIBLE
+            } else {
+                loading?.visibility = View.GONE
+            }
+        })
     }
 
 //    private fun showLoginFailed(@StringRes errorString: Int) {
 //        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
 //    }
 
-    private fun showLoginFailed( errorString: String) {
+    private fun showLoginFailed(errorString: String) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 }

@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.imagi.app.R
-import com.imagi.app.model.Product
+import com.imagi.app.model.Products
 
 
 class ProductListAdapter : BaseAdapter {
 
-    var productList = ArrayList<Product>()
+    var productList = ArrayList<Products>()
     var context: Context? = null
 
-    constructor(context: Context, productList: ArrayList<Product>) : super() {
+    constructor(context: Context, productsList: ArrayList<Products>) : super() {
         this.context = context
-        this.productList = productList
+        this.productList = productsList
     }
 
     override fun getCount(): Int {

@@ -1,13 +1,31 @@
 package com.imagi.app.model
 
+import com.google.gson.annotations.SerializedName
+
 data class User(
-    var alamat: String? = null,
-    val device_id: Any? = null,
-    val email: String? = null,
-    val id: Int? = null,
-    val jk: String? = null,
+
+    @field:SerializedName("user_id")
+    val user_id: Int? = null,
+
+    @field:SerializedName("nama")
     val nama: String? = null,
-    val no_telp: String? = null,
+
+    @field:SerializedName("email")
+    val email: String? = null,
+
+    @field:SerializedName("role")
     val role: String? = null,
-    val status_user: String? = null
+
+    @field:SerializedName("status")
+    val status: String? = null,
+
+    @field:SerializedName("alamat")
+    val alamat: String? = null,
+
+    @field:SerializedName("foto")
+    var foto: String? = null,
+
+    @field:SerializedName("no_telp")
+    var no_telp: String? = null,
+
 )

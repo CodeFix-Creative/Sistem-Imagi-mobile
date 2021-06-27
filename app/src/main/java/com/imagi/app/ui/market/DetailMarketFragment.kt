@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.imagi.app.FeedbackActivity
@@ -74,20 +73,20 @@ class DetailMarketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rvProduct)
-        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
-        var price = 12000
-        for (i in 1..4){
-            price += i * 4
-            var market = Market("Nama Produk $i", price)
-            markets.add(market)
-        }
-//        rvMarket.adapter = MarketAdapter(markets)
-        rvProduct.apply {
-            layoutManager = this.layoutManager
-            adapter = MarketAdapter(markets)
-        }
-        rvProduct.setOnTouchListener(View.OnTouchListener { v, _ -> false })
+//        val recyclerView = view.findViewById<RecyclerView>(R.id.rvProduct)
+//        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
+//        var price = 12000
+//        for (i in 1..4){
+//            price += i * 4
+//            var market = Market("Nama Produk $i", price)
+//            markets.add(market)
+//        }
+////        rvMarket.adapter = MarketAdapter(markets)
+//        rvProduct.apply {
+//            layoutManager = this.layoutManager
+//            adapter = MarketAdapter(markets) {}
+//        }
+//        rvProduct.setOnTouchListener(View.OnTouchListener { v, _ -> false })
 
     }
 

@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.imagi.app.DetailMarket
-import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.item_market.view.*
 import com.imagi.app.R
-import com.imagi.app.ui.market.DetailMarketFragment
+import com.imagi.app.model.Store
 
-class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
+class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Unit)  : RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_market, parent, false)
@@ -21,7 +20,17 @@ class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<Mark
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(market.get(position))
+        val item = market[position]
+
+        holder.itemView.marketName.text = item.nama_toko
+        holder.itemView.productPrice.text = item.alamat_toko
+        holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
+
+        holder.itemView.setOnClickListener {
+
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -29,28 +38,32 @@ class MarketAdapter(val market : ArrayList<Market>)  : RecyclerView.Adapter<Mark
         return market.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        private var view : View = itemView
+    class ViewHolder(view: View)  : RecyclerView.ViewHolder(view) {}
 
-        private  lateinit var market: Market
 
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            Toast.makeText(view.context, "${market.name} OnCLicked", Toast.LENGTH_SHORT).show()
-            val intent = Intent(view.context, DetailMarket::class.java)
-            view.context.startActivity(intent)
-        }
-
-        fun bindData(market: Market){
-            this.market = market
-            view.productImage.setImageResource(R.drawable.ic_launcher_background)
-            view.marketName.setText(market.name)
-            view.productPrice.setText(market.price.toString())
-        }
-
-    }
+//    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+//
+//        private var view : View = itemView
+//
+//        private  lateinit var market: Store
+//
+//        init {
+//            itemView.setOnClickListener(this)
+//        }
+//
+//        override fun onClick(v: View?) {
+//            Toast.makeText(view.context, "${market.nama_toko} OnCLicked", Toast.LENGTH_SHORT).show()
+//            val intent = Intent(view.context, DetailMarket::class.java)
+//            view.context.startActivity(intent)
+//        }
+//
+//        fun bindData(market: Store){
+//            this.market = market
+//            view.productImage.setImageResource(R.drawable.ic_launcher_background)
+//            view.marketName.setText(market.nama_toko)
+//            view.productPrice.setText(market.alamat_toko.toString())
+//        }
+//
+//    }
 }

@@ -1,6 +1,7 @@
 package com.imagi.app.network
 
 import android.content.Intent
+import android.util.Log
 import com.imagi.app.ImagiApp
 import com.imagi.app.ui.login.LoginActivity
 import okhttp3.Interceptor
@@ -11,6 +12,8 @@ class UnauthorizedRedirectInterceptor() : Interceptor {
         val appContext = ImagiApp.applicationContext()
         val dbService = DbServices(appContext)
         val response = chain.proceed(chain.request())
+        Log.d("LOG_RESPONSE", "${response.code()}")
+        Log.d("LOG_RESPONSE", "${response.body()}")
         if(response.code() == 401){
             dbService.logout()
             val intent = Intent(appContext, LoginActivity::class.java)
