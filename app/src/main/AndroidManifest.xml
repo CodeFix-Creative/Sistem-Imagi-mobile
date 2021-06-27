@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.imagi.app">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -20,6 +23,18 @@
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
 
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".ui.review.ReviewActivity"
+            android:label="@string/title_activity_review_list">
+        </activity>
         <activity android:name=".FeedbackActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,13 +54,6 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

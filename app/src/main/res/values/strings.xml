@@ -43,4 +43,5 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="merchant_map">MerchantMap</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_review_list">Review</string>
 </resources>

@@ -20,6 +20,7 @@ import com.imagi.app.network.DbServices
 import com.imagi.app.network.Market
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.ui.market.DetailMarketFragment
+import com.imagi.app.ui.review.ReviewActivity
 import com.imagi.app.util.AppUtils
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -34,8 +35,6 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
     lateinit var id : String;
 
-    lateinit var buttonFeedback : Button
-
     @Inject
     lateinit var frahmentInjector: DispatchingAndroidInjector<Fragment>
 
@@ -49,6 +48,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var merchantName : TextView
     lateinit var merchantAddress : TextView
     lateinit var listProduct : RecyclerView
+    lateinit var buttonReview : Button
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
        return frahmentInjector
@@ -72,6 +72,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         merchantName = findViewById(R.id.vc_merchant_name)
         merchantAddress = findViewById(R.id.vc_address)
         listProduct = findViewById(R.id.rvProduct)
+        buttonReview = findViewById(R.id.buttonFeedbackToMarket)
 
         if(intent.extras != null)
         {
@@ -83,10 +84,9 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
         observerViewModel()
 
-        buttonFeedback = findViewById(R.id.buttonFeedbackToMarket)
-        buttonFeedback.setOnClickListener {
+        buttonReview.setOnClickListener {
             Timber.d("CLICK_FEEDBACK")
-            val intent = Intent(this, FeedbackActivity::class.java)
+            val intent = Intent(this, ReviewActivity::class.java)
             startActivity(intent)
         }
 
