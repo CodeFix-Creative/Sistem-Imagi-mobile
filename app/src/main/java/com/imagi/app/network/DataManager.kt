@@ -1,9 +1,6 @@
 package com.imagi.app.network
 
-import com.imagi.app.model.MerchantResponse
-import com.imagi.app.model.StoreResponse
-import com.imagi.app.model.UserLogin
-import com.imagi.app.model.UserResponse
+import com.imagi.app.model.*
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.Single
@@ -48,6 +45,24 @@ class DataManager
     fun getMerchant(token:String) : Single<retrofit2.Response<MerchantResponse>>{
         return api.getMerchant(token)
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getDetailStore(token:String, id:String) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.getStoreDetail(token, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getAllReview(token: String, id: String) :Single<retrofit2.Response<ReviewResponse>>{
+        return api.getAllReviewStore(token, id)
+            .observeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun postReview(token: String, id: String, review: ReviewForm) :Single<retrofit2.Response<ReviewPostResponse>>{
+        return api.postReview(token, id, review)
+            .observeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 

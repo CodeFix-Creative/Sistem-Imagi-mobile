@@ -3,9 +3,7 @@ package com.imagi.app.ui.base
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.imagi.app.model.Store
-import com.imagi.app.model.User
-import com.imagi.app.model.UserLogin
+import com.imagi.app.model.*
 import com.imagi.app.network.DataManager
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +16,10 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val  errorMessage: MutableLiveData<String> = MutableLiveData()
     val storeLiveData: MutableLiveData<List<Store>> = MutableLiveData()
     val merchantLiveData: MutableLiveData<List<User>> = MutableLiveData()
+    val storeDetailLiveData: MutableLiveData<Store> = MutableLiveData()
+    val reviewDetailLiveData: MutableLiveData<Review> = MutableLiveData()
+    val reviewLiveData: MutableLiveData<List<Review>> = MutableLiveData()
+
 
     @Suppress("CheckResult")
     fun getProfile(token:String, id:String){
@@ -138,6 +140,82 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                 { error->
                     isShowLoader.value = false
                     errorMessage.value = error?.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun getStoreDetail(token:String, id:String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_DETAIL_STORE")
+        dataManager.getDetailStore(token, id)
+            .subscribe({ result->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_DATA_DETAIL_STORE")
+                    val res = result?.body()
+
+                    if(res?.code == 200){
+                        storeDetailLiveData.value = res?.data
+                    }
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            },{
+                error->
+                    isShowLoader.value = false
+                    errorMessage.value = error.message
+            })
+    }
+
+
+    @Suppress("CheckResult")
+    fun getReview(token:String, id:String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_REVIEW")
+        dataManager.getAllReview(token, id)
+            .subscribe({ result->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_DATA_REVIEW")
+                    val res = result?.body()
+
+                    if(res?.code == 200){
+                        reviewLiveData.value = res?.data
+                    }
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            },{
+                error->
+                    isShowLoader.value = false
+                    errorMessage.value = error.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun postReview(token:String, id:String, review:ReviewForm){
+        isShowLoader.value = true
+        Timber.d("POST_DATA_REVIEW")
+        dataManager.postReview(token, id, review)
+            .subscribe({ result->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_POST_DATA_REVIEW")
+                    val res = result?.body()
+
+                    if(res?.code == 200){
+                        reviewDetailLiveData.value = res?.data
+                    }
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            },{
+                error->
+                    isShowLoader.value = false
+                    errorMessage.value = error.message
             })
     }
 

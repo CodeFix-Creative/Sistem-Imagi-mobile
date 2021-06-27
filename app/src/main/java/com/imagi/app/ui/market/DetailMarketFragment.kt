@@ -19,26 +19,13 @@ import com.imagi.app.adapter.MarketAdapter
 import com.imagi.app.model.Store
 import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.detail_market_fragment.*
+import timber.log.Timber
 
 class DetailMarketFragment : Fragment() {
-
-    private var enableScrolling = true
 
     lateinit var buttonLocation : Button
 
     lateinit var buttonFeedback : Button
-
-    var markets = ArrayList<Market>()
-
-    var marchentName = this?.activity?.findViewById<TextView>(R.id.marchentName)
-
-    fun isEnableScrolling(): Boolean {
-        return enableScrolling
-    }
-
-    fun setEnableScrolling(enableScrolling: Boolean) {
-        this.enableScrolling = enableScrolling
-    }
 
     companion object {
         fun newInstance(id:String): DetailMarketFragment {
@@ -49,8 +36,6 @@ class DetailMarketFragment : Fragment() {
             return fragment
         }
     }
-
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -67,11 +52,8 @@ class DetailMarketFragment : Fragment() {
             startActivity(intent)
         }
 
-        buttonFeedback = myInflatedView.findViewById(R.id.buttonFeedbackToMarket)
-        buttonFeedback.setOnClickListener {
-            val intent = Intent(myInflatedView.context, FeedbackActivity::class.java)
-            startActivity(intent)
-        }
+
+
 
         return myInflatedView
     }

@@ -43,3 +43,18 @@ data class StoreResponse(
     @field:SerializedName("data")
     val data : List<Store> = listOf()
 )
+
+data class StoreDetailResponse(
+
+    @field:SerializedName("success")
+    val success : Boolean ? = false,
+
+    @field:SerializedName("message")
+    val message : String ? = null,
+
+    @field:SerializedName("code")
+    val code : Int ? = null,
+
+    @field:SerializedName("data")
+    val data : Store ? = null
+)

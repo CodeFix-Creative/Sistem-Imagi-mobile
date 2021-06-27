@@ -1,10 +1,7 @@
 package com.imagi.app.network
 
 import com.google.gson.GsonBuilder
-import com.imagi.app.model.MerchantResponse
-import com.imagi.app.model.StoreResponse
-import com.imagi.app.model.UserLogin
-import com.imagi.app.model.UserResponse
+import com.imagi.app.model.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
@@ -60,9 +57,26 @@ interface ImagiApiService {
     fun getStore(@Header("Authorization") token: String):
         Single<Response<StoreResponse>>
 
+    @GET("toko/{id}")
+    fun getStoreDetail(@Header("Authorization") token: String, @Path("id") id: String):
+        Single<Response<StoreDetailResponse>>
+
     @GET("pedagang")
     fun getMerchant(@Header("Authorization") token : String):
             Single<Response<MerchantResponse>>
+
+    @GET("review/{id}")
+    fun getAllReviewStore(@Header("Authorization") token: String, @Path("id") id: String):
+            Single<Response<ReviewResponse>>
+
+    @GET("review/{id}")
+    fun postReview(@Header("Authorization") token: String,
+                   @Path("id") id: String,
+                   @Body form: @NotNull ReviewForm
+    ):
+            Single<Response<ReviewPostResponse>>
+
+
 
 }
 

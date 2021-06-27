@@ -8,106 +8,121 @@
     android:orientation="vertical"
     tools:context=".ui.market.DetailMarketFragment">
 
-   <ScrollView
+   <RelativeLayout
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+       android:layout_height="match_parent">
 
-       <LinearLayout
+       <ScrollView
            android:layout_width="match_parent"
-           android:orientation="vertical"
-           android:paddingBottom="24dp"
-           android:layout_height="match_parent">
-           <ImageView
-               android:layout_width="match_parent"
-               android:layout_height="200dp"
-               android:src="@drawable/market_2"
-               android:scaleType="centerCrop"
-               android:contentDescription="TODO" />
+           android:layout_height="wrap_content">
 
            <LinearLayout
+               android:id="@+id/vc_detail_market"
                android:layout_width="match_parent"
                android:orientation="vertical"
-               android:layout_height="wrap_content">
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/market_name"
-                   android:id="@+id/marchentName"
-                   android:textFontWeight="16"
-                   />
+               android:paddingBottom="24dp"
+               android:layout_height="match_parent">
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="200dp"
+                   android:src="@drawable/market_2"
+                   android:scaleType="centerCrop"
+                   android:contentDescription="TODO" />
 
-               <TextView
-                   android:layout_marginTop="4dp"
-                   android:layout_width="wrap_content"
-                   android:textAlignment="textEnd"
-                   android:layout_height="wrap_content"
-                   android:text="@string/sampleNameRetail"
-                   />
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:orientation="vertical"
+                   android:layout_height="wrap_content">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/market_name"
+                       android:textFontWeight="16"
+                       />
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:textAlignment="textEnd"
-                   android:text="@string/market_location"
-                   />
+                   <TextView
+                       android:layout_marginTop="4dp"
+                       android:layout_width="wrap_content"
+                       android:textAlignment="textEnd"
+                       android:id="@+id/vc_merchant_name"
+                       android:layout_height="wrap_content"
+                       android:text="@string/sampleNameRetail"
+                       />
 
-               <TextView
-                   android:layout_marginTop="4dp"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:textAlignment="textEnd"
-                   android:text="@string/sampleAddressRetail"
-                   />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textAlignment="textEnd"
+                       android:text="@string/market_location"
+                       />
+
+                   <TextView
+                       android:layout_marginTop="4dp"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textAlignment="textEnd"
+                       android:id="@+id/vc_address"
+                       android:text="@string/sampleAddressRetail"
+                       />
+                   <Button
+                       android:paddingVertical="16dp"
+                       android:layout_marginHorizontal="24dp"
+                       android:layout_width="match_parent"
+                       android:id="@+id/buttonLocation"
+                       android:text="@string/check_location"
+                       android:layout_height="wrap_content"/>
+               </LinearLayout>
+               <LinearLayout
+                   android:paddingHorizontal="16dp"
+                   android:layout_marginTop="34dp"
+                   android:layout_width="match_parent"
+                   android:orientation="horizontal"
+                   android:layout_height="wrap_content">
+                   <TextView
+                       android:layout_marginTop="4dp"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/product"
+                       />
+
+                   <TextView
+                       android:layout_marginTop="4dp"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:text="@string/seeAll"
+                       android:textAlignment="textEnd"
+                       />
+               </LinearLayout>
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <androidx.recyclerview.widget.RecyclerView
+                       android:id="@+id/rvProduct"
+                       android:padding="10dp"
+                       android:overScrollMode="never"
+                       android:nestedScrollingEnabled="false"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"/>
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
                <Button
                    android:paddingVertical="16dp"
                    android:layout_marginHorizontal="24dp"
                    android:layout_width="match_parent"
-                   android:id="@+id/buttonLocation"
-                   android:text="@string/check_location"
+                   android:text="@string/give_feedback"
+                   android:id="@+id/buttonFeedbackToMarket"
                    android:layout_height="wrap_content"/>
+
            </LinearLayout>
-           <LinearLayout
-               android:paddingHorizontal="16dp"
-               android:layout_marginTop="34dp"
-               android:layout_width="match_parent"
-               android:orientation="horizontal"
-               android:layout_height="wrap_content">
-               <TextView
-                   android:layout_marginTop="4dp"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="@string/product"
-                   />
+       </ScrollView>
 
-               <TextView
-                   android:layout_marginTop="4dp"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="@string/seeAll"
-                   android:textAlignment="textEnd"
-                   />
-           </LinearLayout>
-           <androidx.constraintlayout.widget.ConstraintLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content">
-               <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/rvProduct"
-                   android:padding="10dp"
-                   android:overScrollMode="never"
-                   android:nestedScrollingEnabled="false"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"/>
-
-           </androidx.constraintlayout.widget.ConstraintLayout>
-           <Button
-               android:paddingVertical="16dp"
-               android:layout_marginHorizontal="24dp"
-               android:layout_width="match_parent"
-               android:text="@string/give_feedback"
-               android:id="@+id/buttonFeedbackToMarket"
-               android:layout_height="wrap_content"/>
-
-       </LinearLayout>
-   </ScrollView>
+       <ProgressBar
+           android:id="@+id/progressBarHome"
+           style="?android:attr/progressBarStyle"
+           android:visibility="visible"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true" />
+   </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

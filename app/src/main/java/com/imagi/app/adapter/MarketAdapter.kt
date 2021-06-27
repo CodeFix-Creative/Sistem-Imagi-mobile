@@ -27,7 +27,7 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
         holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
 
         holder.itemView.setOnClickListener {
-
+            listener(item)
         }
 
 
