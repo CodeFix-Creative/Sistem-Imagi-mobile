@@ -7,6 +7,7 @@ import com.imagi.app.ProfilePage
 import com.imagi.app.ui.home.HomeFragment
 import com.imagi.app.ui.login.LoginActivity
 import com.imagi.app.ui.market.DetailMarketFragment
+import com.imagi.app.ui.review.ReviewActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -31,6 +32,9 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeDetailMarketActivity(): DetailMarket
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeReviewActivity(): ReviewActivity
 
 
 }

@@ -44,13 +44,24 @@ data class Review(
     val review:String? = null,
 
     @field:SerializedName("balasan")
-    val balasan:String? = null,
+    val balasan:Replay? = null,
 
     @field:SerializedName("created_at")
     val created_at:String? = null,
 
     @field:SerializedName("updated_at")
     val updated_at:String? = null,
+)
+
+data class Replay(
+    @field:SerializedName("id_balasan_review")
+    val id_balasan_review: Int ? = null,
+
+    @field:SerializedName("nama_pedagang")
+    val nama_pedagang: String ? = null,
+
+    @field:SerializedName("balasan")
+    val balasan: String ? = null,
 )
 
 data class ReviewForm(

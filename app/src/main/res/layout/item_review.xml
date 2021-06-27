@@ -46,9 +46,11 @@
                 android:text="test"
                 android:layout_below="@id/productPrice"/>
             <RelativeLayout
+                android:layout_marginTop="8sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:id="@+id/vc_replay_bound"
                     android:layout_width="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:backgroundTint="@color/redSoft"
@@ -59,15 +61,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:id="@+id/vc_seller_name"
                         android:text="Replay"/>
                     <TextView
                         android:id="@+id/vc_replay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:text="thanks"/>
+                        android:text="Terima kasih atas review nya customer lorem epsum sangat panjang"/>
                 </LinearLayout>
             </RelativeLayout>
 

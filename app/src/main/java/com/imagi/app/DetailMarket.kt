@@ -86,7 +86,10 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
         buttonReview.setOnClickListener {
             Timber.d("CLICK_FEEDBACK")
+            val bundle = Bundle()
+            bundle.putString("id", id)
             val intent = Intent(this, ReviewActivity::class.java)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
 
