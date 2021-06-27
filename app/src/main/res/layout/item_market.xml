@@ -30,7 +30,7 @@
                 android:layout_below="@id/productImage"/>
 
             <TextView
-                android:id="@+id/productPrice"
+                android:id="@+id/marketAddress"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

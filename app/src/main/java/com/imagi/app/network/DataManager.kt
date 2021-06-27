@@ -56,13 +56,20 @@ class DataManager
 
     fun getAllReview(token: String, id: String) :Single<retrofit2.Response<ReviewResponse>>{
         return api.getAllReviewStore(token, id)
-            .observeOn(Schedulers.io())
+            .subscribeOn(
+                Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun postReview(token: String, id: String, review: ReviewForm) :Single<retrofit2.Response<ReviewPostResponse>>{
         return api.postReview(token, id, review)
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getProductStore(token:String, id:String) : Single<retrofit2.Response<ProductListenResponse>>{
+        return api.getProductStore(token, id)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 

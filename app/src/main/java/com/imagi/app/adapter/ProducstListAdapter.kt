@@ -10,7 +10,7 @@ import com.imagi.app.R
 import com.imagi.app.model.Products
 
 
-class ProductListAdapter : BaseAdapter {
+class ProducstListAdapter : BaseAdapter {
 
     var productList = ArrayList<Products>()
     var context: Context? = null

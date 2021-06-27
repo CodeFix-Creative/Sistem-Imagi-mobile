@@ -7,8 +7,8 @@ data class Product(
     @field:SerializedName("id_toko")
     val id: Int? = null,
 
-    @field:SerializedName("nama_toko")
-    val nama_toko: String? = null,
+    @field:SerializedName("nama_barang")
+    val nama_barang: String? = null,
 
     @field:SerializedName("id_barang")
     val id_barang: Int? = null,

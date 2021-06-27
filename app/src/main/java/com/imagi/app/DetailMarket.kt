@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.imagi.app.adapter.MarketAdapter
+import com.imagi.app.adapter.ProductAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.network.Market
 import com.imagi.app.ui.base.CoreViewModel
@@ -46,6 +48,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var mediaData : LinearLayout
     lateinit var merchantName : TextView
     lateinit var merchantAddress : TextView
+    lateinit var listProduct : RecyclerView
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
        return frahmentInjector
@@ -68,6 +71,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         mediaData = findViewById(R.id.vc_detail_market)
         merchantName = findViewById(R.id.vc_merchant_name)
         merchantAddress = findViewById(R.id.vc_address)
+        listProduct = findViewById(R.id.rvProduct)
 
         if(intent.extras != null)
         {
@@ -98,6 +102,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
     private fun observerViewModel(){
         viewModel.getStoreDetail(dbServices.findBearerToken(),id)
+        viewModel.getStoreProduct(dbServices.findBearerToken(), id)
 
         viewModel.isShowLoader.observe(this, {
             if(it){
@@ -116,6 +121,17 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         viewModel.storeDetailLiveData.observe(this, {
             merchantName.text = it.nama_toko
             merchantAddress.text = it.alamat_toko
+        })
+
+        viewModel.productLiveData.observe(this, {
+            val list = listProduct
+            list.invalidate()
+
+            val adapters = ProductAdapter(it){}
+
+            list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            adapters.notifyDataSetChanged()
+            list.adapter = adapters
         })
     }
 

@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.item_market.view.*
 import com.imagi.app.R
 import com.imagi.app.model.Store
 
-class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Unit)  : RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
+class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Unit)  :
+    RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_market, parent, false)
@@ -23,7 +24,7 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
         val item = market[position]
 
         holder.itemView.marketName.text = item.nama_toko
-        holder.itemView.productPrice.text = item.alamat_toko
+        holder.itemView.marketAddress.text = item.alamat_toko
         holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
 
         holder.itemView.setOnClickListener {

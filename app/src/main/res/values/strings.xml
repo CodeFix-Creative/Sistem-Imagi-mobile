@@ -11,13 +11,14 @@
     <string name="title_activity_list_market">ListMarket</string>
     <string name="market_name">Nama Pedagang</string>
     <string name="product">Produk</string>
+    <string name="our_product">Produk Kami : </string>
     <string name="seeAll">Lihat Semua</string>
-    <string name="give_feedback">Berikan Tanggapan</string>
+    <string name="give_feedback">Review</string>
     <string name="give">Kirim</string>
     <string name="action_geolocate">Pick Place</string>
     <string name="default_info_title">Default Location</string>
     <string name="default_info_snippet">No place found, becouse location permission is disable</string>
-    <string name="check_location">Cek Lokasi Toko</string>
+    <string name="check_location">Cek Lokasi</string>
     <string name="market_location">Lokasi Toko</string>
     <string name="sampleNameRetail">Bu Endang</string>
     <string name="sampleAddressRetail">Lt. 2, No 6, Pasar Badung, Badung</string>

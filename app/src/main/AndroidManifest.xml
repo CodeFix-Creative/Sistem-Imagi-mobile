@@ -19,9 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/roundedButton" />
 
         <activity android:name=".FeedbackActivity" />
         <!--

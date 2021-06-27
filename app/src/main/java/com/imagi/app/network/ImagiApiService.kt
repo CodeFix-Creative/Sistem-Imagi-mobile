@@ -73,6 +73,10 @@ interface ImagiApiService {
     ):
             Single<Response<ReviewPostResponse>>
 
+    @GET("barang/toko/{id}")
+    fun getProductStore(@Header("Authorization") token: String,
+        @Path ("id") id: String) :
+            Single<Response<ProductListenResponse>>
 
 
 }

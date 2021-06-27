@@ -33,7 +33,6 @@
                    android:orientation="vertical"
                    android:paddingBottom="24sp"
                    android:layout_marginTop="4sp"
-                   android:layout_marginBottom="24dp"
                    android:paddingHorizontal="16sp"
                    android:layout_height="wrap_content">
 <!--                   <TextView-->
@@ -69,25 +68,36 @@
                        android:id="@+id/vc_address"
                        android:text="@string/sampleAddressRetail"
                        />
-                  <RelativeLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content">
-                      <Button
-                          android:layout_alignParentStart="true"
-                          android:paddingHorizontal="16sp"
-                          android:layout_marginTop="24dp"
-                          android:layout_width="wrap_content"
-                          android:id="@+id/buttonLocation"
-                          android:background="@drawable/roundedButton"
-                          android:text="@string/check_location"
-                          android:backgroundTint="@color/primaryColor"
-                          android:textColor="@color/white"
-                          android:layout_height="wrap_content"/>
-                  </RelativeLayout>
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="24dp">
+                       <Button
+                           android:paddingHorizontal="16sp"
+                           android:layout_width="wrap_content"
+                           android:id="@+id/buttonLocation"
+                           android:background="@drawable/rounded_button"
+                           android:text="@string/check_location"
+                           android:drawableStart="@drawable/ic_location"
+                           android:backgroundTint="@color/primaryColor"
+                           android:textColor="@color/white"
+                           android:layout_height="wrap_content"/>
+
+                       <Button
+                           android:paddingHorizontal="16sp"
+                           android:layout_marginStart="16dp"
+                           android:drawableStart="@drawable/ic_chat"
+                           android:layout_width="120dp"
+                           android:background="@drawable/rounded_button"
+                           android:text="@string/give_feedback"
+                           android:id="@+id/buttonFeedbackToMarket"
+                           android:backgroundTint="@color/greySoft"
+                           android:textColor="@color/white"
+                           android:layout_height="wrap_content"/>
+                   </LinearLayout>
                </LinearLayout>
                <LinearLayout
                    android:paddingHorizontal="16dp"
-                   android:layout_marginTop="34dp"
                    android:layout_width="match_parent"
                    android:orientation="horizontal"
                    android:layout_height="wrap_content">
@@ -95,16 +105,16 @@
                        android:layout_marginTop="4dp"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="@string/product"
+                       android:text="@string/our_product"
                        />
 
-                   <TextView
-                       android:layout_marginTop="4dp"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:text="@string/seeAll"
-                       android:textAlignment="textEnd"
-                       />
+<!--                   <TextView-->
+<!--                       android:layout_marginTop="4dp"-->
+<!--                       android:layout_width="match_parent"-->
+<!--                       android:layout_height="wrap_content"-->
+<!--                       android:text="@string/seeAll"-->
+<!--                       android:textAlignment="textEnd"-->
+<!--                       />-->
                </LinearLayout>
                <androidx.constraintlayout.widget.ConstraintLayout
                    android:layout_width="match_parent"
@@ -118,13 +128,6 @@
                        android:layout_height="match_parent"/>
 
                </androidx.constraintlayout.widget.ConstraintLayout>
-               <Button
-                   android:paddingVertical="16dp"
-                   android:layout_marginHorizontal="24dp"
-                   android:layout_width="match_parent"
-                   android:text="@string/give_feedback"
-                   android:id="@+id/buttonFeedbackToMarket"
-                   android:layout_height="wrap_content"/>
 
            </LinearLayout>
        </ScrollView>

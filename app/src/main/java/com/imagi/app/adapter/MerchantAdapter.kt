@@ -22,7 +22,7 @@ class MerchantAdapter(val list: List<User>, private var listener: (User) -> Unit
         val item = list[position]
 
         holder.itemView.marketName.text = item.nama
-        holder.itemView.productPrice.text = item.no_telp
+        holder.itemView.marketAddress.text = item.no_telp
         holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
 
         holder.itemView.setOnClickListener {

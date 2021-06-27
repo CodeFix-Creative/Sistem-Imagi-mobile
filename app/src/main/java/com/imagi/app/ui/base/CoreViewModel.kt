@@ -19,6 +19,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val storeDetailLiveData: MutableLiveData<Store> = MutableLiveData()
     val reviewDetailLiveData: MutableLiveData<Review> = MutableLiveData()
     val reviewLiveData: MutableLiveData<List<Review>> = MutableLiveData()
+    val productLiveData: MutableLiveData<List<Product>> = MutableLiveData()
 
 
     @Suppress("CheckResult")
@@ -217,6 +218,32 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                     isShowLoader.value = false
                     errorMessage.value = error.message
             })
+    }
+
+    @Suppress("CheckResult")
+    fun getStoreProduct(token:String, id: String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT")
+        dataManager.getProductStore(token, id)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_PRODUCT")
+                    val res = result.body()
+
+                    if(res?.code == 200){
+                        productLiveData.value = res?.data
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
     }
 
 }
