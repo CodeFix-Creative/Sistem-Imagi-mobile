@@ -39,9 +39,6 @@ var retrofitV2 = Retrofit.Builder()
     .build()
 
 interface ImagiApiService {
-    @GET("realestate")
-    suspend fun getProperties():
-            List<MarsProperty>
 
     @Headers("Content-Type: application/json")
     @POST("login")

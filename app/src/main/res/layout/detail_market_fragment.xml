@@ -20,7 +20,6 @@
                android:id="@+id/vc_detail_market"
                android:layout_width="match_parent"
                android:orientation="vertical"
-               android:paddingBottom="24dp"
                android:layout_height="match_parent">
                <ImageView
                    android:layout_width="match_parent"
@@ -32,13 +31,17 @@
                <LinearLayout
                    android:layout_width="match_parent"
                    android:orientation="vertical"
+                   android:paddingBottom="24sp"
+                   android:layout_marginTop="4sp"
+                   android:layout_marginBottom="24dp"
+                   android:paddingHorizontal="16sp"
                    android:layout_height="wrap_content">
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="@string/market_name"
-                       android:textFontWeight="16"
-                       />
+<!--                   <TextView-->
+<!--                       android:layout_width="wrap_content"-->
+<!--                       android:layout_height="wrap_content"-->
+<!--                       android:text="@string/market_name"-->
+<!--                       android:textFontWeight="16"-->
+<!--                       />-->
 
                    <TextView
                        android:layout_marginTop="4dp"
@@ -46,6 +49,9 @@
                        android:textAlignment="textEnd"
                        android:id="@+id/vc_merchant_name"
                        android:layout_height="wrap_content"
+                       android:textStyle="bold"
+                       android:textSize="22sp"
+                       android:layout_marginBottom="8sp"
                        android:text="@string/sampleNameRetail"
                        />
 
@@ -57,20 +63,27 @@
                        />
 
                    <TextView
-                       android:layout_marginTop="4dp"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:textAlignment="textEnd"
                        android:id="@+id/vc_address"
                        android:text="@string/sampleAddressRetail"
                        />
-                   <Button
-                       android:paddingVertical="16dp"
-                       android:layout_marginHorizontal="24dp"
-                       android:layout_width="match_parent"
-                       android:id="@+id/buttonLocation"
-                       android:text="@string/check_location"
-                       android:layout_height="wrap_content"/>
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+                      <Button
+                          android:layout_alignParentStart="true"
+                          android:paddingHorizontal="16sp"
+                          android:layout_marginTop="24dp"
+                          android:layout_width="wrap_content"
+                          android:id="@+id/buttonLocation"
+                          android:background="@drawable/roundedButton"
+                          android:text="@string/check_location"
+                          android:backgroundTint="@color/primaryColor"
+                          android:textColor="@color/white"
+                          android:layout_height="wrap_content"/>
+                  </RelativeLayout>
                </LinearLayout>
                <LinearLayout
                    android:paddingHorizontal="16dp"

@@ -140,63 +140,7 @@ class ProfilePage : Fragment() {
 
     }
 
-    private fun callMyProfile() : Boolean {
-        val sharedPreferences: SharedPreferences =
-            (this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE) ?: Log.d(
-                "ADA_USER",
-                "TES"
-            )) as SharedPreferences
-//        Log.d("ADA_USER", "TES")
-//        Log.d("ADA_USER", "${sharedPreferences.contains("currentUser")}")
-        if(sharedPreferences.contains("currentUser")
-        ){
-            val gson = Gson()
-            val user = sharedPreferences.getString("currentUser", "")
-            this.authKey = sharedPreferences.getString("authorization", "").toString()
-            this.safeUser  = gson.fromJson<User>(user, User::class.java)
-            if (authKey != null) {
-                return true
-            }
-        }
-        return false
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        val userRepository: UserRepository = UserRepository()
-//
-//        userResult.observe(this@ProfilePage, Observer {
-//            val userResult = it ?: return@Observer
-//
-//        })
-
-//        if(refreshProfile.isNotEmpty()){
-//            if(refreshProfile?.isRefreshing){
-//                if(callMyProfile()){
-//                    userRepository.getDetailUser(safeUser.id, authKey){
-////                    Log.d("OBSERVER" , "BERHASIL")
-//                        Log.d("- 1", "${it}")
-//                        if(it?.code == 200){
-//                            loading?.visibility = View.GONE
-////                        Log.d("- 2" , "BERHASIL")
-//                            address?.setText(it.data.alamat)
-//                            name?.setText(it.data.nama)
-//                            phone?.setText(it.data.no_telp)
-//                            nameHighlight.setText(it.data.nama)
-//                            frame?.visibility = View.VISIBLE
-//                        }
-//                        if(it?.code == 401){
-//                            Toast.makeText(context, "Unauthorized", Toast.LENGTH_LONG).show()
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-
-
+//    private fun callMyProfile() : Boolean {
 //        val sharedPreferences: SharedPreferences =
 //            (this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE) ?: Log.d(
 //                "ADA_USER",
@@ -204,31 +148,19 @@ class ProfilePage : Fragment() {
 //            )) as SharedPreferences
 ////        Log.d("ADA_USER", "TES")
 ////        Log.d("ADA_USER", "${sharedPreferences.contains("currentUser")}")
-//        if(sharedPreferences.contains(Constant.SP_USER)
+//        if(sharedPreferences.contains("currentUser")
 //        ){
 //            val gson = Gson()
-//            val userId = sharedPreferences.getString(Constant.SP_USER, "")
-//            val auth = sharedPreferences.getString(Constant.SP_TOKEN, "")
-//            val currentUser = gson.fromJson<User>(userId, User::class.java)
-//            if (auth != null) {
-//                userRepository.getDetailUser(currentUser.id, auth){
-////                    Log.d("OBSERVER" , "BERHASIL")
-//                    Log.d("- 1", "${it}")
-//                    if(it?.code == 200){
-//                        loading?.visibility = View.GONE
-////                        Log.d("- 2" , "BERHASIL")
-//                        address?.setText(it.data.alamat)
-//                        name?.setText(it.data.nama)
-//                        phone?.setText(it.data.no_telp)
-//                        nameHighlight.setText(it.data.nama)
-//                        frame?.visibility = View.VISIBLE
-//                    }
-//                    if(it?.code == 401){
-//                        Toast.makeText(context, "Unauthorized", Toast.LENGTH_LONG).show()
-//                    }
-//                }
+//            val user = sharedPreferences.getString("currentUser", "")
+//            this.authKey = sharedPreferences.getString("authorization", "").toString()
+//            this.safeUser  = gson.fromJson<User>(user, User::class.java)
+//            if (authKey != null) {
+//                return true
 //            }
 //        }
-    }
+//        return false
+//    }
+
+
 
 }

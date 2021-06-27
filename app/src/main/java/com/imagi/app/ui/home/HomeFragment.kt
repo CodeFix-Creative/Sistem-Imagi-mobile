@@ -86,15 +86,15 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_layout_home, container, false)
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter =  MyItemRecyclerViewAdapter(DummyContent.ITEMS)
-            }
-        }
+//        if (view is RecyclerView) {
+//            with(view) {
+//                layoutManager = when {
+//                    columnCount <= 1 -> LinearLayoutManager(context)
+//                    else -> GridLayoutManager(context, columnCount)
+//                }
+//                adapter =  MyItemRecyclerViewAdapter(DummyContent.ITEMS)
+//            }
+//        }
         return view
     }
 
