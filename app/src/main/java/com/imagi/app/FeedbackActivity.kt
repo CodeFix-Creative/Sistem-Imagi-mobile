@@ -1,11 +1,100 @@
 package com.imagi.app
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.imagi.app.adapter.ProductAdapter
+import com.imagi.app.network.DbServices
+import com.imagi.app.ui.base.CoreViewModel
+import com.imagi.app.util.AppUtils
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import dagger.android.support.HasSupportFragmentInjector
+import timber.log.Timber
+import javax.inject.Inject
 
-class FeedbackActivity : AppCompatActivity() {
+class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    lateinit var id : String;
+
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: CoreViewModel
+    private lateinit var dbServices: DbServices
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
+    }
+
+    lateinit var progress : ProgressBar
+    lateinit var mediaData : LinearLayout
+    lateinit var merchantName : TextView
+    lateinit var buttonSend : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback)
+        dbServices = DbServices(this)
+        dbServices.mContext = this
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
+
+        progress = findViewById(R.id.progressBarHome)
+        mediaData = findViewById(R.id.vc_media_data)
+        merchantName = findViewById(R.id.vc_merchant_name)
+        buttonSend = findViewById(R.id.vc_btn_review)
+
+        buttonSend.setOnClickListener {
+
+        }
+
+        if(intent.extras != null)
+        {
+            val bundle = intent.extras
+            id = bundle?.getString("id")!!
+        }else{
+            Timber.d("FAIL_GET_DATA")
+        }
+
+        observerViewModel()
+    }
+
+    private fun observerViewModel(){
+        viewModel.getStoreDetail(dbServices.findBearerToken(),id)
+
+        viewModel.isShowLoader.observe(this, {
+            if(it){
+                progress.visibility = View.VISIBLE
+                mediaData.visibility = View.GONE
+            }else{
+                progress.visibility = View.GONE
+                mediaData.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.errorMessage.observe(this, {
+            AppUtils.showAlert(this, it);
+        })
+
+        viewModel.storeDetailLiveData.observe(this, {
+            merchantName.text = it.nama_toko
+        })
+
     }
 }

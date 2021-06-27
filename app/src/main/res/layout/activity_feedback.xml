@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_centerVertical="true"
+            android:id="@+id/vc_media_data"
             android:layout_centerHorizontal="true"
             android:paddingHorizontal="24dp"
             android:orientation="vertical"
@@ -22,6 +23,7 @@
                 android:text="@string/sampleNameRetail"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:id="@+id/vc_merchant_name"
                 android:layout_marginBottom="16dp"
                 />
             <ImageView
@@ -47,10 +49,23 @@
 
             <Button
                 android:layout_width="match_parent"
+                android:id="@+id/vc_btn_review"
+                android:layout_marginTop="16sp"
+                android:backgroundTint="@color/primaryColor"
+                android:background="@drawable/rounded_button"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="@string/give"
                 />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBarHome"
+            style="?android:attr/progressBarStyle"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
