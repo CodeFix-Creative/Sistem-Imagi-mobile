@@ -16,6 +16,7 @@ import com.imagi.app.FeedbackActivity
 import com.imagi.app.MapsActivity
 import com.imagi.app.R
 import com.imagi.app.adapter.MarketAdapter
+import com.imagi.app.model.Store
 import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.detail_market_fragment.*
 
@@ -40,7 +41,13 @@ class DetailMarketFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = DetailMarketFragment()
+        fun newInstance(id:String): DetailMarketFragment {
+            val fragment = DetailMarketFragment()
+            val bundle = Bundle()
+            bundle.putString("id", id)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private lateinit var viewModel: MainViewModel
@@ -73,28 +80,8 @@ class DetailMarketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val recyclerView = view.findViewById<RecyclerView>(R.id.rvProduct)
-//        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
-//        var price = 12000
-//        for (i in 1..4){
-//            price += i * 4
-//            var market = Market("Nama Produk $i", price)
-//            markets.add(market)
-//        }
-////        rvMarket.adapter = MarketAdapter(markets)
-//        rvProduct.apply {
-//            layoutManager = this.layoutManager
-//            adapter = MarketAdapter(markets) {}
-//        }
-//        rvProduct.setOnTouchListener(View.OnTouchListener { v, _ -> false })
-
     }
 
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 
 
 }

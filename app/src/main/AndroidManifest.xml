@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
-        <activity android:name=".HomeActivity"></activity>
         <activity android:name=".FeedbackActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -45,11 +44,6 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
-
-        <activity
-            android:name=".MerchantMap"
-            android:label="@string/merchant_map" />
-        <activity android:name=".MainProfile" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

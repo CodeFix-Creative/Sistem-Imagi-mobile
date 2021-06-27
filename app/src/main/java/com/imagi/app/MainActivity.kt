@@ -2,18 +2,15 @@ package com.imagi.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.imagi.app.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imagi.app.ui.base.CoreViewModel
-import com.imagi.app.ui.home.ItemFragment
+import com.imagi.app.ui.home.HomeFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -42,7 +39,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                val fragment = ItemFragment()
+                val fragment = HomeFragment()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
