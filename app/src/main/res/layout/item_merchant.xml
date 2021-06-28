@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        android:layout_margin="5dp"
+
+        app:cardElevation="3dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:foregroundGravity="bottom"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:src="@drawable/ic_launcher_background"
+                android:scaleType="centerCrop"/>
+
+            <RelativeLayout
+                android:layout_marginTop="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/marketName"
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/transparants"
+                    android:paddingLeft="10dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textFontWeight="700"
+                    android:textColor="@color/white"
+                    android:text="Toko Kue"/>
+
+                <TextView
+                    android:id="@+id/marketAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textFontWeight="700"
+                    android:textColor="@color/white"
+                    android:text="Gianyar"
+                    android:layout_below="@id/marketName"/>
+            </RelativeLayout>
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -14,7 +14,7 @@ class MerchantAdapter(val list: List<User>, private var listener: (User) -> Unit
     class ViewHolder(view: View)  : RecyclerView.ViewHolder(view) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_market, parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_merchant, parent,false)
         return ViewHolder(view)
     }
 
