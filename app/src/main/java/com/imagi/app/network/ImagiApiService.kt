@@ -66,10 +66,11 @@ interface ImagiApiService {
     fun getAllReviewStore(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<ReviewResponse>>
 
-    @GET("review/{id}")
+    @Headers("Content-Type: application/json")
+    @POST("review/{id}")
     fun postReview(@Header("Authorization") token: String,
                    @Path("id") id: String,
-                   @Body form: @NotNull ReviewForm
+                   @Body req: ReviewForm
     ):
             Single<Response<ReviewPostResponse>>
 

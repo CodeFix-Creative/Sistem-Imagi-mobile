@@ -3,17 +3,17 @@ package com.imagi.app
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.imagi.app.adapter.ProductAdapter
+import com.imagi.app.model.ReviewForm
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
@@ -45,6 +45,7 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var mediaData : LinearLayout
     lateinit var merchantName : TextView
     lateinit var buttonSend : Button
+    lateinit var review : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -59,9 +60,18 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
         mediaData = findViewById(R.id.vc_media_data)
         merchantName = findViewById(R.id.vc_merchant_name)
         buttonSend = findViewById(R.id.vc_btn_review)
+        review = findViewById(R.id.contentFeedback)
 
         buttonSend.setOnClickListener {
-
+            if(validateFormReview(review.text.toString())){
+                viewModel.postReview(dbServices.findBearerToken(), id, ReviewForm(
+                    review = review?.text.toString(),
+                    toko_id = id.toInt()
+                ),
+                    context = this
+                )
+                finish()
+            }
         }
 
         if(intent.extras != null)
@@ -73,6 +83,15 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
         observerViewModel()
+    }
+
+    private fun validateFormReview(content: String) : Boolean{
+        return if(TextUtils.isEmpty(content)){
+            AppUtils.showAlert(this, "Mohon mengisi data review toko")
+            false
+        }else{
+            true
+        }
     }
 
     private fun observerViewModel(){
@@ -95,6 +114,7 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
         viewModel.storeDetailLiveData.observe(this, {
             merchantName.text = it.nama_toko
         })
+
 
     }
 }

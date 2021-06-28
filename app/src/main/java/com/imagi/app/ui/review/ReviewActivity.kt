@@ -42,6 +42,14 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var listReview : RecyclerView
     lateinit var fab : FloatingActionButton
 
+//    val startForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val intent = result.intent
+//            // Handle the Intent
+//        }
+//    }
+
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return frahmentInjector
     }

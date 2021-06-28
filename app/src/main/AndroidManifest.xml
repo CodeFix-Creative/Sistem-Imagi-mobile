@@ -35,7 +35,8 @@
             android:name=".ui.review.ReviewActivity"
             android:label="@string/title_activity_review_list">
         </activity>
-        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".FeedbackActivity"
+            android:label="@string/give_review"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

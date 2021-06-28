@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:layout_centerVertical="true"
             android:id="@+id/vc_media_data"
             android:layout_centerHorizontal="true"
             android:paddingHorizontal="24dp"
+            android:layout_marginTop="16sp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -29,6 +29,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:background="@drawable/rounded_button"
                 android:src="@drawable/market_2"
                 android:scaleType="centerCrop"
                 android:layout_marginBottom="16dp"/>
@@ -43,6 +44,7 @@
             <EditText
                 android:id="@+id/contentFeedback"
                 android:layout_width="match_parent"
+                android:imeOptions="actionDone"
                 android:layout_height="wrap_content">
 
             </EditText>

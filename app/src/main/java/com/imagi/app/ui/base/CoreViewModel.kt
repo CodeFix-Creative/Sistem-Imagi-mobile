@@ -1,10 +1,12 @@
 package com.imagi.app.ui.base
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.imagi.app.model.*
 import com.imagi.app.network.DataManager
+import com.imagi.app.util.AppUtils
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -196,7 +198,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun postReview(token:String, id:String, review:ReviewForm){
+    fun postReview(token:String, id:String, review:ReviewForm, context: Context){
         isShowLoader.value = true
         Timber.d("POST_DATA_REVIEW")
         dataManager.postReview(token, id, review)
@@ -208,6 +210,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
 
                     if(res?.code == 200){
                         reviewDetailLiveData.value = res?.data
+                        AppUtils.showAlert(context, "Review Berhasil Ditambahkan")
                     }
                 }else{
                     errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"

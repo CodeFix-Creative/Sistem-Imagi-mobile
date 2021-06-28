@@ -66,8 +66,8 @@ data class Replay(
 
 data class ReviewForm(
     @field:SerializedName("toko_id")
-    val toko_id: Int ? = null,
+    var toko_id: Int ? = null,
 
     @field:SerializedName("review")
-    val review: Int ? = null,
+    var review: String ? = null,
 )

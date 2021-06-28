@@ -44,4 +44,5 @@
     <string name="merchant_map">MerchantMap</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_review_list">Review</string>
+    <string name="give_review">Berikan Ulasan</string>
 </resources>
