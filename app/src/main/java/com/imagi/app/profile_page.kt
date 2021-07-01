@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,12 @@ import androidx.lifecycle.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.imagi.app.model.User
+import com.imagi.app.model.UserForm
 import com.imagi.app.model.UserResponse
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.ui.login.LoginActivity
+import com.imagi.app.util.AppUtils
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,6 +42,7 @@ class ProfilePage : Fragment() {
     lateinit var loading : ProgressBar
     lateinit var frame : RelativeLayout
     lateinit var buttonLogout : Button
+    lateinit var saveChange : Button
     lateinit var refreshProfile : SwipeRefreshLayout
 
     lateinit var safeUser : User
@@ -62,8 +66,37 @@ class ProfilePage : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dbServices = DbServices(getContext())
+
+        saveChange.setOnClickListener {
+            if(validateForm(name.text.toString(), phone.text.toString(), address.text.toString())){
+                viewModel.putProfile(
+                    dbServices.findBearerToken(),
+                    dbServices.getUser().id_customer.toString(),
+                    UserForm(
+                        nama = name.text.toString(),
+                        no_telp = phone.text.toString(),
+                        alamat = address.text.toString()
+                    )
+                )
+            }
+        }
         observerViewModel()
 
+    }
+
+    private fun validateForm(nama:String, phone:String, address:String,): Boolean {
+        return if(TextUtils.isEmpty(nama)){
+            activity?.let { AppUtils.showAlert(it, "Mohon mengisi nama user") }
+            false
+        } else if(TextUtils.isEmpty(phone)){
+            activity?.let { AppUtils.showAlert(it, "Mohon mengisi nomor telepon user") }
+            false
+        }else if(TextUtils.isEmpty(address)){
+            activity?.let { AppUtils.showAlert(it, "Mohon mengisi alamat user") }
+            false
+        }else{
+            true
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -119,6 +152,7 @@ class ProfilePage : Fragment() {
         frame = inflateView?.findViewById<RelativeLayout>(R.id.side_user)
         refreshProfile = inflateView?.findViewById<SwipeRefreshLayout>(R.id.refreshProfile)
         buttonLogout = inflateView?.findViewById(R.id.logout)
+        saveChange = inflateView?.findViewById(R.id.editButton)
 //        buttonLogout.setBackgroundColor(R.color.red)
 
         refreshProfile.setOnRefreshListener {

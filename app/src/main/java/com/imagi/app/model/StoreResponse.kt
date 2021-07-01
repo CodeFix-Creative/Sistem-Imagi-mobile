@@ -27,6 +27,8 @@ data class Store (
 
     @field:SerializedName("pedagang")
     val pedagang: User? = null,
+
+
 )
 
 data class StoreResponse(

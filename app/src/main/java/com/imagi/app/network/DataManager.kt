@@ -73,4 +73,16 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun putProfile(token: String, id: String, form: UserForm) :Single<retrofit2.Response<UserResponse>>{
+        return api.putProfile(token, id, form)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getStoreMerchant(token:String, id:String) : Single<retrofit2.Response<UserResponse>>{
+        return api.getStoreByMerchant(token, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

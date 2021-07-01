@@ -26,7 +26,7 @@ class MerchantAdapter(val list: List<User>, private var listener: (User) -> Unit
         holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
 
         holder.itemView.setOnClickListener {
-
+            listener(item)
         }
     }
 

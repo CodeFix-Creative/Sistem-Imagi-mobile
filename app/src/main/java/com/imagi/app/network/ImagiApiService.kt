@@ -79,6 +79,18 @@ interface ImagiApiService {
         @Path ("id") id: String) :
             Single<Response<ProductListenResponse>>
 
+    @Headers("Content-Type: application/json")
+    @PUT("customers/{id}")
+    fun putProfile(@Header("Authorization") token: String,
+                   @Path("id") id: String,
+                   @Body req: UserForm
+    ):
+            Single<Response<UserResponse>>
+
+    @GET("toko/pedagang/{id}")
+    fun getStoreByMerchant(@Header("Authorization") token: String, @Path("id") id: String):
+            Single<Response<UserResponse>>
+
 
 }
 

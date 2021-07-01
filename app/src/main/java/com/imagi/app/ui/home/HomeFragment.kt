@@ -2,9 +2,9 @@ package com.imagi.app.ui.home
 
 //import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,7 +17,6 @@ import com.imagi.app.R
 import com.imagi.app.adapter.MerchantAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
-import com.imagi.app.ui.home.dummy.DummyContent
 import com.imagi.app.util.AppUtils
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_item_list.*
@@ -71,7 +70,13 @@ class HomeFragment : Fragment() {
             val list = list
             list.invalidate()
 
-            val adapters = MerchantAdapter(it){}
+            val adapters = MerchantAdapter(it){
+                val bundle = Bundle()
+                it.id_pedagang?.let { it1 -> bundle.putString("id", it1.toString()) }
+                val intent = Intent(view?.context, StoreMerchant::class.java)
+                intent.putExtras(bundle)
+                view?.context?.startActivity(intent)
+            }
 
             list.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             adapters?.notifyDataSetChanged()

@@ -23,20 +23,17 @@
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
 
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
 
         <activity
-            android:name=".ui.review.ReviewActivity"
-            android:label="@string/title_activity_review_list">
+            android:name=".ui.home.StoreMerchant"
+            android:label="@string/title_activity_store_merhcnat">
         </activity>
-        <activity android:name=".FeedbackActivity"
-            android:label="@string/give_review"/>
+        <activity
+            android:name=".ui.review.ReviewActivity"
+            android:label="@string/title_activity_review_list"></activity>
+        <activity
+            android:name=".FeedbackActivity"
+            android:label="@string/give_review" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

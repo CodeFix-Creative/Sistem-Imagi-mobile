@@ -1,15 +1,21 @@
 package com.imagi.app.adapter
-import android.content.Intent
+
+import android.app.Activity
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.imagi.app.DetailMarket
-import kotlinx.android.synthetic.main.item_market.view.*
+import com.bumptech.glide.Glide
 import com.imagi.app.R
 import com.imagi.app.model.Store
+import kotlinx.android.synthetic.main.item_market.view.*
+import java.io.InputStream
+import java.net.URL
+
 
 class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Unit)  :
     RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
@@ -25,8 +31,15 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
 
         holder.itemView.marketName.text = item.nama_toko
         holder.itemView.marketAddress.text = item.alamat_toko
-        holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
-
+//        try{
+            Glide.with(holder.itemView)
+                .load("https://s3-ap-southeast-1.amazonaws.com/gotani/6042bea41001a65a95db5194833f003d_2021_06_15.jpeg")
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(holder.itemView.productImage)
+//        }catch (e:Exception){
+//            holder.itemView.productImage.setImageResource()
+//
+//        }
         holder.itemView.setOnClickListener {
             listener(item)
         }
@@ -34,8 +47,19 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
 
     }
 
+    fun LoadImageFromWebOperations(url: String?): Drawable? {
+        return try {
+            val data: InputStream = URL(url).content as InputStream
+            Log.d("DATA_IMAGE", "$data")
+            Drawable.createFromStream(data, "src name")
+        } catch (e: Exception) {
+            Log.d("DATA_IMAGE_NULL", "")
+            null
+        }
+    }
+
     override fun getItemCount(): Int {
-        Log.d("Jumlah data" , "${market?.size}")
+        Log.d("Jumlah data", "${market?.size}")
         return market.size
     }
 

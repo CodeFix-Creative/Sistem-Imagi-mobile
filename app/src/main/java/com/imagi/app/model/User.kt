@@ -28,4 +28,28 @@ data class User(
     @field:SerializedName("no_telp")
     var no_telp: String? = null,
 
+    @field:SerializedName("id_customer")
+    var id_customer: String? = null,
+
+    @field:SerializedName("id_pedagang")
+    var id_pedagang: String? = null,
+
+    @field:SerializedName("toko")
+    var toko: List<Store>? = listOf(),
+
+)
+
+data class UserForm(
+
+    @field:SerializedName("nama")
+    val nama: String? = null,
+
+    @field:SerializedName("alamat")
+    val alamat: String? = null,
+
+    @field:SerializedName("foto")
+    var foto: String? = null,
+
+    @field:SerializedName("no_telp")
+    var no_telp: String? = null,
 )

@@ -249,4 +249,55 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                 })
     }
 
+    @Suppress("CheckResult")
+    fun putProfile(token:String, id:String, form:UserForm){
+        isShowLoader.value = true
+        Timber.d("PUT_DATA_USER")
+        dataManager.putProfile(token, id, form)
+            .subscribe({ result->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_PUT_DATA_USER")
+                    val res = result?.body()
+
+                    if(res?.code == 200){
+                        userLiveData.value = res?.data
+                    }
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            },{
+                    error->
+                isShowLoader.value = false
+                errorMessage.value = error.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun getStoreMerchant(token:String, id: String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.getStoreMerchant(token, id)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+
+                    if(res?.code == 200){
+                        storeLiveData.value = res?.data?.toko
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
 }

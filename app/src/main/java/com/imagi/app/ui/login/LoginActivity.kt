@@ -47,13 +47,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CoreViewModel
 
-//    private lateinit var loginViewModel: LoginViewModel
-
-    val loginRepository: LoginRepository = LoginRepository(LoginDataSource())
-
     val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
-    var currentUser : UserResponse? = null
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
