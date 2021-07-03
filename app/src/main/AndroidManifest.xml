@@ -23,14 +23,16 @@
         android:theme="@style/Theme.Imagi"
         android:usesCleartextTraffic="true">
 
-
         <activity
-            android:name=".ui.home.StoreMerchant"
-            android:label="@string/title_activity_store_merhcnat">
+            android:name=".ui.home.SearchActivityPage"
+            android:label="@string/title_activity_search_page">
         </activity>
         <activity
+            android:name=".ui.home.StoreMerchant"
+            android:label="@string/title_activity_store_merhcnat"></activity>
+        <activity
             android:name=".ui.review.ReviewActivity"
-            android:label="@string/title_activity_review_list"></activity>
+            android:label="@string/title_activity_review_list" />
         <activity
             android:name=".FeedbackActivity"
             android:label="@string/give_review" />

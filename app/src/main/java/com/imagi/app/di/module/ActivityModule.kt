@@ -2,6 +2,7 @@ package com.imagi.app.di.module
 
 import com.imagi.app.*
 import com.imagi.app.ui.home.HomeFragment
+import com.imagi.app.ui.home.SearchActivityPage
 import com.imagi.app.ui.home.StoreMerchant
 import com.imagi.app.ui.login.LoginActivity
 import com.imagi.app.ui.review.ReviewActivity
@@ -38,6 +39,9 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeFragmentStoreMerchant(): StoreMerchant
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeSearchActivity(): SearchActivityPage
 
 
 }

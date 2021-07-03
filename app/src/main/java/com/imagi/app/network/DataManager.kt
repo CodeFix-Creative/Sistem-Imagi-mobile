@@ -85,4 +85,10 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getProductSearch(token:String, query:String) : Single<retrofit2.Response<ProductListenResponse>>{
+        return api.getSearchGlobalProduct(token, query, )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

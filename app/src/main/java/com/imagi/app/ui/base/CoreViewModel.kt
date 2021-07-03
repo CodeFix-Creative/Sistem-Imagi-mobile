@@ -9,6 +9,7 @@ import com.imagi.app.network.DataManager
 import com.imagi.app.util.AppUtils
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.max
 
 class CoreViewModel @Inject constructor(private val dataManager: DataManager) : ViewModel() {
 
@@ -228,6 +229,32 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT")
         dataManager.getProductStore(token, id)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_PRODUCT")
+                    val res = result.body()
+
+                    if(res?.code == 200){
+                        productLiveData.value = res?.data
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun getGlobalSearch(token:String, query: String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT")
+        dataManager.getProductSearch(token, query)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")

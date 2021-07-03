@@ -91,6 +91,11 @@ interface ImagiApiService {
     fun getStoreByMerchant(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<UserResponse>>
 
+    @GET("barang/search?")
+    fun getSearchGlobalProduct(@Header("Authorization") token: String,
+                        @Query("searchValue") searchValue: String ):
+            Single<Response<ProductListenResponse>>
+
 
 }
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.imagi.app.adapter.MerchantAdapter
 import com.imagi.app.model.Store
+import com.imagi.app.ui.home.SearchActivityPage
 import com.imagi.app.ui.market.DetailMarketFragment
 import com.imagi.app.util.AppUtils
 import kotlinx.android.synthetic.main.fragment_market.*
@@ -33,6 +35,7 @@ class MarketFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CoreViewModel
     private lateinit var dbServices: DbServices
+    private lateinit var btnSearch: LinearLayout
 
     lateinit var recyclerView: RecyclerView
     lateinit var progressBar: ProgressBar
@@ -44,6 +47,12 @@ class MarketFragment : Fragment() {
         val myInflatedView: View = inflater.inflate(R.layout.fragment_market, container, false)
         initializeFragment(myInflatedView)
         dbServices.mContext = context
+
+        btnSearch = myInflatedView.findViewById(R.id.vc_search_bar)
+        btnSearch.setOnClickListener {
+            var intent = Intent(activity, SearchActivityPage::class.java)
+            startActivity(intent)
+        }
         return myInflatedView
     }
 
