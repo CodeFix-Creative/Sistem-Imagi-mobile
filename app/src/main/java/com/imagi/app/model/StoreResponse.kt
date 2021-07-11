@@ -60,3 +60,39 @@ data class StoreDetailResponse(
     @field:SerializedName("data")
     val data : Store ? = null
 )
+
+data class StoreForm(
+    @field:SerializedName("pedagang_id")
+    val pedagang_id : String ? = null,
+
+    @field:SerializedName("nama_toko")
+    val nama_toko : String ? = null,
+
+    @field:SerializedName("no_telp")
+    val no_telp : String ? = null,
+
+    @field:SerializedName("alamat_toko")
+    val alamat_toko : String ? = null,
+
+    @field:SerializedName("latitude")
+    val latitude : String ? = null,
+
+    @field:SerializedName("longitude")
+    val longitude : String ? = null,
+
+    @field:SerializedName("foto")
+    val foto : String ? = null,
+
+    @field:SerializedName("facebook")
+    val facebook : String  = "-",
+
+    @field:SerializedName("twitter")
+    val twitter : String  = "-",
+
+    @field:SerializedName("instagram")
+    val instagram : String  = "-",
+
+    @field:SerializedName("website")
+    val website : String = "-",
+
+    )

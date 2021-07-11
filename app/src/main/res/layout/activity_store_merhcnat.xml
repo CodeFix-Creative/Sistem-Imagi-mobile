@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".ui.home.store_merhcnat"
+    tools:context=".ui.home.StoreMerchant"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -17,9 +17,135 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:id="@+id/vc_dialog_form"
+                android:layout_width="match_parent"
+                app:cardCornerRadius="16dp"
+                android:layout_margin="16dp"
+                android:layout_height="match_parent">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="22dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tambah Toko"
+                                android:textColor="@color/primaryColor"
+                                android:textStyle="bold"
+                                android:textSize="18dp"/>
+
+
+                            <TextView
+                                android:layout_alignParentEnd="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kembali"
+                                android:id="@+id/vc_btn_close"
+                                android:textColor="@color/redLight"
+                                android:textStyle="bold"
+                                android:textSize="18dp"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_marginTop="24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nama Toko"
+                            android:layout_marginBottom="4dp"/>
+                        <EditText
+                            android:id="@+id/vc_merchant_name"
+                            android:padding="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_border"/>
+
+                        <TextView
+                            android:layout_marginTop="24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nomor Telepon"
+                            android:layout_marginBottom="4dp"/>
+                        <EditText
+                            android:id="@+id/vc_merchant_phone"
+                            android:padding="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_border"
+                            android:inputType="text" />
+
+                        <TextView
+                            android:layout_marginTop="24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Alamat"
+                            android:layout_marginBottom="4dp"/>
+                        <EditText
+                            android:id="@+id/vc_merchant_address"
+                            android:padding="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_border"
+                            android:inputType="text" />
+
+                        <TextView
+                            android:layout_marginTop="24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Foto"
+                            android:layout_marginBottom="4dp"/>
+                        <ImageView
+                            android:id="@+id/vc_merchant_photo"
+                            android:padding="8dp"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:src="@drawable/ic_launcher_background"
+                            android:background="@drawable/round_border" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/vc_btn_save"
+                            android:layout_marginTop="24dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/round_border"
+                            android:backgroundTint="@color/primaryColor">
+
+                            <TextView
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="24dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Simpan"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:layout_marginBottom="4dp"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.cardview.widget.CardView>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMarket"
                     android:padding="10dp"

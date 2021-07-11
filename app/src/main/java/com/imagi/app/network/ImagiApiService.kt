@@ -1,10 +1,13 @@
 package com.imagi.app.network
 
+import androidx.annotation.NonNull
 import com.google.gson.GsonBuilder
 import com.imagi.app.model.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.jetbrains.annotations.NotNull
 import retrofit2.Call
 import retrofit2.Response
@@ -128,6 +131,31 @@ interface ImagiApiService {
     fun deleteProduct(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<ProductResponse>>
 
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("toko")
+    fun postStore(
+        @Header("Authorization") token: String,
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part file :MultipartBody.Part
+        ):
+            Single<Response<StoreDetailResponse>>
+
+
+    @Headers("Content-Type: application/json")
+    @PUT("toko/{id}")
+    fun putStore(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body form: @NotNull StoreForm):
+            Single<Response<StoreDetailResponse>>
+
+    @Headers("Content-Type: application/json")
+    @DELETE("toko/{id}")
+    fun deleteStore(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,):
+            Single<Response<StoreDetailResponse>>
 
 
 }

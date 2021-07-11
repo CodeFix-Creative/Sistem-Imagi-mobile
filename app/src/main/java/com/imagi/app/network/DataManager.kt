@@ -5,6 +5,8 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
@@ -117,6 +119,24 @@ class DataManager
 
     fun postReplay(token:String,id:String, content:ReplayForm) : Single<retrofit2.Response<ReplayPostResponse>>{
         return api.postReplay(token,id,content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun postStore(token:String, content:Map<String, RequestBody>, file:MultipartBody.Part) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.postStore(token, content, file)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun putStore(token:String,id:String, content:StoreForm) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.putStore(token,id,content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun deleteStore(token:String,id:String) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.deleteStore(token,id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

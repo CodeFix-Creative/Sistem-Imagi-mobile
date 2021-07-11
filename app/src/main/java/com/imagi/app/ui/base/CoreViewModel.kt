@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.imagi.app.model.*
 import com.imagi.app.network.DataManager
 import com.imagi.app.util.AppUtils
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.max
@@ -434,6 +436,72 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT_STORE")
         dataManager.postReplay(token, id, content)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun postStore(token:String, content:Map<String, RequestBody>, image:MultipartBody.Part?){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.postStore(token,content, image!!)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun putStore(token:String,id:String, content:StoreForm){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.putStore(token, id, content)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun deleteStore(token:String,id:String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.deleteStore(token, id)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
