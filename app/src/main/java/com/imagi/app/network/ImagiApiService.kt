@@ -74,6 +74,14 @@ interface ImagiApiService {
     ):
             Single<Response<ReviewPostResponse>>
 
+    @Headers("Content-Type: application/json")
+    @POST("review/{id}/reply")
+    fun postReplay(@Header("Authorization") token: String,
+                   @Path("id") id: String,
+                   @Body req: ReplayForm
+    ):
+            Single<Response<ReplayPostResponse>>
+
     @GET("barang/toko/{id}")
     fun getProductStore(@Header("Authorization") token: String,
         @Path ("id") id: String) :

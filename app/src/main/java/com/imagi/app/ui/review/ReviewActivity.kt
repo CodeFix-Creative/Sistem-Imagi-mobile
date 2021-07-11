@@ -2,6 +2,7 @@ package com.imagi.app.ui.review
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -15,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.imagi.app.FeedbackActivity
 import com.imagi.app.R
 import com.imagi.app.adapter.ReviewAdapter
+import com.imagi.app.model.ReplayForm
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
@@ -22,12 +24,14 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_review_list.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
-    lateinit var id : String;
+    lateinit var id : String
+    lateinit var idReview : String
 
     @Inject
     lateinit var frahmentInjector: DispatchingAndroidInjector<Fragment>
@@ -40,14 +44,6 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var progress : ProgressBar
     lateinit var listReview : RecyclerView
     lateinit var fab : FloatingActionButton
-
-//    val startForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val intent = result.intent
-//            // Handle the Intent
-//        }
-//    }
-
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return frahmentInjector
@@ -66,6 +62,10 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         listReview = findViewById(R.id.vc_review_list)
         fab = findViewById(R.id.fab)
 
+        vc_btn_close.setOnClickListener {
+            vc_dialog_form.visibility = View.GONE
+        }
+
         fab.setOnClickListener {
             Timber.d("CLICK_FEEDBACK")
             val bundle = Bundle()
@@ -73,6 +73,18 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
             val intent = Intent(this, FeedbackActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
+        }
+
+        vc_btn_save.setOnClickListener {
+            Timber.d("BALASAN : ${vc_et_replay.text.toString()}")
+            if(validate(vc_et_replay.text.toString())){
+                viewModel.postReplay(dbServices.findBearerToken(), dbServices.user.id_pedagang.toString(),
+                    ReplayForm(
+                        balasan = vc_et_replay.text.toString(),
+                        id_review = idReview
+                    )
+                )
+            }
         }
 
         if(intent.extras != null)
@@ -87,7 +99,21 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     }
 
+    private fun validate(replay:String) : Boolean {
+        return if(TextUtils.isEmpty(replay)){
+            AppUtils.showAlert(this, "Mohon mengisi balasan anada")
+            false
+        }else{
+            true
+        }
+    }
+
     private fun observerViewModel(){
+
+        if(dbServices.user.role == "Pedagang"){
+            fab.visibility = View.GONE;
+        }
+
         viewModel.getReview(dbServices.findBearerToken(),id)
 
         viewModel.isShowLoader.observe(this, {
@@ -104,11 +130,23 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
             AppUtils.showAlert(this, it);
         })
 
+        viewModel.code.observe(this, {
+            if(it == 201){
+                viewModel.getReview(dbServices.findBearerToken(),id)
+            }
+        })
+
         viewModel.reviewLiveData.observe(this, {
             val list = listReview
             list.invalidate()
 
-            val adapters = ReviewAdapter(it){}
+            val adapters = ReviewAdapter(it){
+                this.idReview = it.id_review.toString()
+                if(dbServices.user.role == "Pedagang"){
+                    vc_dialog_form.visibility = View.VISIBLE
+                    vc_customer_name.setText(it.nama_customer)
+                }
+            }
 
             list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             adapters.notifyDataSetChanged()

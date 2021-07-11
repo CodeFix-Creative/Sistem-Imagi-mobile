@@ -10,7 +10,7 @@ import com.imagi.app.model.Review
 import kotlinx.android.synthetic.main.item_product.view.*
 import kotlinx.android.synthetic.main.item_review.view.*
 
-class ReviewAdapter(val list: List<Review>, private var listerner: (Product)-> Unit) :
+class ReviewAdapter(val list: List<Review>, private var listerner: (Review)-> Unit) :
     RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
 
     class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
@@ -37,7 +37,7 @@ class ReviewAdapter(val list: List<Review>, private var listerner: (Product)-> U
         }
 
         holder.itemView.setOnClickListener {
-
+            listerner(list[position])
         }
     }
 

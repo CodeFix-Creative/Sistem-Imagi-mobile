@@ -115,4 +115,10 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun postReplay(token:String,id:String, content:ReplayForm) : Single<retrofit2.Response<ReplayPostResponse>>{
+        return api.postReplay(token,id,content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

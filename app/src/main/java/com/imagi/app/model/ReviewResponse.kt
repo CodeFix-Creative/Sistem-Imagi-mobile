@@ -30,6 +30,22 @@ data class ReviewPostResponse (
     val data : Review? = null
 )
 
+data class ReplayPostResponse (
+    @field:SerializedName("success")
+    val success : Boolean ? = false,
+
+    @field:SerializedName("message")
+    val message : String ? = null,
+
+    @field:SerializedName("code")
+    val code : Int ? = null,
+
+    @field:SerializedName("data")
+    val data : Replay? = null
+)
+
+
+
 data class Review(
     @field:SerializedName("id_review")
     val id_review: Int ? = null,
@@ -71,3 +87,13 @@ data class ReviewForm(
     @field:SerializedName("review")
     var review: String ? = null,
 )
+
+data class ReplayForm(
+    @field:SerializedName("balasan")
+    var balasan: String ? = null,
+
+    @field:SerializedName("id_review")
+    var id_review: String ? = null,
+
+
+    )

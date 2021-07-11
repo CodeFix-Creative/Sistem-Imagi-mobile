@@ -13,4 +13,5 @@
     <color name="primaryColor">#FC9449</color>
     <color name="red">#f54260</color>
     <color name="redSoft">#ffcccc</color>
+    <color name="redLight">#ff8080</color>
 </resources>

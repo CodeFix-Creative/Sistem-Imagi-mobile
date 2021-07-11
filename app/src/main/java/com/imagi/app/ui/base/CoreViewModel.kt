@@ -429,4 +429,26 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                 })
     }
 
+    @Suppress("CheckResult")
+    fun postReplay(token:String,id:String, content:ReplayForm){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.postReplay(token, id, content)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
 }

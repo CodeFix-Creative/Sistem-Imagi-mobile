@@ -89,7 +89,7 @@
                            android:drawableStart="@drawable/ic_chat"
                            android:layout_width="120dp"
                            android:background="@drawable/rounded_button"
-                           android:text="@string/give_feedback"
+                           android:text="Ulasan"
                            android:id="@+id/buttonFeedbackToMarket"
                            android:backgroundTint="@color/greySoft"
                            android:textColor="@color/white"
