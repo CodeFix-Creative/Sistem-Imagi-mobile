@@ -96,6 +96,31 @@ interface ImagiApiService {
                         @Query("searchValue") searchValue: String ):
             Single<Response<ProductListenResponse>>
 
+    @Headers("Content-Type: application/json")
+    @POST("barang")
+    fun postProduct(
+        @Header("Authorization") token: String,
+        @Body form: @NotNull ProductForm):
+            Single<Response<ProductResponse>>
+
+
+    @Headers("Content-Type: application/json")
+    @PUT("barang/{id}")
+    fun putProduct(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body form: @NotNull ProductForm):
+            Single<Response<ProductResponse>>
+
+    @GET("barang/{id}")
+    fun getProduct(@Header("Authorization") token: String, @Path("id") id: String):
+            Single<Response<ProductResponse>>
+
+    @DELETE("barang/{id}/forceDelete")
+    fun deleteProduct(@Header("Authorization") token: String, @Path("id") id: String):
+            Single<Response<ProductResponse>>
+
+
 
 }
 

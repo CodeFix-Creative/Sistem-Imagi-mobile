@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="unit_list">
+        <item>Kilogram</item>
+        <item>Pcs</item>
+        <item>Liter</item>
+        <item>Pasang</item>
+        <item>Ons</item>
+        <item>Krat</item>
+        <item>Bakul</item>
+        <item>Keranjang</item>
+        <item>Karung</item>
+        <item>Jerigen</item>
+    </string-array>
+</resources>

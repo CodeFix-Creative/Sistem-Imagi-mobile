@@ -10,9 +10,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.imagi.app.adapter.ProductAdapter
 import com.imagi.app.model.ReviewForm
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel

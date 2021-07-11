@@ -52,3 +52,20 @@ data class ProductListenResponse(
     @field:SerializedName("message")
     val message: String? = null
 )
+
+
+data class ProductForm(
+
+    @field:SerializedName("toko_id")
+    val toko_id: String? = null,
+
+    @field:SerializedName("nama_barang")
+    val nama_barang: String? = null,
+
+    @field:SerializedName("harga")
+    val harga: String? = null,
+
+    @field:SerializedName("satuan")
+    val satuan: String? = null
+
+)

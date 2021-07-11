@@ -37,6 +37,9 @@ data class User(
     @field:SerializedName("toko")
     var toko: List<Store>? = listOf(),
 
+    @field:SerializedName("path_foto")
+    var path_foto: String ? = null
+
 )
 
 data class UserForm(

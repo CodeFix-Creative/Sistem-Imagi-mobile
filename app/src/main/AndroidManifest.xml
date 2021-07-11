@@ -28,8 +28,15 @@
             android:label="@string/title_activity_search_page">
         </activity>
         <activity
+            android:name=".MenuMerchant"
+            android:label="@string/merchant">
+        </activity>
+        <activity
             android:name=".ui.home.StoreMerchant"
             android:label="@string/title_activity_store_merhcnat"></activity>
+        <activity
+            android:name=".ui.market.ActivityProductDetail"
+            android:label="Product"></activity>
         <activity
             android:name=".ui.review.ReviewActivity"
             android:label="@string/title_activity_review_list" />

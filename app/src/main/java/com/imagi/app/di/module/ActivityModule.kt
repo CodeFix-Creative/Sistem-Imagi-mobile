@@ -5,6 +5,7 @@ import com.imagi.app.ui.home.HomeFragment
 import com.imagi.app.ui.home.SearchActivityPage
 import com.imagi.app.ui.home.StoreMerchant
 import com.imagi.app.ui.login.LoginActivity
+import com.imagi.app.ui.market.ActivityProductDetail
 import com.imagi.app.ui.review.ReviewActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -18,6 +19,9 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeMainActivity(): MainActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeMenuMerchant(): MenuMerchant
 
     @ContributesAndroidInjector
     internal abstract fun contributeFragmentProfile(): ProfilePage
@@ -42,6 +46,9 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeSearchActivity(): SearchActivityPage
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeProductDetailhActivity(): ActivityProductDetail
 
 
 }

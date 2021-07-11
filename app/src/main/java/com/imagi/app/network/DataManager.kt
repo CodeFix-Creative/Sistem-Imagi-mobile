@@ -91,4 +91,28 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun postProduct(token:String, productForm:ProductForm) : Single<retrofit2.Response<ProductResponse>>{
+        return api.postProduct(token, productForm)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun putProduct(token:String,id:String, productForm:ProductForm) : Single<retrofit2.Response<ProductResponse>>{
+        return api.putProduct(token, id, productForm)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getProduct(token:String, id:String) : Single<retrofit2.Response<ProductResponse>>{
+        return api.getProduct(token, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun deleteProduct(token:String, id:String) : Single<retrofit2.Response<ProductResponse>>{
+        return api.deleteProduct(token, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

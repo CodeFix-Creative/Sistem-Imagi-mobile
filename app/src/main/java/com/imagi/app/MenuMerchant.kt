@@ -14,52 +14,43 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MenuMerchant : AppCompatActivity(), HasSupportFragmentInjector {
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
+    lateinit var dbServices: DbServices
+
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: CoreViewModel
-    lateinit var dbServices: DbServices
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         dbServices = DbServices(this)
         dbServices.mContext = this
-        AndroidInjection.inject(this)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_menu_merchant)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        setContentView(R.layout.activity_menu_merchant)
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationMerchant)
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.nav_home -> {
-                val fragment = HomeFragment()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val fragment = HomeFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_profile -> {
+                    val fragment = ProfilePage.newInstance()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-
-            R.id.nav_merchant -> {
-                val fragment = MarketFragment.newInstance()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_profile -> {
-                val fragment = ProfilePage.newInstance()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
+            false
     }
 
     private fun addFragment(fragment: Fragment) {
@@ -69,6 +60,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .replace(R.id.content, fragment, fragment.javaClass.getSimpleName())
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return fragmentInjector
     }
 
 }

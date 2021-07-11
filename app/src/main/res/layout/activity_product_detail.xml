@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.market.ActivityProductDetail">
+
+    <androidx.core.widget.NestedScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".MainProfile">
+
+            <RelativeLayout
+                android:id="@+id/profileContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp">
+                <ProgressBar
+                    android:id="@+id/loadingProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="64dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="64dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.3" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/side_user">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="24dp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Product Name"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryColor"
+                                />
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/vc_name"
+                                android:text=""
+                                android:hint="ex: kue beras"
+                                android:textSize="14sp"
+                                android:textColor="@color/blackSoft"
+                                />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Harga"
+                                android:layout_marginTop="16dp"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryColor"
+                                />
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/vc_price"
+                                android:hint="ex : 4000"
+                                android:inputType="number"
+                                android:textSize="14sp"
+                                android:textColor="@color/blackSoft"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Satuan"
+                                android:layout_marginTop="16dp"
+                                android:textSize="14sp"
+                                android:textColor="@color/primaryColor"
+                                />
+
+                            <Spinner
+                                android:id="@+id/unit_spinner"
+                                android:layout_width="match_parent"
+                                android:autofillHints="Pilih satuan barang"
+                                android:layout_height="wrap_content"
+                                style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+
+<!--                            <RelativeLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content">-->
+
+<!--                                <com.google.android.material.textfield.TextInputLayout-->
+<!--                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--                                    android:id="@+id/vc_unit"-->
+<!--                                    android:padding="8dp"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"/>-->
+
+<!--                                <com.google.android.material.textfield.MaterialAutoCompleteTextView-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:id="@+id/vc_unit_auto"-->
+<!--                                    android:inputType="none"/>-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_marginEnd="8dp"-->
+<!--                                    android:layout_centerVertical="true"-->
+<!--                                    android:layout_alignParentEnd="true"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@drawable/ic_baseline_arrow_drop_down_24"/>-->
+
+<!--                            </RelativeLayout>-->
+
+                            <Button
+                                android:layout_marginTop="16dp"
+                                android:id="@+id/vc_btn_change"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Save Change"
+                                />
+
+                            <Button
+                                android:layout_marginTop="16dp"
+                                android:id="@+id/vc_btn_add"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Add Product"
+                                />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBarHome"
+        style="?android:attr/progressBarStyle"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+</RelativeLayout>

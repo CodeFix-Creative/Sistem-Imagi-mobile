@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.imagi.app.R
 import com.imagi.app.model.Store
 import com.imagi.app.model.User
@@ -23,7 +24,10 @@ class MerchantAdapter(val list: List<User>, private var listener: (User) -> Unit
 
         holder.itemView.marketName.text = item.nama
         holder.itemView.marketAddress.text = item.no_telp
-        holder.itemView.productImage.setImageResource(R.drawable.ic_launcher_background)
+        Glide.with(holder.itemView)
+            .load(item.path_foto)
+            .placeholder(R.drawable.ic_launcher_background)
+            .into(holder.itemView.productImage)
 
         holder.itemView.setOnClickListener {
             listener(item)

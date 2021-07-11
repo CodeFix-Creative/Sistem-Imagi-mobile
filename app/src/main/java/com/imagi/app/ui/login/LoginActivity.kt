@@ -18,11 +18,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.imagi.app.MainActivity
+import com.imagi.app.MenuMerchant
 import com.imagi.app.R
 import com.imagi.app.data.LoginDataSource
 import com.imagi.app.data.LoginRepository
 import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
+import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
 import com.imagi.app.util.Constant
@@ -46,6 +48,7 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CoreViewModel
+    private lateinit var dbServices: DbServices
 
     val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
@@ -57,6 +60,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
+        dbServices = DbServices(this)
+        dbServices.mContext = this
         setContentView(R.layout.activity_login)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
@@ -71,8 +76,12 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 Constant.SP_TOKEN_USER,
                 Context.MODE_PRIVATE
             )
-            if(sharedPreferences.contains(Constant.SP_TOKEN)){
-                goToMenuPage()
+            if(sharedPreferences.contains(Constant.SP_TOKEN) ){
+                if(dbServices.user.role == "Pedagang"){
+                    goToMenuPageMerchant()
+                }else {
+                    goToMenuPage()
+                }
             }
         }catch (e: Exception){}
 
@@ -187,6 +196,11 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         startActivity(intent)
     }
 
+    private fun goToMenuPageMerchant(){
+        val intent = Intent(this, MenuMerchant::class.java)
+        startActivity(intent)
+    }
+
     private fun observeViewModel(){
         viewModel.token.observe(this, {
             getSharedPreferences(Constant.SP_TOKEN_USER, MODE_PRIVATE).edit()
@@ -199,8 +213,11 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     .apply()
                 Log.d("DATA_USER", "${Gson().toJson(it)}")
             })
-
-            goToMenuPage()
+            if(dbServices.user.role == "Pedagang"){
+                goToMenuPageMerchant()
+            }else {
+                goToMenuPage()
+            }
             finish()
         })
 

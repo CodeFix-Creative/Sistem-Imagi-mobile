@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.imagi.app.R
 import com.imagi.app.model.Product
+import kotlinx.android.synthetic.main.item_product.*
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductAdapter(val list: List<Product>, private var listerner: (Product)-> Unit) :
+class ProductAdapter(val list: List<Product>,private var role: String = "Customer",
+                     private var deleteListener:(Product)->Unit,
+                     private var listerner: (Product)-> Unit) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     class ViewHolder(view:View) : RecyclerView.ViewHolder(view) {
@@ -28,7 +31,15 @@ class ProductAdapter(val list: List<Product>, private var listerner: (Product)->
         holder.itemView.productPrice.text = "${item.harga_rp}/${item.satuan}"
 
         holder.itemView.setOnClickListener {
-
+            listerner(list[position])
+        }
+        if(role!=null){
+            if(role == "Pedagang"){
+                holder.itemView.vc_btn_delete.visibility = View.VISIBLE
+                holder.itemView.vc_btn_delete.setOnClickListener {
+                    deleteListener(list[position])
+                }
+            }
         }
     }
 

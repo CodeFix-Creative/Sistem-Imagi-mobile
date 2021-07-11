@@ -99,7 +99,7 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
             val listResult = list
             listResult.invalidate()
 
-            val adapters = ProductAdapter(it){}
+            val adapters = ProductAdapter(it,"", {}){}
 
             listResult.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             adapters.notifyDataSetChanged()

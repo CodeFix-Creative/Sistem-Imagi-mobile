@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.imagi.app.FeedbackActivity
 import com.imagi.app.R
-import com.imagi.app.adapter.ProductAdapter
 import com.imagi.app.adapter.ReviewAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel

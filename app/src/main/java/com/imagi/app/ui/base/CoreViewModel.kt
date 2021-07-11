@@ -23,6 +23,8 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val reviewDetailLiveData: MutableLiveData<Review> = MutableLiveData()
     val reviewLiveData: MutableLiveData<List<Review>> = MutableLiveData()
     val productLiveData: MutableLiveData<List<Product>> = MutableLiveData()
+    val product: MutableLiveData<Product> = MutableLiveData()
+    val code: MutableLiveData<Int> = MutableLiveData()
 
 
     @Suppress("CheckResult")
@@ -317,6 +319,106 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                         storeLiveData.value = res?.data?.toko
                     }
 
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun postProduct(token:String, productForm: ProductForm){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.postProduct(token, productForm)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                    if(res?.code == 201){
+                        product.value = res?.data
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun putProduct(token:String, id:String, productForm: ProductForm){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.putProduct(token, id, productForm)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                    if(res?.code == 200){
+                        product.value = res?.data
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun getProduct(token:String, id:String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.getProduct(token, id)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+
+                    if(res?.code == 200){
+                        product.value = res?.data
+                    }
+
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun deleteProduct(token:String, id:String){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.deleteProduct(token, id)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
                 }else{
                     errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
                 }
