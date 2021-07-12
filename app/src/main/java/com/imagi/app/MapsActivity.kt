@@ -3,6 +3,7 @@ package com.imagi.app
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -13,21 +14,46 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
+    private lateinit var latitude: String
+    private lateinit var longitude: String
+
     private var myLocationPermissionGrated by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+
+        if(intent.extras != null)
+        {
+            Log.d("LOG_MAP", "PARSHING SUCCESS")
+            val bundle = intent.extras
+            if (bundle != null) {
+                Log.d("LOG_MAP", "ADA BUNDLE")
+                Timber.d("DATA LATITUDE ${bundle.getString("latitude").toString()}")
+                if(bundle.containsKey("latitude")){
+                    this.latitude = bundle.getString("latitude").toString()
+                }
+                if(bundle.containsKey("longitude")){
+                    this.longitude = bundle.getString("longitude").toString()
+                }
+            }
+        }else{
+            Timber.d("FAIL_GET_DATA")
+        }
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map1) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
     }
 
     /**
@@ -41,12 +67,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
+        val zoomLevel = 16.0f
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
+        val sydney = LatLng(longitude.toDouble(), latitude.toDouble())
+//        val sydney = LatLng(-34.0, 151.0)
+        Log.d("LOG_MAP", "$latitude")
+        Log.d("LOG_MAP", "$longitude")
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        getLocationPermission()
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel))
     }
 
     private fun getLocationPermission() {
@@ -54,7 +83,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             myLocationPermissionGrated = true
         }else{
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
         }
     }
 
@@ -67,12 +100,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         myLocationPermissionGrated = false
        when(requestCode){
            1 -> {
-               if(grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                   if((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)){
+               if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   if ((ContextCompat.checkSelfPermission(
+                           this,
+                           Manifest.permission.ACCESS_FINE_LOCATION
+                       ) == PackageManager.PERMISSION_GRANTED)
+                   ) {
                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
                        myLocationPermissionGrated = true
                    }
-               }else{
+               } else {
                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
                }
            }

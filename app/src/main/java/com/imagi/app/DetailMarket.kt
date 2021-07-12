@@ -103,6 +103,15 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
             startActivity(intent)
         }
 
+        buttonLocation.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("latitude", viewModel.storeDetailLiveData.value?.latitude.toString())
+            bundle.putString("longitude", viewModel.storeDetailLiveData.value?.longitude.toString())
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
+
 //        if (savedInstanceState == null) {
 //            supportFragmentManager.beginTransaction()
 //                .replace(R.id.container, DetailMarketFragment.newInstance(id))
