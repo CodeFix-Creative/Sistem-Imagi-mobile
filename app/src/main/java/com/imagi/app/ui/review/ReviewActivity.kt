@@ -137,6 +137,9 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         })
 
         viewModel.reviewLiveData.observe(this, {
+            if(it == null){
+                vc_empty_review.visibility = View.VISIBLE
+            }
             val list = listReview
             list.invalidate()
 

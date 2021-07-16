@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.type.watch" />
     <!--
@@ -37,13 +37,13 @@
         </activity>
         <activity
             android:name=".ui.home.StoreMerchant"
-            android:label="@string/title_activity_store_merhcnat"></activity>
+            android:label="Toko"></activity>
         <activity
             android:name=".ui.market.ActivityProductDetail"
-            android:label="Product"></activity>
+            android:label="Produk"></activity>
         <activity
             android:name=".ui.review.ReviewActivity"
-            android:label="@string/title_activity_review_list" />
+            android:label="Ulasan" />
         <activity
             android:name=".FeedbackActivity"
             android:label="@string/give_review" />
@@ -75,7 +75,7 @@
 
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login">
+            android:label="SIG IMAGI">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

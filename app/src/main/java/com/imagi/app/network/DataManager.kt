@@ -123,14 +123,14 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun postStore(token:String, content:Map<String, RequestBody>, file:MultipartBody.Part) : Single<retrofit2.Response<StoreDetailResponse>>{
+    fun postStore(token:String, content:Map<String, RequestBody>, file:MultipartBody.Part?) : Single<retrofit2.Response<StoreDetailResponse>>{
         return api.postStore(token, content, file)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun putStore(token:String,id:String, content:StoreForm) : Single<retrofit2.Response<StoreDetailResponse>>{
-        return api.putStore(token,id,content)
+    fun putStore(token:String,id:String,content:Map<String, RequestBody>, file:MultipartBody.Part) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.putStore(token,id,content, file)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

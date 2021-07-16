@@ -48,28 +48,50 @@ interface ImagiApiService {
     fun login(@Body form: @NotNull UserLogin):
             Single<Response<UserResponse>>
 
-
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("users/self")
-    fun getUser(@Header("Authorization") token: String) :
+    fun getUser(@Header("Authorization", ) token: String) :
             Single<Response<UserResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("toko")
     fun getStore(@Header("Authorization") token: String):
         Single<Response<StoreResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("toko/{id}")
     fun getStoreDetail(@Header("Authorization") token: String, @Path("id") id: String):
         Single<Response<StoreDetailResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("pedagang")
     fun getMerchant(@Header("Authorization") token : String):
             Single<Response<MerchantResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("review/{id}")
     fun getAllReviewStore(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<ReviewResponse>>
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("review/{id}")
     fun postReview(@Header("Authorization") token: String,
                    @Path("id") id: String,
@@ -77,7 +99,10 @@ interface ImagiApiService {
     ):
             Single<Response<ReviewPostResponse>>
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("review/{id}/reply")
     fun postReplay(@Header("Authorization") token: String,
                    @Path("id") id: String,
@@ -85,12 +110,19 @@ interface ImagiApiService {
     ):
             Single<Response<ReplayPostResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("barang/toko/{id}")
     fun getProductStore(@Header("Authorization") token: String,
         @Path ("id") id: String) :
             Single<Response<ProductListenResponse>>
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @PUT("customers/{id}")
     fun putProfile(@Header("Authorization") token: String,
                    @Path("id") id: String,
@@ -98,16 +130,27 @@ interface ImagiApiService {
     ):
             Single<Response<UserResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("toko/pedagang/{id}")
     fun getStoreByMerchant(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<UserResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("barang/search?")
     fun getSearchGlobalProduct(@Header("Authorization") token: String,
-                        @Query("searchValue") searchValue: String ):
+                        @Query("name") searchValue: String ):
             Single<Response<ProductListenResponse>>
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("barang")
     fun postProduct(
         @Header("Authorization") token: String,
@@ -115,7 +158,10 @@ interface ImagiApiService {
             Single<Response<ProductResponse>>
 
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @PUT("barang/{id}")
     fun putProduct(
         @Header("Authorization") token: String,
@@ -123,34 +169,52 @@ interface ImagiApiService {
         @Body form: @NotNull ProductForm):
             Single<Response<ProductResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @GET("barang/{id}")
     fun getProduct(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<ProductResponse>>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @DELETE("barang/{id}/forceDelete")
     fun deleteProduct(@Header("Authorization") token: String, @Path("id") id: String):
             Single<Response<ProductResponse>>
 
     @Multipart
-    @Headers("Accept: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("toko")
     fun postStore(
         @Header("Authorization") token: String,
         @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
-        @Part file :MultipartBody.Part
+        @Part file :MultipartBody.Part?
         ):
             Single<Response<StoreDetailResponse>>
 
-
-    @Headers("Content-Type: application/json")
-    @PUT("toko/{id}")
+    @Multipart
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("toko/{id}")
     fun putStore(
         @Header("Authorization") token: String,
         @Path("id") id: String,
-        @Body form: @NotNull StoreForm):
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part file :MultipartBody.Part):
             Single<Response<StoreDetailResponse>>
 
-    @Headers("Content-Type: application/json")
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @DELETE("toko/{id}")
     fun deleteStore(
         @Header("Authorization") token: String,

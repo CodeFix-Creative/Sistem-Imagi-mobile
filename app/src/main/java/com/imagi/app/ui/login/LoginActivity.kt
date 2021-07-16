@@ -20,8 +20,6 @@ import com.google.gson.Gson
 import com.imagi.app.MainActivity
 import com.imagi.app.MenuMerchant
 import com.imagi.app.R
-import com.imagi.app.data.LoginDataSource
-import com.imagi.app.data.LoginRepository
 import com.imagi.app.model.UserLogin
 import com.imagi.app.model.UserResponse
 import com.imagi.app.network.DbServices

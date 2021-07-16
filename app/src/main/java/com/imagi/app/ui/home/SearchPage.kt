@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +22,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_search_page.*
 import javax.inject.Inject
 
 class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
@@ -37,7 +39,10 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var textEmpty : TextView
     lateinit var textSearch : EditText
     lateinit var btnSearch : ImageView
+    lateinit var btnSearchAll : LinearLayout
     lateinit var list : RecyclerView
+    var minPrice : String = ""
+    var maxPrice : String = ""
 
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
@@ -59,9 +64,30 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
         textSearch = findViewById(R.id.vc_search)
         textEmpty = findViewById(R.id.vc_empty_product)
         btnSearch =  findViewById(R.id.vc_btn_search)
+        btnSearchAll = findViewById(R.id.vc_btn_searchAll)
 
         btnSearch.setOnClickListener {
-            var url = "nama=${textSearch.text.toString()}}&min=5000&max=10000"
+            if(vc_minPrice.text!=null){
+                this.minPrice = vc_minPrice.text.toString()
+            }
+            if(vc_maxPrice.text!=null){
+                this.maxPrice = vc_minPrice.text.toString()
+            }
+            var url = "${textSearch.text.toString()}}&min=${minPrice}&max=${maxPrice}"
+            viewModel.getGlobalSearch(
+                dbServices.findBearerToken(),
+                url
+            )
+        }
+
+        btnSearchAll.setOnClickListener {
+            if(vc_minPrice.text!=null){
+                this.minPrice = vc_minPrice.text.toString()
+            }
+            if(vc_maxPrice.text!=null){
+                this.maxPrice = vc_minPrice.text.toString()
+            }
+            var url = "nama=${textSearch.text.toString()}}&min=$minPrice&max=$maxPrice"
             viewModel.getGlobalSearch(
                 dbServices.findBearerToken(),
                 url

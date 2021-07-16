@@ -51,4 +51,5 @@ abstract class ActivityModule {
     internal abstract fun contributeProductDetailhActivity(): ActivityProductDetail
 
 
+
 }

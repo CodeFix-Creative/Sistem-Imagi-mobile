@@ -2,14 +2,15 @@ package com.imagi.app.ui.home
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -21,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.imagi.app.DetailMarket
 import com.imagi.app.R
 import com.imagi.app.adapter.MarketAdapter
@@ -45,6 +48,8 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
     lateinit var id : String;
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     @Inject
     lateinit var frahmentInjector: DispatchingAndroidInjector<Fragment>
 
@@ -55,10 +60,13 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
     lateinit var progress : ProgressBar
     lateinit var listReview : RecyclerView
+    var onClick : Boolean = false
 
     private val pickImage = 100
     private val PERMISSION_REQUEST_CODE = 200
     private var imageUri: Uri? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     val uriPathHelper = URIPathHelper()
 
@@ -73,9 +81,21 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_merhcnat)
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         progress = findViewById(R.id.progressBarHome)
         listReview = findViewById(R.id.rvMarket)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    Timber.d("ONSTART")
+                    Timber.d("GET_LAST_LOCATION : ${location.latitude}")
+                    Timber.d("GET_LAST_LOCATION : ${location.longitude}")
+                }
+               this.latitude = location?.latitude
+               this.longitude = location?.longitude
+            }
+
         if (checkPermission()) {
             //main logic or main code
 
@@ -87,11 +107,20 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
         fab.setOnClickListener {
             vc_dialog_form.visibility = View.VISIBLE
+            fab.visibility = View.GONE
+//            bg_main.setBackgroundColor(R.color.blackSoft)
+            this.onClick = !onClick
         }
 
         vc_merchant_photo.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
+        }
+
+        vc_btn_close.setOnClickListener {
+//            bg_main.setBackgroundColor(Color.parseColor("#FFFFFFF"))
+            vc_dialog_form.visibility = View.GONE
+            fab.visibility = View.VISIBLE
         }
 
         vc_btn_save.setOnClickListener {
@@ -106,41 +135,20 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
                 map["nama_toko"] = toRequestBody(vc_merchant_name.text.toString())
                 map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString())
                 map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString())
-                map["latitude"] = toRequestBody("44.968046")
-                map["longitude"] = toRequestBody("-94.420307")
+                map["latitude"] = toRequestBody("$latitude")
+                map["longitude"] = toRequestBody("$longitude")
                 map["facebook"] = toRequestBody("-")
                 map["twitter"] = toRequestBody("-")
                 map["instagram"] = toRequestBody("-")
                 map["website"] = toRequestBody("-")
                 val file = File(imageUri?.path)
-//                val file1 = File(file.absolutePath)
-//                val requestFile =
-//                    RequestBody.create(MediaType.parse("multipart/form-data"), file1)
-//                val body = MultipartBody.Part.createFormData("image", file1.name, requestFile)
                 val body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
-                if(imageUri!=null){
 
-//                    var file = File(imageUri!!.path)
-//                    var fileBody = RequestBody.create(MediaType.parse("image/png"), file)
-//                    map.put("foto", fileBody)
-
-//                    MultipartBody.Part
-                }
-                Timber.d("data : ${map.toString()}")
-
+                Timber.d("DATA_LATITUDE : $latitude")
+                Timber.d("DATA_LONGITUDE : $longitude")
                 viewModel.postStore(
                     dbServices.findBearerToken(), map, body
                 )
-//                viewModel.postStore(
-//                    dbServices.findBearerToken(), StoreForm(
-//                        pedagang_id = id,
-//                        nama_toko = vc_merchant_name.text.toString(),
-//                        no_telp = vc_merchant_phone.text.toString(),
-//                        alamat_toko = vc_merchant_address.text.toString(),
-//                        latitude = "44.968046",
-//                        longitude = "-94.420307"
-//                    ), null
-//                )
             }
         }
 
@@ -165,16 +173,39 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
         when (requestCode) {
             PERMISSION_REQUEST_CODE -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(applicationContext, "Permission Granted", Toast.LENGTH_SHORT).show()
-
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        this.latitude = location?.latitude
+                        this.longitude = location?.longitude
+                        Timber.d("GET_LAST_LOCATION")
+                    }
                 // main logic
             } else {
                 Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
                         != PackageManager.PERMISSION_GRANTED
                     ) {
                         AlertDialog.Builder(this).setMessage("Permission camera diperlukan")
-                            .setPositiveButton("OK", {dialogInterface, i->
+                            .setPositiveButton("OK", { dialogInterface, i ->
+                                requestPermission()
+                            })
+                            .create().show()
+                    }
+
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        AlertDialog.Builder(this).setMessage("Permission akses lokasi diperlukan")
+                            .setPositiveButton("OK", { dialogInterface, i ->
+                                requestPermission()
+                            })
+                            .create().show()
+                    }
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        AlertDialog.Builder(this).setMessage("Permission akses lokasi diperlukan")
+                            .setPositiveButton("OK", { dialogInterface, i ->
                                 requestPermission()
                             })
                             .create().show()
@@ -187,12 +218,24 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
 
     private fun checkPermission(): Boolean {
-        return if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Permission is not granted
+        return if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED) {
             false
-        } else true
+        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            false
+        }else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            false
+        } else{
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    this.latitude = location?.latitude
+                    this.longitude = location?.longitude
+                    Timber.d("GET_LAST_LOCATION")
+                }
+            true
+        }
     }
 
     private fun requestPermission() {
@@ -205,9 +248,10 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
     fun prepareFilePart(name: String, fileUri: Uri) : MultipartBody.Part {
         var file : File = File(uriPathHelper.getPath(this, fileUri))
 
+        Log.d("FILENAME", "${file.name}")
         var body = RequestBody.create(MediaType.parse(contentResolver.getType(fileUri)), file)
 
-        return MultipartBody.Part.createFormData(name, file.name, body)
+        return MultipartBody.Part.createFormData("foto", file.name, body)
     }
 
     fun toRequestBody(value: String): RequestBody {
@@ -235,6 +279,9 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
             false
         }else if(TextUtils.isEmpty(address)){
             AppUtils.showAlert(this, "Mohon melengkapi alamat toko")
+            false
+        } else if (imageUri==null){
+            AppUtils.showAlert(this, "Mohon menambahkan foto toko")
             false
         } else {
             true
@@ -269,7 +316,7 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
             val adapters = MarketAdapter(it) {
                 val bundle = Bundle()
-                bundle.putString("id", id)
+                bundle.putString("id", it.toko_id.toString())
                 val intent = Intent(this, DetailMarket::class.java)
                 intent.putExtras(bundle)
                 startActivity(intent)
@@ -278,6 +325,18 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
             list.layoutManager = GridLayoutManager(this, 2)
             adapters.notifyDataSetChanged()
             list.adapter = adapters
+        })
+
+        viewModel.code.observe(this, {
+            if (it == 201) {
+                vc_dialog_form.visibility = View.GONE
+                fab.visibility = View.VISIBLE
+                viewModel.getStoreMerchant(dbServices.findBearerToken(), id)
+            }
+            if (it == 422) {
+                AppUtils.showAlert(this, "Gambar yang ada upload terlalu besar, mohon menggunkkan gambar" +
+                        "dengan ukuran yang lebih kecil")
+            }
         })
     }
 }

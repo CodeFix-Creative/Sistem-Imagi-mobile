@@ -17,6 +17,7 @@ import com.imagi.app.MapsActivity
 import com.imagi.app.R
 import com.imagi.app.adapter.MarketAdapter
 import com.imagi.app.model.Store
+import com.imagi.app.network.DbServices
 import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.detail_market_fragment.*
 import kotlinx.android.synthetic.main.detail_market_fragment.view.*
@@ -25,6 +26,8 @@ import timber.log.Timber
 class DetailMarketFragment : Fragment() {
 
     lateinit var buttonLocation : Button
+
+    private lateinit var dbServices: DbServices
 
     lateinit var buttonFeedback : Button
 
@@ -42,7 +45,10 @@ class DetailMarketFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
+
         val myInflatedView: View = inflater.inflate(R.layout.detail_market_fragment, container, false)
+        dbServices = DbServices(view?.context)
+        dbServices.mContext = activity
         (activity as AppCompatActivity).supportActionBar?.title = "Detail Produk"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -53,6 +59,9 @@ class DetailMarketFragment : Fragment() {
             startActivity(intent)
         }
 
+        if(dbServices.user.role.equals("Pedagang")){
+            buttonEdit.visibility = View.VISIBLE
+        }
 
 
 

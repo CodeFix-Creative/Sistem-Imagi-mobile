@@ -11,7 +11,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.max
 
 class CoreViewModel @Inject constructor(private val dataManager: DataManager) : ViewModel() {
 
@@ -454,17 +453,17 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun postStore(token:String, content:Map<String, RequestBody>, image:MultipartBody.Part?){
+    fun postStore(token:String, content:Map<String, RequestBody>, image: MultipartBody.Part?){
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT_STORE")
         dataManager.postStore(token,content, image!!)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                this.code.value = result.code()
                 if(result.isSuccessful){
                     Timber.d("SUCCESS_GET_STORE")
                     val res = result.body()
-                    this.code.value = res?.code
                 }else{
                     errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
                 }
@@ -476,10 +475,10 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun putStore(token:String,id:String, content:StoreForm){
+    fun putStore(token:String,id:String, content:Map<String, RequestBody>, file:MultipartBody.Part){
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT_STORE")
-        dataManager.putStore(token, id, content)
+        dataManager.putStore(token, id, content, file)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")

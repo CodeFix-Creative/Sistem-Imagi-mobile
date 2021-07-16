@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +33,10 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
         holder.itemView.marketName.text = item.nama_toko
         holder.itemView.marketAddress.text = item.alamat_toko
 //        try{
-            Glide.with(holder.itemView)
-                .load("https://s3-ap-southeast-1.amazonaws.com/gotani/6042bea41001a65a95db5194833f003d_2021_06_15.jpeg")
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(holder.itemView.productImage)
+        Glide.with(holder.itemView)
+            .load(Uri.parse("${item.path_foto}"))
+            .placeholder(R.drawable.ic_launcher_background)
+            .into(holder.itemView.productImage)
 //        }catch (e:Exception){
 //            holder.itemView.productImage.setImageResource()
 //

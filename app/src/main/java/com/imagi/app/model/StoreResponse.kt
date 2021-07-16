@@ -28,6 +28,9 @@ data class Store (
     @field:SerializedName("pedagang")
     val pedagang: User? = null,
 
+    @field:SerializedName("path_foto")
+    val path_foto: String? = null,
+
 
 )
 

@@ -69,7 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         val zoomLevel = 16.0f
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(longitude.toDouble(), latitude.toDouble())
+        val sydney = LatLng(latitude.toDouble(), longitude.toDouble())
 //        val sydney = LatLng(-34.0, 151.0)
         Log.d("LOG_MAP", "$latitude")
         Log.d("LOG_MAP", "$longitude")

@@ -7,7 +7,7 @@
         android:id="@+id/products"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="12dp"
         android:layout_margin="5dp"
 
         app:cardElevation="3dp">
@@ -22,7 +22,7 @@
                <ImageView
                    android:id="@+id/productImage"
                    android:layout_width="match_parent"
-                   android:layout_height="140dp"
+                   android:layout_height="150dp"
                    android:src="@drawable/ic_launcher_background"
                    android:scaleType="centerCrop"/>
                <View

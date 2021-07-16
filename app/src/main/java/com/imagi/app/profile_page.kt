@@ -3,14 +3,17 @@ package com.imagi.app
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -22,8 +25,14 @@ import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.ui.login.LoginActivity
 import com.imagi.app.util.AppUtils
+import com.imagi.app.util.URIPathHelper
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.activity_store_merhcnat.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 
@@ -47,9 +56,13 @@ class ProfilePage : Fragment() {
 
     lateinit var safeUser : User
     lateinit var authKey : String
+    private val pickImage = 100
+    private val PERMISSION_REQUEST_CODE = 200
+    private var imageUri: Uri? = null
     val resource = context?.resources
     val _userResult = MutableLiveData<UserResponse>()
     val userResult: LiveData<UserResponse> = _userResult
+    val uriPathHelper = URIPathHelper()
 
 
     override fun onCreateView(
@@ -69,6 +82,7 @@ class ProfilePage : Fragment() {
 
         saveChange.setOnClickListener {
             if(validateForm(name.text.toString(), phone.text.toString(), address.text.toString())){
+                Timber.d("TOKEN : ${dbServices.findBearerToken()}")
                 viewModel.putProfile(
                     dbServices.findBearerToken(),
                     dbServices.getUser().id_customer.toString(),
@@ -80,8 +94,31 @@ class ProfilePage : Fragment() {
                 )
             }
         }
+
+//        vc_merchant_photo.setOnClickListener {
+//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//            startActivityForResult(gallery, pickImage)
+//        }
+
         observerViewModel()
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == AppCompatActivity.RESULT_OK && requestCode == pickImage){
+            imageUri = data?.data
+            vc_merchant_photo.setImageURI(imageUri)
+        }
+    }
+
+    fun prepareFilePart(name: String, fileUri: Uri) : MultipartBody.Part {
+        var file : File = File(activity?.let { uriPathHelper.getPath(it, fileUri) })
+
+        Log.d("FILENAME", "${file.name}")
+        var body = RequestBody.create(MediaType.parse(activity?.contentResolver?.getType(fileUri)), file)
+
+        return MultipartBody.Part.createFormData("foto", file.name, body)
     }
 
     private fun validateForm(nama:String, phone:String, address:String,): Boolean {
