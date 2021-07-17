@@ -33,7 +33,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="240dp"
-                            android:background="@color/primaryColor"
+                            android:background="@color/teal_700"
                             android:id="@+id/header_user">
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -41,14 +41,31 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true">
 
-                                <ImageView
-                                    android:layout_width="120dp"
-                                    android:layout_height="120dp"
-                                    android:padding="16dp"
-                                    android:id="@+id/userImageData"
-                                    android:background="@color/primaryColor"
-                                    android:src="@drawable/img"
-                                    />
+                                <RelativeLayout
+                                    android:layout_width="150dp"
+                                    android:layout_height="150dp"
+                                    android:id="@+id/userImageData">
+                                    <ImageView
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_width="150dp"
+                                        android:layout_height="150dp"
+                                        android:padding="8dp"
+                                        android:id="@+id/userImage"
+                                        android:src="@drawable/img"
+                                        />
+                                    <ImageView
+                                        android:layout_alignParentBottom="true"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:padding="8dp"
+                                        android:id="@+id/btn_image"
+                                        android:layout_marginBottom="8dp"
+                                        android:layout_marginEnd="8dp"
+                                        android:background="@drawable/round_border_green"
+                                        android:src="@drawable/ic_baseline_camera_alt_24"
+                                        />
+                                </RelativeLayout>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -116,7 +133,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Phone Number"
+                                        android:text="Nomor Telepon"
                                         android:layout_marginTop="16dp"
                                         android:textSize="14sp"
                                         android:textColor="@color/primaryColor"
@@ -133,7 +150,8 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:hint="Address"
+                                        android:text="Alamat"
+                                        android:id="@+id/vc_tv_address"
                                         android:layout_marginTop="16dp"
                                         android:textSize="14sp"
                                         android:textColor="@color/primaryColor"
@@ -164,12 +182,31 @@
                                         android:textColor="@color/blackSoft"
                                         />
 
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Konrimasi Password"
+                                        android:layout_marginTop="16dp"
+                                        android:textSize="14sp"
+                                        android:textColor="@color/primaryColor"
+                                        />
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/confirmPasswordEditProfile"
+                                        android:hint=""
+                                        android:textSize="14sp"
+                                        android:textColor="@color/blackSoft"
+                                        />
+
                                     <Button
                                         android:layout_marginTop="16dp"
                                         android:id="@+id/editButton"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="Save Change"
+                                        android:textColor="@color/white"
+                                        android:background="@color/primaryColor"
+                                        android:text="Simpan Perubahan"
                                         />
 
                                     <Button
@@ -177,7 +214,7 @@
                                         android:id="@+id/logout"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="Logout"
+                                        android:text="Keluar"
                                         />
 
 

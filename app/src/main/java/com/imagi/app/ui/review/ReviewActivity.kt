@@ -2,6 +2,7 @@ package com.imagi.app.ui.review
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import android.widget.LinearLayout
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.imagi.app.FeedbackActivity
 import com.imagi.app.R
@@ -45,6 +47,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var progress : ProgressBar
     lateinit var listReview : RecyclerView
     lateinit var fab : FloatingActionButton
+    lateinit var refresh: SwipeRefreshLayout
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return frahmentInjector
@@ -62,6 +65,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         progress = findViewById(R.id.progressBarHome)
         listReview = findViewById(R.id.vc_review_list)
         fab = findViewById(R.id.fab)
+        refresh = findViewById<SwipeRefreshLayout>(R.id.refresh)
 
         vc_btn_close.setOnClickListener {
             vc_dialog_form.visibility = View.GONE
@@ -86,6 +90,18 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     )
                 )
             }
+        }
+
+        refresh.setOnRefreshListener {
+            viewModel.getReview(dbServices.findBearerToken(),id)
+            Handler().postDelayed(Runnable {
+                try{
+                    refresh.isRefreshing = false
+                }catch (e:Exception){
+                    Timber.d("${e.message}")
+                }
+            }, 1000)
+
         }
 
         if(intent.extras != null)
@@ -114,6 +130,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if(dbServices.user.role == "Pedagang"){
             fab.visibility = View.GONE;
         }
+        Timber.d("data_kosong ${viewModel.reviewLiveData.value?.isEmpty()}")
 
         viewModel.getReview(dbServices.findBearerToken(),id)
 
@@ -139,7 +156,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         })
 
         viewModel.reviewLiveData.observe(this, {
-            if(it == null){
+            if(it == null || viewModel.reviewLiveData.value?.isEmpty() == true){
                 vc_empty_review.visibility = View.VISIBLE
             }
             val list = listReview

@@ -28,6 +28,7 @@ import com.imagi.app.util.AppUtils
 import com.imagi.app.util.URIPathHelper
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
+import kotlinx.android.synthetic.main.fragment_profile_page.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,6 +49,7 @@ class ProfilePage : Fragment() {
     lateinit var phone : EditText
     lateinit var password : EditText
     lateinit var nameHighlight : TextView
+    lateinit var tvAddress : TextView
     lateinit var loading : ProgressBar
     lateinit var frame : RelativeLayout
     lateinit var buttonLogout : Button
@@ -56,13 +58,16 @@ class ProfilePage : Fragment() {
 
     lateinit var safeUser : User
     lateinit var authKey : String
+    lateinit var type : String
     private val pickImage = 100
+    lateinit var currentview:View
     private val PERMISSION_REQUEST_CODE = 200
     private var imageUri: Uri? = null
     val resource = context?.resources
     val _userResult = MutableLiveData<UserResponse>()
     val userResult: LiveData<UserResponse> = _userResult
     val uriPathHelper = URIPathHelper()
+    private var body: MultipartBody.Part? = null
 
 
     override fun onCreateView(
@@ -73,42 +78,57 @@ class ProfilePage : Fragment() {
         val myInflatedView: View = inflater.inflate(R.layout.fragment_profile_page, container, false)
         initializeFragment(myInflatedView)
         dbServices.mContext  = context
-        return myInflatedView
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         dbServices = DbServices(getContext())
-
+        this.currentview = myInflatedView
         saveChange.setOnClickListener {
             if(validateForm(name.text.toString(), phone.text.toString(), address.text.toString())){
                 Timber.d("TOKEN : ${dbServices.findBearerToken()}")
-                viewModel.putProfile(
-                    dbServices.findBearerToken(),
-                    dbServices.getUser().id_customer.toString(),
-                    UserForm(
-                        nama = name.text.toString(),
-                        no_telp = phone.text.toString(),
-                        alamat = address.text.toString()
-                    )
-                )
+                var map = HashMap<String, RequestBody>()
+
+                map["nama"] = toRequestBody(myInflatedView.nameEditProfile.text.toString())
+                map["no_telp"] = toRequestBody(myInflatedView.phoneNumberEditProfile.text.toString())
+                if(myInflatedView.addressEditProfile.text.toString().isNotEmpty()) {
+                    map["alamat"] = toRequestBody(myInflatedView.addressEditProfile.text.toString())
+                }
+                if(myInflatedView.passwordEditProfile.text.isNotEmpty()){
+                    if(myInflatedView.confirmPasswordEditProfile.text.equals(myInflatedView.passwordEditProfile.text.toString())){
+                        map["password"] = toRequestBody(myInflatedView.passwordEditProfile.text.toString())
+                    }else{
+                        activity?.let { it1 -> AppUtils.showAlert(it1, "Mohon memasukkan password & konfirmasi password yang sama") }
+                    }
+                }
+
+                if(imageUri!=null) {
+                    val file = File(imageUri?.path)
+                    body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                }
+
+                if(body!=null) {
+                    viewModel.putProfile(dbServices.findBearerToken(), map, body!!)
+                }else{
+                    viewModel.putProfileWithoutImage(dbServices.findBearerToken(), map)
+                }
             }
         }
 
-//        vc_merchant_photo.setOnClickListener {
-//            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-//            startActivityForResult(gallery, pickImage)
-//        }
+        myInflatedView.findViewById<ImageView>(R.id.btn_image).setOnClickListener {
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, pickImage)
+        }
 
         observerViewModel()
+        return myInflatedView
+    }
 
+    fun toRequestBody(value: String): RequestBody {
+        return RequestBody.create(MediaType.parse("text/plain"), value)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == AppCompatActivity.RESULT_OK && requestCode == pickImage){
             imageUri = data?.data
-            vc_merchant_photo.setImageURI(imageUri)
+            currentview.userImage.setImageURI(imageUri)
         }
     }
 
@@ -129,8 +149,12 @@ class ProfilePage : Fragment() {
             activity?.let { AppUtils.showAlert(it, "Mohon mengisi nomor telepon user") }
             false
         }else if(TextUtils.isEmpty(address)){
-            activity?.let { AppUtils.showAlert(it, "Mohon mengisi alamat user") }
-            false
+            if(dbServices.user.role == "Pedagang"){
+                true
+            }else{
+                activity?.let { AppUtils.showAlert(it, "Mohon mengisi alamat user") }
+                false
+            }
         }else{
             true
         }
@@ -190,7 +214,13 @@ class ProfilePage : Fragment() {
         refreshProfile = inflateView?.findViewById<SwipeRefreshLayout>(R.id.refreshProfile)
         buttonLogout = inflateView?.findViewById(R.id.logout)
         saveChange = inflateView?.findViewById(R.id.editButton)
+        tvAddress = inflateView?.findViewById<TextView>(R.id.vc_tv_address)
 //        buttonLogout.setBackgroundColor(R.color.red)
+
+        if(dbServices.user.role == "Pedagang"){
+            address.visibility = View.GONE
+            tvAddress.visibility = View.GONE
+        }
 
         refreshProfile.setOnRefreshListener {
             frame?.visibility = View.GONE
@@ -199,6 +229,11 @@ class ProfilePage : Fragment() {
                 refreshProfile.isRefreshing = false
                 frame?.visibility = View.VISIBLE
                 loading?.visibility = View.GONE
+                try{
+                    viewModel.getProfile(dbServices.findBearerToken(), dbServices.getUser().user_id.toString())
+                }catch (e:Exception){
+                    Timber.d("${e.message}")
+                }
             }, 1000)
         }
 
@@ -210,28 +245,6 @@ class ProfilePage : Fragment() {
         }
 
     }
-
-//    private fun callMyProfile() : Boolean {
-//        val sharedPreferences: SharedPreferences =
-//            (this.activity?.getSharedPreferences("user", Context.MODE_PRIVATE) ?: Log.d(
-//                "ADA_USER",
-//                "TES"
-//            )) as SharedPreferences
-////        Log.d("ADA_USER", "TES")
-////        Log.d("ADA_USER", "${sharedPreferences.contains("currentUser")}")
-//        if(sharedPreferences.contains("currentUser")
-//        ){
-//            val gson = Gson()
-//            val user = sharedPreferences.getString("currentUser", "")
-//            this.authKey = sharedPreferences.getString("authorization", "").toString()
-//            this.safeUser  = gson.fromJson<User>(user, User::class.java)
-//            if (authKey != null) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
-
 
 
 }

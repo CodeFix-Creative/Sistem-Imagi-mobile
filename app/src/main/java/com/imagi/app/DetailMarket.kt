@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -34,6 +36,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_review_list.*
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
 import kotlinx.android.synthetic.main.detail_market_fragment.*
 import kotlinx.android.synthetic.main.detail_market_fragment.vc_btn_close
@@ -78,6 +81,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
     private var longitude: Double? = null
     private var body: MultipartBody.Part? = null
     private var onEdit :Boolean = false
+    lateinit var refresh: SwipeRefreshLayout
 
     val uriPathHelper = URIPathHelper()
 
@@ -94,7 +98,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
 
-//        (this as AppCompatActivity).supportActionBar?.title = "Detail Produk"
+        (this as AppCompatActivity).supportActionBar?.title = "Toko"
 //        (this as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        (this as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -104,6 +108,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         merchantAddress = findViewById(R.id.vc_address)
         listProduct = findViewById(R.id.rvProduct)
         buttonReview = findViewById(R.id.buttonFeedbackToMarket)
+        refresh = findViewById<SwipeRefreshLayout>(R.id.refresh)
 
         if(intent.extras != null)
         {
@@ -116,6 +121,19 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         vc_merchant_photo.setOnClickListener {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImage)
+        }
+
+        refresh.setOnRefreshListener {
+            viewModel.getStoreDetail(dbServices.findBearerToken(), id)
+            viewModel.getStoreProduct(dbServices.findBearerToken(), id)
+            Handler().postDelayed(Runnable {
+                try{
+                    refresh.isRefreshing = false
+                }catch (e:Exception){
+                    Timber.d("${e.message}")
+                }
+            }, 1000)
+
         }
 
         buttonEdit.setOnClickListener {
@@ -145,9 +163,9 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                     Timber.d("ONSTART")
                     Timber.d("GET_LAST_LOCATION : ${location.latitude}")
                     Timber.d("GET_LAST_LOCATION : ${location.longitude}")
+                    this.latitude = location?.latitude
+                    this.longitude = location?.longitude
                 }
-                this.latitude = location?.latitude
-                this.longitude = location?.longitude
             }
 
         if (checkPermission()) {
@@ -304,6 +322,10 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
     private fun observerViewModel(){
         viewModel.getStoreDetail(dbServices.findBearerToken(), id)
         viewModel.getStoreProduct(dbServices.findBearerToken(), id)
+
+//        if(viewModel.productLiveData.value == null || viewModel.productLiveData.value?.isEmpty() == true){
+//            findViewById<RelativeLayout>(R.id.vc_empty).visibility = View.VISIBLE
+//        }
 
         viewModel.isShowLoader.observe(this, {
             if (it) {

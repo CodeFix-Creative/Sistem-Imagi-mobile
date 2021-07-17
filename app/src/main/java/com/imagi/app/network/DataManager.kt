@@ -75,8 +75,14 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun putProfile(token: String, id: String, form: UserForm) :Single<retrofit2.Response<UserResponse>>{
-        return api.putProfile(token, id, form)
+    fun putProfile(token: String, content:Map<String, RequestBody>, file:MultipartBody.Part) :Single<retrofit2.Response<UserResponse>>{
+        return api.postProfile(token,content, file)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun putProfileWithoutImage(token: String, content:Map<String, RequestBody>,) :Single<retrofit2.Response<UserResponse>>{
+        return api.postProfileWithoutImage(token, content,)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

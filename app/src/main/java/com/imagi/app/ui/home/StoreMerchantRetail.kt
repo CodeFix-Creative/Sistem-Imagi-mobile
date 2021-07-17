@@ -42,7 +42,10 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_review_list.*
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
+import kotlinx.android.synthetic.main.activity_store_merhcnat.fab
+import kotlinx.android.synthetic.main.activity_store_merhcnat.vc_dialog_form
 import kotlinx.android.synthetic.main.activity_store_merhcnat.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -293,7 +296,7 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == pickImage){
             imageUri = data?.data
-            vc_merchant_photo.setImageURI(imageUri)
+            currentview.vc_merchant_photo.setImageURI(imageUri)
         }
     }
 
@@ -344,6 +347,9 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
 
         activity?.let {
             viewModel.storeLiveData.observe(it, {
+                if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+                    currentview.vc_empty.visibility = View.VISIBLE
+                }
                 val list = listReview
                 list.invalidate()
 

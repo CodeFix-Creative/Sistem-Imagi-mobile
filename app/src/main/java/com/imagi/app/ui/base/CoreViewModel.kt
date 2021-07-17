@@ -183,6 +183,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         dataManager.getAllReview(token, id)
             .subscribe({ result->
                 isShowLoader.value = false
+                this.code.value = result.code()
                 if(result.isSuccessful){
                     Timber.d("SUCCESS_GET_DATA_REVIEW")
                     val res = result?.body()
@@ -191,7 +192,10 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                         reviewLiveData.value = res?.data
                     }
                 }else{
-                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                    if(result.code() != 404){
+                        errorMessage.value =
+                            "[" + result.code() + "] sedang terjadi kendala. Cek kembali nanti"
+                    }
                 }
 
             },{
@@ -283,10 +287,35 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun putProfile(token:String, id:String, form:UserForm){
+    fun putProfile(token:String, content:Map<String, RequestBody>, file:MultipartBody.Part){
         isShowLoader.value = true
         Timber.d("PUT_DATA_USER")
-        dataManager.putProfile(token, id, form)
+        dataManager.putProfile(token, content, file)
+            .subscribe({ result->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_PUT_DATA_USER")
+                    val res = result?.body()
+
+                    if(res?.code == 200){
+                        userLiveData.value = res?.data
+                    }
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+
+            },{
+                    error->
+                isShowLoader.value = false
+                errorMessage.value = error.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun putProfileWithoutImage(token:String, content:Map<String, RequestBody>){
+        isShowLoader.value = true
+        Timber.d("PUT_DATA_USER")
+        dataManager.putProfileWithoutImage(token, content)
             .subscribe({ result->
                 isShowLoader.value = false
                 if(result.isSuccessful){

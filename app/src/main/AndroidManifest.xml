@@ -29,11 +29,11 @@
 
         <activity
             android:name=".ui.home.SearchActivityPage"
-            android:label="@string/title_activity_search_page">
+            android:label="Cari Produk">
         </activity>
         <activity
             android:name=".MenuMerchant"
-            android:label="@string/merchant">
+            android:label="Pedagang">
         </activity>
         <activity
             android:name=".ui.home.StoreMerchant"

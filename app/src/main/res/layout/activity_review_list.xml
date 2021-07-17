@@ -12,6 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/inner_frame_layout_padding">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -127,7 +131,7 @@
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data Ulasan Kosong"
+                android:text="Belum ada ulasan"
                 android:id="@+id/vc_empty_review"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -142,6 +146,6 @@
                 android:layout_width="wrap_content"
                 />
         </RelativeLayout>
-
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

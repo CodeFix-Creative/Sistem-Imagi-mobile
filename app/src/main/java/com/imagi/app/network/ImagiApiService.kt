@@ -118,15 +118,26 @@ interface ImagiApiService {
     fun getProductStore(@Header("Authorization") token: String,
         @Path ("id") id: String) :
             Single<Response<ProductListenResponse>>
-
+    @Multipart
     @Headers(
-        "Accept: application/json",
-        "Content-Type: application/json"
+        "Accept: application/json"
     )
-    @PUT("customers/{id}")
-    fun putProfile(@Header("Authorization") token: String,
-                   @Path("id") id: String,
-                   @Body req: UserForm
+    @POST("users/self")
+    fun postProfile(
+        @Header("Authorization") token: String,
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part file :MultipartBody.Part?
+    ):
+            Single<Response<UserResponse>>
+
+    @Multipart
+    @Headers(
+        "Accept: application/json"
+    )
+    @POST("users/self")
+    fun postProfileWithoutImage(
+        @Header("Authorization") token: String,
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
     ):
             Single<Response<UserResponse>>
 
