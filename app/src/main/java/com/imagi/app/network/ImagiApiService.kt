@@ -188,7 +188,6 @@ interface ImagiApiService {
     @Multipart
     @Headers(
         "Accept: application/json",
-        "Content-Type: application/json"
     )
     @POST("toko")
     fun postStore(
@@ -200,8 +199,7 @@ interface ImagiApiService {
 
     @Multipart
     @Headers(
-        "Accept: application/json",
-        "Content-Type: application/json"
+        "Accept: application/json"
     )
     @POST("toko/{id}")
     fun putStore(
