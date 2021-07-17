@@ -23,6 +23,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_search_page.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
@@ -71,12 +72,14 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 this.minPrice = vc_minPrice.text.toString()
             }
             if(vc_maxPrice.text!=null){
-                this.maxPrice = vc_minPrice.text.toString()
+                this.maxPrice = vc_maxPrice.text.toString()
             }
             var url = "${textSearch.text.toString()}}&min=${minPrice}&max=${maxPrice}"
             viewModel.getGlobalSearch(
                 dbServices.findBearerToken(),
-                url
+                textSearch.text.toString(),
+                minPrice,
+                maxPrice
             )
         }
 
@@ -85,12 +88,14 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 this.minPrice = vc_minPrice.text.toString()
             }
             if(vc_maxPrice.text!=null){
-                this.maxPrice = vc_minPrice.text.toString()
+                this.maxPrice = vc_maxPrice.text.toString()
             }
             var url = "nama=${textSearch.text.toString()}}&min=$minPrice&max=$maxPrice"
             viewModel.getGlobalSearch(
                 dbServices.findBearerToken(),
-                url
+                textSearch.text.toString(),
+                minPrice,
+                maxPrice
             )
         }
 
@@ -122,14 +127,17 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 textEmpty.visibility = View.VISIBLE
             }
 
-            val listResult = list
-            listResult.invalidate()
+            Timber.d("ADA DATA ${it.isNotEmpty()}")
+            if(it.isNotEmpty()) {
+                val listResult = list
+                listResult.invalidate()
 
-            val adapters = ProductAdapter(it,"", {}){}
+                val adapters = ProductAdapter(it, "", {}) {}
 
-            listResult.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            adapters.notifyDataSetChanged()
-            listResult.adapter = adapters
+                listResult.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                adapters.notifyDataSetChanged()
+                listResult.adapter = adapters
+            }
         })
     }
 }

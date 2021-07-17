@@ -142,9 +142,11 @@ interface ImagiApiService {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @GET("barang/search?")
+    @GET("barang/search")
     fun getSearchGlobalProduct(@Header("Authorization") token: String,
-                        @Query("name") searchValue: String ):
+                        @Query("nama") searchValue: String?,
+                        @Query("min") minPrice: String?,
+                        @Query("max") maxPrice: String?) :
             Single<Response<ProductListenResponse>>
 
     @Headers(
@@ -207,6 +209,17 @@ interface ImagiApiService {
         @Path("id") id: String,
         @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
         @Part file :MultipartBody.Part):
+            Single<Response<StoreDetailResponse>>
+
+    @Multipart
+    @Headers(
+        "Accept: application/json"
+    )
+    @POST("toko/{id}")
+    fun putStoreWithoutFfle(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>):
             Single<Response<StoreDetailResponse>>
 
     @Headers(

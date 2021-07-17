@@ -87,8 +87,8 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getProductSearch(token:String, query:String) : Single<retrofit2.Response<ProductListenResponse>>{
-        return api.getSearchGlobalProduct(token, query, )
+    fun getProductSearch(token:String, query:String?, queryMin:String?, queryMax:String?) : Single<retrofit2.Response<ProductListenResponse>>{
+        return api.getSearchGlobalProduct(token, query, queryMin, queryMax)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -131,6 +131,12 @@ class DataManager
 
     fun putStore(token:String,id:String,content:Map<String, RequestBody>, file:MultipartBody.Part) : Single<retrofit2.Response<StoreDetailResponse>>{
         return api.putStore(token,id,content, file)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun putStoreWithoutImage(token:String,id:String,content:Map<String, RequestBody>) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.putStoreWithoutFfle(token,id,content)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

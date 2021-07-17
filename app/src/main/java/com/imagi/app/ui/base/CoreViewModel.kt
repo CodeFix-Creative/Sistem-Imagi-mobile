@@ -23,7 +23,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val storeDetailLiveData: MutableLiveData<Store> = MutableLiveData()
     val reviewDetailLiveData: MutableLiveData<Review> = MutableLiveData()
     val reviewLiveData: MutableLiveData<List<Review>> = MutableLiveData()
-    val productLiveData: MutableLiveData<List<Product>> = MutableLiveData()
+    var productLiveData: MutableLiveData<List<Product>> = MutableLiveData()
     val product: MutableLiveData<Product> = MutableLiveData()
     val code: MutableLiveData<Int> = MutableLiveData()
 
@@ -254,23 +254,26 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun getGlobalSearch(token:String, query: String){
+    fun getGlobalSearch(token:String, query: String, queryMin:String?, queryMax:String?,){
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT")
-        dataManager.getProductSearch(token, query)
+        dataManager.getProductSearch(token, query, queryMin, queryMax)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                this.code.value = result.code()
                 if(result.isSuccessful){
                     Timber.d("SUCCESS_GET_PRODUCT")
                     val res = result.body()
 
                     if(res?.code == 200){
-                        productLiveData.value = res?.data
+                        this.productLiveData.value = res?.data
                     }
 
                 }else{
-                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                    this.productLiveData = MutableLiveData<List<Product>>()
+                    Timber.d("DATA PRODUCT ${productLiveData.value?.isNotEmpty()}")
+                    errorMessage.value = "["+result.code()+"] Barang tidak ditemukan"
                 }
             },
                 { error->
@@ -479,6 +482,28 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT_STORE")
         dataManager.putStore(token, id, content, file)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    this.code.value = res?.code
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
+    fun putStoreWithoutImage(token:String,id:String, content:Map<String, RequestBody>){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.putStoreWithoutImage(token, id, content)
             .subscribe ({ result ->
                 isShowLoader.value = false
                 Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")

@@ -76,7 +76,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
     private var imageUri: Uri? = null
     private var latitude: Double? = null
     private var longitude: Double? = null
-
+    private var body: MultipartBody.Part? = null
     private var onEdit :Boolean = false
 
     val uriPathHelper = URIPathHelper()
@@ -131,9 +131,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                 .into(vc_merchant_photo)
             vc_merchant_long.setText(viewModel.storeDetailLiveData.value?.longitude)
             vc_merchant_lat.setText(viewModel.storeDetailLiveData.value?.latitude)
-            if(viewModel.storeDetailLiveData.value?.path_foto !=null){
-                this.imageUri = Uri.parse(viewModel.storeDetailLiveData.value!!.path_foto)
-            }
+
         }
 
         vc_btn_close.setOnClickListener {
@@ -193,26 +191,37 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                     vc_merchant_address.text.toString()
                 )){
 
+                if(vc_merchant_lat.text.toString()!=""){
+                    this.latitude = vc_merchant_lat.text.toString().toDouble()
+                }
+                if(vc_merchant_long.text.toString()!=""){
+                    this.longitude = vc_merchant_long.text.toString().toDouble()
+                }
+
                 var map = HashMap<String, RequestBody>()
                 toRequestBody(id)?.let { it1 -> map.put("pedagang_id", it1) }
-                map["nama_toko"] = toRequestBody(et_merchant_name.text.toString())
-                map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString())
-                map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString())
+                map["nama_toko"] = toRequestBody(et_merchant_name.text.toString().trim())
+                map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString().trim())
+                map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString().trim())
                 map["latitude"] = toRequestBody("$latitude")
                 map["longitude"] = toRequestBody("$longitude")
                 map["facebook"] = toRequestBody("-")
                 map["twitter"] = toRequestBody("-")
                 map["instagram"] = toRequestBody("-")
                 map["website"] = toRequestBody("-")
-                val file = File(imageUri?.path)
-                val body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                if(imageUri!=null) {
+                    val file = File(imageUri?.path)
+                    body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                }
 
                 Timber.d("GAMBAR :")
                 Timber.d("DATA_LONGITUDE : $longitude")
                 if (body != null) {
                     viewModel.putStore(
-                        dbServices.findBearerToken(), id, map, body
+                        dbServices.findBearerToken(), id, map, body!!
                     )
+                } else{
+                    viewModel.putStoreWithoutImage(dbServices.findBearerToken(), id, map)
                 }
             }
         }
@@ -269,7 +278,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun validate(
+    private fun  validate(
         name: String,
         phone: String,
         address: String,
@@ -282,9 +291,6 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
             false
         }else if(TextUtils.isEmpty(address)){
             AppUtils.showAlert(this, "Mohon melengkapi alamat toko")
-            false
-        } else if (imageUri==null){
-            AppUtils.showAlert(this, "Mohon menambahkan foto toko")
             false
         } else {
             true
