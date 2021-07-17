@@ -8,6 +8,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.ui.home.HomeFragment
+import com.imagi.app.ui.home.StoreMerchant
+import com.imagi.app.ui.home.StoreMerchantRetail
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -40,7 +42,7 @@ class MenuMerchant : AppCompatActivity(), HasSupportFragmentInjector {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    val fragment = HomeFragment()
+                    val fragment = StoreMerchantRetail()
                     addFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -65,5 +67,6 @@ class MenuMerchant : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
     }
+
 
 }
