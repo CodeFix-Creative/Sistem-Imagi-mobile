@@ -478,6 +478,28 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
+    fun postStoreWithoutImage(token:String, content:Map<String, RequestBody>){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_MERCHANT_STORE")
+        dataManager.postStoreWithImage(token,content)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                Timber.d("TRY_GET_PRODUCT ${isShowLoader.value}")
+                this.code.value = result.code()
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+                })
+    }
+
+    @Suppress("CheckResult")
     fun putStore(token:String,id:String, content:Map<String, RequestBody>, file:MultipartBody.Part){
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT_STORE")

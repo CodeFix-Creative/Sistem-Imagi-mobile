@@ -6,13 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -184,6 +184,8 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
             startActivity(intent)
         }
 
+
+
         findViewById<RelativeLayout>(R.id.vc_btn_save).setOnClickListener {
             if(validate(
                     et_merchant_name.text.toString(),
@@ -272,6 +274,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Timber.d("RESULT :${resultCode}")
         if(resultCode == RESULT_OK && requestCode == pickImage){
             imageUri = data?.data
             vc_merchant_photo.setImageURI(imageUri)
@@ -299,14 +302,14 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
 
     private fun observerViewModel(){
-        viewModel.getStoreDetail(dbServices.findBearerToken(),id)
+        viewModel.getStoreDetail(dbServices.findBearerToken(), id)
         viewModel.getStoreProduct(dbServices.findBearerToken(), id)
 
         viewModel.isShowLoader.observe(this, {
-            if(it){
+            if (it) {
                 progress.visibility = View.VISIBLE
                 mediaData.visibility = View.GONE
-            }else{
+            } else {
                 progress.visibility = View.GONE
                 mediaData.visibility = View.VISIBLE
             }
@@ -332,9 +335,10 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
             val adapters = dbServices.user.role?.let { it1 ->
                 ProductAdapter(it, it1, {
-                    AlertDialog.Builder(this).setMessage("Apakah anda yakin ingin menghapus produk ini ?")
+                    AlertDialog.Builder(this)
+                        .setMessage("Apakah anda yakin ingin menghapus produk ini ?")
                         .setCancelable(true)
-                        .setNegativeButton("Tidak"){dialogInterface, i ->}
+                        .setNegativeButton("Tidak") { dialogInterface, i -> }
                         .setPositiveButton("Ya") { dialogInterface, i ->
                             viewModel.deleteProduct(
                                 dbServices.findBearerToken(),
@@ -342,7 +346,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                             )
                         }
                         .create().show()
-                }){
+                }) {
                     val intent = Intent(this, ActivityProductDetail::class.java)
                     val bundle = Bundle()
                     bundle.putString("id", viewModel.storeDetailLiveData.value?.toko_id.toString())
@@ -359,18 +363,24 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         })
 
         viewModel.code.observe(this, {
-            if(it == 200 && !onEdit){
+            if (it == 200 && !onEdit) {
                 AlertDialog.Builder(this).setMessage("Produk berhasil dihapus")
-                    .setPositiveButton("OK", {dialogInterface, i-> viewModel.getStoreProduct(dbServices.findBearerToken(), id)})
+                    .setPositiveButton("OK", { dialogInterface, i ->
+                        viewModel.getStoreProduct(
+                            dbServices.findBearerToken(),
+                            id
+                        )
+                    })
                     .create().show()
             }
-            if(it == 200 && onEdit){
+            if (it == 200 && onEdit) {
                 AlertDialog.Builder(this).setMessage("Data toko berhasil diperbaharui")
-                    .setPositiveButton("OK", {dialogInterface, i->
+                    .setPositiveButton("OK", { dialogInterface, i ->
                         vc_dialog_form.visibility = View.GONE
                         vc_add_product.visibility = View.VISIBLE
-                        viewModel.getStoreDetail(dbServices.findBearerToken(),id)
-                        viewModel.getStoreProduct(dbServices.findBearerToken(), id)})
+                        viewModel.getStoreDetail(dbServices.findBearerToken(), id)
+                        viewModel.getStoreProduct(dbServices.findBearerToken(), id)
+                    })
                     .create().show()
             }
         })

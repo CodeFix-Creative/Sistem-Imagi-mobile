@@ -129,6 +129,12 @@ class DataManager
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun postStoreWithImage(token:String, content:Map<String, RequestBody>) : Single<retrofit2.Response<StoreDetailResponse>>{
+        return api.postStoreWithoutImage(token, content)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun putStore(token:String,id:String,content:Map<String, RequestBody>, file:MultipartBody.Part) : Single<retrofit2.Response<StoreDetailResponse>>{
         return api.putStore(token,id,content, file)
             .subscribeOn(Schedulers.io())

@@ -201,6 +201,17 @@ interface ImagiApiService {
 
     @Multipart
     @Headers(
+        "Accept: application/json",
+    )
+    @POST("toko")
+    fun postStoreWithoutImage(
+        @Header("Authorization") token: String,
+        @PartMap form: Map<String, @JvmSuppressWildcards RequestBody>,
+        ):
+            Single<Response<StoreDetailResponse>>
+
+    @Multipart
+    @Headers(
         "Accept: application/json"
     )
     @POST("toko/{id}")

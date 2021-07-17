@@ -67,6 +67,7 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
     private var imageUri: Uri? = null
     private var latitude: Double? = null
     private var longitude: Double? = null
+    private var body: MultipartBody.Part? = null
 
     val uriPathHelper = URIPathHelper()
 
@@ -141,14 +142,22 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
                 map["twitter"] = toRequestBody("-")
                 map["instagram"] = toRequestBody("-")
                 map["website"] = toRequestBody("-")
-                val file = File(imageUri?.path)
-                val body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                if(imageUri!=null) {
+                    val file = File(imageUri?.path)
+                    body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                }
 
                 Timber.d("DATA_LATITUDE : $latitude")
                 Timber.d("DATA_LONGITUDE : $longitude")
-                viewModel.postStore(
-                    dbServices.findBearerToken(), map, body
-                )
+                if(body!=null) {
+                    viewModel.postStore(
+                        dbServices.findBearerToken(), map, body
+                    )
+                }else{
+                    viewModel.postStoreWithoutImage(
+                        dbServices.findBearerToken(), map
+                    )
+                }
             }
         }
 
@@ -279,9 +288,6 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
             false
         }else if(TextUtils.isEmpty(address)){
             AppUtils.showAlert(this, "Mohon melengkapi alamat toko")
-            false
-        } else if (imageUri==null){
-            AppUtils.showAlert(this, "Mohon menambahkan foto toko")
             false
         } else {
             true

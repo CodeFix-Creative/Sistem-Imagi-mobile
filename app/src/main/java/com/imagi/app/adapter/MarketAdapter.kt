@@ -35,7 +35,7 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
 //        try{
         Glide.with(holder.itemView)
             .load(Uri.parse("${item.path_foto}"))
-            .placeholder(R.drawable.ic_launcher_background)
+            .placeholder(R.drawable.market_2)
             .into(holder.itemView.productImage)
 //        }catch (e:Exception){
 //            holder.itemView.productImage.setImageResource()
