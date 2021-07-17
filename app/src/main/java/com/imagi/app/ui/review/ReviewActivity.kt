@@ -30,8 +30,7 @@ import javax.inject.Inject
 
 class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
-    lateinit var id : String
-    lateinit var idReview : String
+
 
     @Inject
     lateinit var frahmentInjector: DispatchingAndroidInjector<Fragment>
@@ -41,6 +40,8 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private lateinit var viewModel: CoreViewModel
     private lateinit var dbServices: DbServices
 
+    lateinit var id : String
+    lateinit var idReview : String
     lateinit var progress : ProgressBar
     lateinit var listReview : RecyclerView
     lateinit var fab : FloatingActionButton
@@ -81,7 +82,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 viewModel.postReplay(dbServices.findBearerToken(), dbServices.user.id_pedagang.toString(),
                     ReplayForm(
                         balasan = vc_et_replay.text.toString(),
-                        id_review = idReview
+                        review_id = idReview
                     )
                 )
             }
@@ -133,6 +134,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         viewModel.code.observe(this, {
             if(it == 201){
                 viewModel.getReview(dbServices.findBearerToken(),id)
+                vc_dialog_form.visibility = View.GONE
             }
         })
 

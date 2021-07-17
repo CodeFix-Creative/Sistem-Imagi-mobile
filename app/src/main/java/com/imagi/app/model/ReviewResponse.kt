@@ -92,8 +92,8 @@ data class ReplayForm(
     @field:SerializedName("balasan")
     var balasan: String ? = null,
 
-    @field:SerializedName("id_review")
-    var id_review: String ? = null,
+    @field:SerializedName("review_id")
+    var review_id: String ? = null,
 
 
     )
