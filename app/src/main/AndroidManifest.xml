@@ -75,7 +75,7 @@
 
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="SIG IMAGI">
+            android:label="SIG Pasar Trandisional">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -98,7 +98,8 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <!-- <activity android:name=".product_item" /> -->
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:label="Pembeli"/>
     </application>
 
 </manifest>
