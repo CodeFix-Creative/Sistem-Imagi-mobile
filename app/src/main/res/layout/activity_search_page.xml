@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".ui.home.SearchActivityPage"
+    tools:context=".ui.merchent.SearchActivityPage"
     tools:deviceIds="wear">
 
     <FrameLayout

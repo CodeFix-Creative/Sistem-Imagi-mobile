@@ -73,7 +73,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        val sydney = LatLng(-34.0, 151.0)
         Log.d("LOG_MAP", "$latitude")
         Log.d("LOG_MAP", "$longitude")
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        mMap.addMarker(MarkerOptions().position(sydney).title(""))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel))
     }

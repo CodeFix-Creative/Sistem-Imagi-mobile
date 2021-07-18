@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".ui.home.StoreMerchant"
+    tools:context=".ui.merchent.StoreMerchant"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -27,7 +27,6 @@
                 android:visibility="gone"
                 android:id="@+id/vc_dialog_form"
                 android:layout_width="match_parent"
-                app:cardCornerRadius="16dp"
                 android:paddingVertical="16dp"
                 android:layout_height="match_parent">
 

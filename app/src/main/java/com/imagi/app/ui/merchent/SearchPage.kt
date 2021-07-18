@@ -1,20 +1,16 @@
-package com.imagi.app.ui.home
+package com.imagi.app.ui.merchent
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.imagi.app.R
 import com.imagi.app.adapter.ProductAdapter
-import com.imagi.app.adapter.ReviewAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils

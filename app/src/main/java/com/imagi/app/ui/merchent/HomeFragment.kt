@@ -1,4 +1,4 @@
-package com.imagi.app.ui.home
+package com.imagi.app.ui.merchent
 
 //import android.app.Activity
 import android.content.Context

@@ -11,7 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
-import com.imagi.app.ui.home.HomeFragment
+import com.imagi.app.ui.home.MapsFragment
+import com.imagi.app.ui.merchent.HomeFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 //        setContentView(R.layout.activity_main)
 
 
-        addFragment(HomeFragment())
+        addFragment(MapsFragment())
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                val fragment = HomeFragment()
+                val fragment = MapsFragment()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

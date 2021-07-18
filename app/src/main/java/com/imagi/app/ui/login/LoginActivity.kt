@@ -64,8 +64,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         viewModel.isShowLoader.value = false
-        username.setText("pedagang@gmail.com")
-        password.setText("Pedagang123")
+        username.setText("customer@gmail.com")
+        password.setText("password")
 
         try {
             this.supportActionBar!!.hide()

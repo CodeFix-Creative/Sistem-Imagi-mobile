@@ -26,8 +26,8 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     var productLiveData: MutableLiveData<List<Product>> = MutableLiveData()
     val product: MutableLiveData<Product> = MutableLiveData()
     val code: MutableLiveData<Int> = MutableLiveData()
-
-
+    val localMarkerLiveData: MutableLiveData<List<LocalMarker>> = MutableLiveData()
+    var data: ArrayList<LocalMarker> = ArrayList<LocalMarker>()
     @Suppress("CheckResult")
     fun getProfile(token:String, id:String){
         isShowLoader.value = true
@@ -114,6 +114,37 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                     }
                     Timber.d("JUMLAH_TOKO ${result.body()?.data?.size}")
                     Timber.d("JUMLAH_TOKO ${storeLiveData.value}")
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun getStoreByMap(token:String){
+        isShowLoader.value = true
+        dataManager.getStore(token)
+            .subscribe ({ result ->
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    if(res?.code == 200){
+                        storeLiveData.value = res.data
+                        for(it in res.data) {
+                            data.add(LocalMarker(
+                                latitude = it.latitude?.toDouble(),
+                                longitude = it.longitude?.toDouble(),
+                                name = it.nama_toko,
+                                id = it.toko_id.toString()
+                            ))
+                        }
+                        localMarkerLiveData.postValue(data)
+                    }
+                    isShowLoader.value = false
                 }else{
                     errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
                 }

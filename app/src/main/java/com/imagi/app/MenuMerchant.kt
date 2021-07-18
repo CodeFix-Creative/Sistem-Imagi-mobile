@@ -3,14 +3,9 @@ package com.imagi.app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imagi.app.network.DbServices
-import com.imagi.app.ui.base.CoreViewModel
-import com.imagi.app.ui.home.HomeFragment
-import com.imagi.app.ui.home.StoreMerchant
-import com.imagi.app.ui.home.StoreMerchantRetail
+import com.imagi.app.ui.merchent.StoreMerchantRetail
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

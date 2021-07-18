@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.detail_market_fragment.vc_merchant_lat
 import kotlinx.android.synthetic.main.detail_market_fragment.vc_merchant_long
 import kotlinx.android.synthetic.main.detail_market_fragment.vc_merchant_phone
 import kotlinx.android.synthetic.main.detail_market_fragment.vc_merchant_photo
+import kotlinx.android.synthetic.main.fragment_profile_page.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -149,10 +150,14 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
             et_merchant_name.setText(viewModel.storeDetailLiveData.value?.nama_toko)
             vc_merchant_phone.setText(viewModel.storeDetailLiveData.value?.no_telp)
             vc_merchant_address.setText(viewModel.storeDetailLiveData.value?.alamat_toko)
-            Glide.with(vc_merchant_photo)
-                .load(Uri.parse("${viewModel.storeDetailLiveData.value?.path_foto}"))
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(vc_merchant_photo)
+
+            if(viewModel.storeDetailLiveData.value?.foto!=""){
+                Glide.with(vc_merchant_photo)
+                    .load(Uri.parse("${viewModel.storeDetailLiveData.value?.path_foto}"))
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(vc_merchant_photo)
+            }
+
             vc_merchant_long.setText(viewModel.storeDetailLiveData.value?.longitude)
             vc_merchant_lat.setText(viewModel.storeDetailLiveData.value?.latitude)
 

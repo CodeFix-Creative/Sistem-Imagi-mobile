@@ -1,4 +1,4 @@
-package com.imagi.app.ui.home
+package com.imagi.app.ui.merchent
 
 import android.Manifest
 import android.app.AlertDialog
@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -39,7 +38,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
-import kotlinx.android.synthetic.main.activity_store_merhcnat.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

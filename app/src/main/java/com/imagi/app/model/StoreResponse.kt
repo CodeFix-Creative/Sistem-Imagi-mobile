@@ -31,6 +31,9 @@ data class Store (
     @field:SerializedName("path_foto")
     val path_foto: String? = null,
 
+    @field:SerializedName("foto")
+    val foto: String? = null,
+
 
 )
 

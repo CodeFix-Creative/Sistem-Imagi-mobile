@@ -1,4 +1,4 @@
-package com.imagi.app.ui.home
+package com.imagi.app.ui.merchent
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
@@ -19,10 +19,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -403,11 +401,10 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
                         requireActivity(), "Gambar yang ada upload terlalu besar, mohon menggunkkan gambar" +
                             "dengan ukuran yang lebih kecil")
                 }
+                if(it == 200){
+                    viewModel.getStoreMerchant(dbServices.findBearerToken(), id)
+                }
             })
         }
-    }
-
-    companion object {
-        fun newInstance(): ProfilePage = ProfilePage()
     }
 }
