@@ -12,6 +12,7 @@
     <color name="blue">#3586cc</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparants">#84040404</color>
+    <color name="transparantsImage">#b1b3b4FF</color>
     <color name="primaryColor">#FC9449</color>
     <color name="red">#f54260</color>
     <color name="redSoft">#ffcccc</color>

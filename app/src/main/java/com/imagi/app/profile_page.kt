@@ -197,10 +197,13 @@ class ProfilePage : Fragment() {
             phone?.setText(viewModel.userLiveData.value?.no_telp)
             nameHighlight.setText(viewModel.userLiveData.value?.nama)
             frame?.visibility = View.VISIBLE
-            Glide.with(currentView.userImage)
-                .load(Uri.parse("${it.path_foto}"))
-                .placeholder(R.drawable.img)
-                .into(currentView.userImage)
+            if(it.foto!=null){
+                Glide.with(currentView.userImage)
+                    .load(Uri.parse("${it.path_foto}"))
+                    .placeholder(R.drawable.img)
+                    .into(currentView.userImage)
+            }
+
         })
 
     }

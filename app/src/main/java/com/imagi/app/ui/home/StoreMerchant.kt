@@ -8,6 +8,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
@@ -22,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.imagi.app.DetailMarket
@@ -70,6 +72,7 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
     private var latitude: Double? = null
     private var longitude: Double? = null
     private var body: MultipartBody.Part? = null
+    lateinit var refresh: SwipeRefreshLayout
 
     val uriPathHelper = URIPathHelper()
 
@@ -87,6 +90,7 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         progress = findViewById(R.id.progressBarHome)
         listReview = findViewById(R.id.rvMarket)
+        refresh = findViewById<SwipeRefreshLayout>(R.id.refresh)
 
 
         fusedLocationClient.lastLocation
@@ -121,6 +125,18 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
         if(dbServices.user.role == "Pedagang"){
             this.id = dbServices.user.id_pedagang.toString()
+        }
+
+        refresh.setOnRefreshListener {
+            viewModel.getStoreMerchant(dbServices.findBearerToken(), id)
+            Handler().postDelayed(Runnable {
+                try{
+                    refresh.isRefreshing = false
+                }catch (e:Exception){
+                    Timber.d("${e.message}")
+                }
+            }, 500)
+
         }
 
         observerViewModel();
@@ -279,16 +295,20 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
             val list = listReview
             list.invalidate()
 
-            val adapters = MarketAdapter(it) {
-                val bundle = Bundle()
-                bundle.putString("id", it.toko_id.toString())
-                val intent = Intent(this, DetailMarket::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)
+            val adapters = dbServices.user.role?.let { it1 ->
+                MarketAdapter(it, it1, {
+
+                }) {
+                    val bundle = Bundle()
+                    bundle.putString("id", it.toko_id.toString())
+                    val intent = Intent(this, DetailMarket::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
             }
 
             list.layoutManager = GridLayoutManager(this, 2)
-            adapters.notifyDataSetChanged()
+            adapters?.notifyDataSetChanged()
             list.adapter = adapters
         })
 

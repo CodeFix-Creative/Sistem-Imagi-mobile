@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <RelativeLayout
             android:id="@+id/bg_main"
             android:layout_width="match_parent"
@@ -211,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>

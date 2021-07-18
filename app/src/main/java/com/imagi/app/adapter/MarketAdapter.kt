@@ -18,7 +18,7 @@ import java.io.InputStream
 import java.net.URL
 
 
-class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Unit)  :
+class MarketAdapter(val market: List<Store>, private val type:String, private var listenerDelete: (Store) -> Unit?, private var listener: (Store) -> Unit)  :
     RecyclerView.Adapter<MarketAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,15 +32,16 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
 
         holder.itemView.marketName.text = item.nama_toko
         holder.itemView.marketAddress.text = item.alamat_toko
-//        try{
         Glide.with(holder.itemView)
             .load(Uri.parse("${item.path_foto}"))
             .placeholder(R.drawable.market_2)
             .into(holder.itemView.productImage)
-//        }catch (e:Exception){
-//            holder.itemView.productImage.setImageResource()
-//
-//        }
+        if(type == "Pedagang"){
+            holder.itemView.btn_delete.visibility = View.VISIBLE
+            holder.itemView.btn_delete.setOnClickListener {
+                listenerDelete(item)
+            }
+        }
         holder.itemView.setOnClickListener {
             listener(item)
         }
@@ -66,30 +67,4 @@ class MarketAdapter(val market: List<Store>, private var listener: (Store) -> Un
 
 
     class ViewHolder(view: View)  : RecyclerView.ViewHolder(view) {}
-
-
-//    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-//
-//        private var view : View = itemView
-//
-//        private  lateinit var market: Store
-//
-//        init {
-//            itemView.setOnClickListener(this)
-//        }
-//
-//        override fun onClick(v: View?) {
-//            Toast.makeText(view.context, "${market.nama_toko} OnCLicked", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(view.context, DetailMarket::class.java)
-//            view.context.startActivity(intent)
-//        }
-//
-//        fun bindData(market: Store){
-//            this.market = market
-//            view.productImage.setImageResource(R.drawable.ic_launcher_background)
-//            view.marketName.setText(market.nama_toko)
-//            view.productPrice.setText(market.alamat_toko.toString())
-//        }
-//
-//    }
 }

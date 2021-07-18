@@ -13,29 +13,62 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_height="180dp">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/productImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/market_2"/>
+                <View
+                    android:id="@+id/overlay_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@color/transparants"
+                    />
+            </RelativeLayout>
             <ImageView
-                android:id="@+id/productImage"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:id="@+id/marketName"
+                android:id="@+id/btn_delete"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:layout_width="38dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_height="38dp"
+                android:background="@drawable/round_border_circle"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_delete_forever_24"/>
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:layout_below="@id/productImage"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/marketName"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="TESTING"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/marketAddress"
-                android:layout_marginBottom="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:layout_below="@id/marketName"/>
+                <TextView
+                    android:id="@+id/marketAddress"
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textSize="11dp"
+                    android:textColor="@color/white"
+                    android:text="SAMPLE ADDRESS"
+                    android:layout_below="@id/marketName"/>
+            </RelativeLayout>
+
 
         </RelativeLayout>
 

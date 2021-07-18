@@ -19,14 +19,8 @@ import com.imagi.app.ui.base.CoreViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.imagi.app.adapter.MerchantAdapter
-import com.imagi.app.model.Store
 import com.imagi.app.ui.home.SearchActivityPage
-import com.imagi.app.ui.market.DetailMarketFragment
 import com.imagi.app.util.AppUtils
-import kotlinx.android.synthetic.main.activity_store_merhcnat.*
-import kotlinx.android.synthetic.main.fragment_market.*
 import kotlinx.android.synthetic.main.fragment_market.view.*
 import timber.log.Timber
 import java.lang.Exception
@@ -117,12 +111,14 @@ class MarketFragment : Fragment() {
             val list = recyclerView
             list.invalidate()
 
-            val adapters = MarketAdapter(it){
-                val bundle = Bundle()
-                it.toko_id?.let { it1 -> bundle.putString("id", it1.toString()) }
-                val intent = Intent(view?.context, DetailMarket::class.java)
-                intent.putExtras(bundle)
-                view?.context?.startActivity(intent)
+            val adapters = dbServices.user.role?.let { it1 ->
+                MarketAdapter(it, it1, {}){
+                    val bundle = Bundle()
+                    it.toko_id?.let { it1 -> bundle.putString("id", it1.toString()) }
+                    val intent = Intent(view?.context, DetailMarket::class.java)
+                    intent.putExtras(bundle)
+                    view?.context?.startActivity(intent)
+                }
             }
 
 //            context?.let { it1 -> AppUtils.showAlert(it1, "Show DATA") }

@@ -7,29 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.imagi.app.FeedbackActivity
 import com.imagi.app.MapsActivity
 import com.imagi.app.R
-import com.imagi.app.adapter.MarketAdapter
-import com.imagi.app.model.Store
 import com.imagi.app.network.DbServices
-import com.imagi.app.network.Market
 import kotlinx.android.synthetic.main.detail_market_fragment.*
-import kotlinx.android.synthetic.main.detail_market_fragment.view.*
-import timber.log.Timber
 
 class DetailMarketFragment : Fragment() {
 
     lateinit var buttonLocation : Button
 
     private lateinit var dbServices: DbServices
-
-    lateinit var buttonFeedback : Button
 
     companion object {
         fun newInstance(id:String): DetailMarketFragment {

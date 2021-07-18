@@ -10,6 +10,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.imagi.app.DetailMarket
@@ -37,13 +39,10 @@ import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
 import com.imagi.app.util.URIPathHelper
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.activity_review_list.*
-import kotlinx.android.synthetic.main.activity_store_merhcnat.*
 import kotlinx.android.synthetic.main.activity_store_merhcnat.fab
 import kotlinx.android.synthetic.main.activity_store_merhcnat.vc_dialog_form
 import kotlinx.android.synthetic.main.activity_store_merhcnat.view.*
@@ -80,6 +79,7 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
     private var latitude: Double? = null
     private var longitude: Double? = null
     private var body: MultipartBody.Part? = null
+    lateinit var refresh: SwipeRefreshLayout
 
     val uriPathHelper = URIPathHelper()
 
@@ -106,6 +106,7 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
         progress = myInflatedView?.findViewById(R.id.progressBarHome)
         listReview = myInflatedView.findViewById(R.id.rvMarket)
+        refresh = myInflatedView.findViewById<SwipeRefreshLayout>(R.id.refresh)
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
@@ -185,6 +186,18 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
 
         if(dbServices.user.role == "Pedagang"){
             this.id = dbServices.user.id_pedagang.toString()
+        }
+
+        refresh.setOnRefreshListener {
+            viewModel.getStoreMerchant(dbServices.findBearerToken(), id)
+            Handler().postDelayed(Runnable {
+                try{
+                    refresh.isRefreshing = false
+                }catch (e:Exception){
+                    Timber.d("${e.message}")
+                }
+            }, 500)
+
         }
 
         observerViewModel();
@@ -353,16 +366,27 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
                 val list = listReview
                 list.invalidate()
 
-                val adapters = MarketAdapter(it) {
-                    val bundle = Bundle()
-                    bundle.putString("id", it.toko_id.toString())
-                    val intent = Intent(activity, DetailMarket::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+                val adapters = dbServices.user.role?.let { it1 ->
+                    MarketAdapter(it, it1, {
+                        AlertDialog.Builder(activity)
+                            .setMessage("Apakah anda yakin ingin menghapus toko ini ?")
+                            .setCancelable(true)
+                            .setNegativeButton("Tidak") { dialogInterface, i -> }
+                            .setPositiveButton("Ya") { dialogInterface, i ->
+                                viewModel.deleteStore(dbServices.findBearerToken(), it.toko_id.toString())
+                            }
+                            .create().show()
+                    }) {
+                        val bundle = Bundle()
+                        bundle.putString("id", it.toko_id.toString())
+                        val intent = Intent(activity, DetailMarket::class.java)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    }
                 }
 
                 list.layoutManager = GridLayoutManager(activity, 2)
-                adapters.notifyDataSetChanged()
+                adapters?.notifyDataSetChanged()
                 list.adapter = adapters
             })
         }
