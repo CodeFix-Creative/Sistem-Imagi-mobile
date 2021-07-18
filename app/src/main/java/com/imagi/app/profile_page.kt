@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.imagi.app.model.User
 import com.imagi.app.model.UserForm
@@ -29,6 +30,7 @@ import com.imagi.app.util.URIPathHelper
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
 import kotlinx.android.synthetic.main.fragment_profile_page.view.*
+import kotlinx.android.synthetic.main.item_market.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -60,7 +62,7 @@ class ProfilePage : Fragment() {
     lateinit var authKey : String
     lateinit var type : String
     private val pickImage = 100
-    lateinit var currentview:View
+    lateinit var currentView: View
     private val PERMISSION_REQUEST_CODE = 200
     private var imageUri: Uri? = null
     val resource = context?.resources
@@ -79,7 +81,7 @@ class ProfilePage : Fragment() {
         initializeFragment(myInflatedView)
         dbServices.mContext  = context
         dbServices = DbServices(getContext())
-        this.currentview = myInflatedView
+        this.currentView = myInflatedView
         saveChange.setOnClickListener {
             if(validateForm(name.text.toString(), phone.text.toString(), address.text.toString())){
                 Timber.d("TOKEN : ${dbServices.findBearerToken()}")
@@ -91,7 +93,9 @@ class ProfilePage : Fragment() {
                     map["alamat"] = toRequestBody(myInflatedView.addressEditProfile.text.toString())
                 }
                 if(myInflatedView.passwordEditProfile.text.isNotEmpty()){
-                    if(myInflatedView.confirmPasswordEditProfile.text.equals(myInflatedView.passwordEditProfile.text.toString())){
+                    if(myInflatedView.confirmPasswordEditProfile.text.toString().length < 8){
+                        activity?.let { it1 -> AppUtils.showAlert(it1, "Password minimal 8 karakter") }
+                    } else if(myInflatedView.confirmPasswordEditProfile.text.toString() == myInflatedView.passwordEditProfile.text.toString()){
                         map["password"] = toRequestBody(myInflatedView.passwordEditProfile.text.toString())
                     }else{
                         activity?.let { it1 -> AppUtils.showAlert(it1, "Mohon memasukkan password & konfirmasi password yang sama") }
@@ -128,7 +132,7 @@ class ProfilePage : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == AppCompatActivity.RESULT_OK && requestCode == pickImage){
             imageUri = data?.data
-            currentview.userImage.setImageURI(imageUri)
+            currentView.userImage.setImageURI(imageUri)
         }
     }
 
@@ -193,6 +197,10 @@ class ProfilePage : Fragment() {
             phone?.setText(viewModel.userLiveData.value?.no_telp)
             nameHighlight.setText(viewModel.userLiveData.value?.nama)
             frame?.visibility = View.VISIBLE
+            Glide.with(currentView.userImage)
+                .load(Uri.parse("${it.path_foto}"))
+                .placeholder(R.drawable.img)
+                .into(currentView.userImage)
         })
 
     }

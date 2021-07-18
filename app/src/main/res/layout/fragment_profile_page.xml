@@ -47,9 +47,11 @@
                                     android:id="@+id/userImageData">
                                     <ImageView
                                         android:layout_centerHorizontal="true"
-                                        android:layout_width="150dp"
-                                        android:layout_height="150dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
                                         android:padding="8dp"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitCenter"
                                         android:id="@+id/userImage"
                                         android:src="@drawable/img"
                                         />

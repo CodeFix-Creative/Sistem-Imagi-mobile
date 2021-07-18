@@ -2,9 +2,9 @@ package com.imagi.app
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -41,10 +41,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         dbServices.mContext = this
         AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+
+
+        addFragment(HomeFragment())
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
+    }
+
+    override fun onBackPressed() {
+        finishAffinity()
     }
 
     override fun onRequestPermissionsResult(

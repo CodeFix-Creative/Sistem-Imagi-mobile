@@ -3,6 +3,7 @@ package com.imagi.app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.imagi.app.network.DbServices
@@ -24,15 +25,22 @@ class MenuMerchant : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
+    lateinit var selected : BottomNavigationView.OnNavigationItemSelectedListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
         dbServices = DbServices(this)
         dbServices.mContext = this
+
+
         setContentView(R.layout.activity_menu_merchant)
 
         setContentView(R.layout.activity_menu_merchant)
+
+
+        addFragment(StoreMerchantRetail())
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationMerchant)
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)

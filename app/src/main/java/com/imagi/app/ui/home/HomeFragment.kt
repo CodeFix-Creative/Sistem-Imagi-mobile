@@ -41,6 +41,10 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         dbServices = DbServices(getContext())
+    }
+
+
+    private fun observeViewModel(){
 
         try{
             viewModel.getMerchant(dbServices.findBearerToken())
@@ -48,12 +52,7 @@ class HomeFragment : Fragment() {
             Timber.d("Error: ${e.message}")
         }
 
-        observeViewModel()
-    }
-
-
-    private fun observeViewModel(){
-        viewModel.isShowLoader.observe(this, {
+        viewModel.isShowLoader.observe(viewLifecycleOwner, {
             if(it){
                 progressBarHome.visibility = View.VISIBLE
                 list.visibility = View.GONE
@@ -63,11 +62,11 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.errorMessage.observe(this, {
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
             view?.let { it1-> AppUtils.showAlert(it1.context, it) }
         })
 
-        viewModel.merchantLiveData.observe(this, {
+        viewModel.merchantLiveData.observe(viewLifecycleOwner, {
             Timber.d("SHOE_DATA_MERCHANT")
             val list = list
             list.invalidate()
@@ -86,6 +85,7 @@ class HomeFragment : Fragment() {
         })
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,16 +96,9 @@ class HomeFragment : Fragment() {
             var intent = Intent(activity, SearchActivityPage::class.java)
             startActivity(intent)
         }
-        // Set the adapter
-//        if (view is RecyclerView) {
-//            with(view) {
-//                layoutManager = when {
-//                    columnCount <= 1 -> LinearLayoutManager(context)
-//                    else -> GridLayoutManager(context, columnCount)
-//                }
-//                adapter =  MyItemRecyclerViewAdapter(DummyContent.ITEMS)
-//            }
-//        }
+
+        observeViewModel()
+
         return view
     }
 

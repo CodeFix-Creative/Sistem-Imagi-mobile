@@ -37,6 +37,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_store_merhcnat.*
+import kotlinx.android.synthetic.main.activity_store_merhcnat.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -108,60 +109,7 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
             requestPermission();
         }
 
-        fab.setOnClickListener {
-            vc_dialog_form.visibility = View.VISIBLE
-            fab.visibility = View.GONE
-//            bg_main.setBackgroundColor(R.color.blackSoft)
-            this.onClick = !onClick
-        }
-
-        vc_merchant_photo.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
-        }
-
-        vc_btn_close.setOnClickListener {
-//            bg_main.setBackgroundColor(Color.parseColor("#FFFFFFF"))
-            vc_dialog_form.visibility = View.GONE
-            fab.visibility = View.VISIBLE
-        }
-
-        vc_btn_save.setOnClickListener {
-            if(validate(
-                    vc_merchant_name.text.toString(),
-                    vc_merchant_phone.text.toString(),
-                    vc_merchant_address.text.toString()
-                )){
-
-                var map = HashMap<String, RequestBody>()
-                toRequestBody(id)?.let { it1 -> map.put("pedagang_id", it1) }
-                map["nama_toko"] = toRequestBody(vc_merchant_name.text.toString())
-                map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString())
-                map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString())
-                map["latitude"] = toRequestBody("$latitude")
-                map["longitude"] = toRequestBody("$longitude")
-                map["facebook"] = toRequestBody("-")
-                map["twitter"] = toRequestBody("-")
-                map["instagram"] = toRequestBody("-")
-                map["website"] = toRequestBody("-")
-                if(imageUri!=null) {
-                    val file = File(imageUri?.path)
-                    body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
-                }
-
-                Timber.d("DATA_LATITUDE : $latitude")
-                Timber.d("DATA_LONGITUDE : $longitude")
-                if(body!=null) {
-                    viewModel.postStore(
-                        dbServices.findBearerToken(), map, body
-                    )
-                }else{
-                    viewModel.postStoreWithoutImage(
-                        dbServices.findBearerToken(), map
-                    )
-                }
-            }
-        }
+        fab.visibility = View.GONE
 
         if(intent.extras != null)
         {
@@ -323,6 +271,11 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
         })
 
         viewModel.storeLiveData.observe(this, {
+
+            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+                vc_empty.visibility = View.VISIBLE
+            }
+
             val list = listReview
             list.invalidate()
 

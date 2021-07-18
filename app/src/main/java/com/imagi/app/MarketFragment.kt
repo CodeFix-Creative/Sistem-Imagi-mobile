@@ -25,7 +25,9 @@ import com.imagi.app.model.Store
 import com.imagi.app.ui.home.SearchActivityPage
 import com.imagi.app.ui.market.DetailMarketFragment
 import com.imagi.app.util.AppUtils
+import kotlinx.android.synthetic.main.activity_store_merhcnat.*
 import kotlinx.android.synthetic.main.fragment_market.*
+import kotlinx.android.synthetic.main.fragment_market.view.*
 import timber.log.Timber
 import java.lang.Exception
 
@@ -39,6 +41,7 @@ class MarketFragment : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var progressBar: ProgressBar
+    lateinit var currentView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +50,7 @@ class MarketFragment : Fragment() {
         val myInflatedView: View = inflater.inflate(R.layout.fragment_market, container, false)
         initializeFragment(myInflatedView)
         dbServices.mContext = context
-
+        this.currentView = myInflatedView
         btnSearch = myInflatedView.findViewById(R.id.vc_search_bar)
         btnSearch.setOnClickListener {
             var intent = Intent(activity, SearchActivityPage::class.java)
@@ -105,6 +108,11 @@ class MarketFragment : Fragment() {
         })
 
         viewModel.storeLiveData.observe(this, {
+
+            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+                currentView.vc_empty.visibility = View.VISIBLE
+            }
+
             Timber.d("SHOW_DATA")
             val list = recyclerView
             list.invalidate()
