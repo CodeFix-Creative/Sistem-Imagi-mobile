@@ -26,13 +26,19 @@
                 android:id="@+id/vc_merchant_name"
                 android:layout_marginBottom="16dp"
                 />
-            <ImageView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@drawable/rounded_button"
-                android:src="@drawable/market_2"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
+                android:background="@drawable/round_border">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/market_2"
+                    android:scaleType="centerCrop"
+                    android:id="@+id/vc_store_image"
+                    android:layout_marginBottom="16dp"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

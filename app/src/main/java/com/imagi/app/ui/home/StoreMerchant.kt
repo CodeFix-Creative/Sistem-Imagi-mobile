@@ -288,9 +288,9 @@ class StoreMerchant : AppCompatActivity() , HasSupportFragmentInjector {
 
         viewModel.storeLiveData.observe(this, {
 
-            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
-                vc_empty.visibility = View.VISIBLE
-            }
+//            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+//                vc_empty.visibility = View.VISIBLE
+//            }
 
             val list = listReview
             list.invalidate()

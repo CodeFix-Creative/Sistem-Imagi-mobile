@@ -360,9 +360,9 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
 
         activity?.let {
             viewModel.storeLiveData.observe(it, {
-                if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
-                    currentview.vc_empty.visibility = View.VISIBLE
-                }
+//                if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+//                    currentview.vc_empty.visibility = View.VISIBLE
+//                }
                 val list = listReview
                 list.invalidate()
 

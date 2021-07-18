@@ -103,9 +103,9 @@ class MarketFragment : Fragment() {
 
         viewModel.storeLiveData.observe(this, {
 
-            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
-                currentView.vc_empty.visibility = View.VISIBLE
-            }
+//            if(it == null || viewModel.storeLiveData.value?.isEmpty() == true){
+//                currentView.vc_empty.visibility = View.VISIBLE
+//            }
 
             Timber.d("SHOW_DATA")
             val list = recyclerView

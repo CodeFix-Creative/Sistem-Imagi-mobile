@@ -1,6 +1,7 @@
 package com.imagi.app
 
 import android.app.Activity
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,7 +11,10 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.imagi.app.model.ReviewForm
+import com.imagi.app.model.User
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
@@ -19,6 +23,8 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_feedback.*
+import kotlinx.android.synthetic.main.detail_market_fragment.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,6 +49,7 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var merchantName : TextView
     lateinit var buttonSend : Button
     lateinit var review : EditText
+    lateinit var user : User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -75,6 +82,10 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
         {
             val bundle = intent.extras
             id = bundle?.getString("id")!!
+//            if(bundle.containsKey("data")){
+//                var result = bundle?.getString("data")!!
+//                this.user = Gson().fromJson(result, User::class.java)
+//            }
         }else{
             Timber.d("FAIL_GET_DATA")
         }
@@ -110,6 +121,10 @@ class FeedbackActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         viewModel.storeDetailLiveData.observe(this, {
             merchantName.text = it.nama_toko
+            Glide.with(vc_store_image)
+                .load(Uri.parse("${it.path_foto}"))
+                .placeholder(R.drawable.market_2)
+                .into(vc_store_image)
         })
 
 

@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
 import com.imagi.app.adapter.ProductAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
@@ -180,6 +181,7 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
             Timber.d("CLICK_FEEDBACK")
             val bundle = Bundle()
             bundle.putString("id", id)
+//            bundle.putString("data", Gson().toJson(viewModel.storeDetailLiveData.value))
             val intent = Intent(this, ReviewActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)

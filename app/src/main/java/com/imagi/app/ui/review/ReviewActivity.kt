@@ -48,6 +48,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var listReview : RecyclerView
     lateinit var fab : FloatingActionButton
     lateinit var refresh: SwipeRefreshLayout
+    lateinit var data: String
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return frahmentInjector
@@ -75,6 +76,7 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
             Timber.d("CLICK_FEEDBACK")
             val bundle = Bundle()
             bundle.putString("id", id)
+//            bundle.putString("data", data)
             val intent = Intent(this, FeedbackActivity::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
@@ -108,6 +110,9 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         {
             val bundle = intent.extras
             id = bundle?.getString("id")!!
+//            if(bundle.containsKey("data")){
+//                this.data = bundle?.getString("data")!!
+//            }
         }else{
             Timber.d("FAIL_GET_DATA")
         }
@@ -156,9 +161,9 @@ class ReviewActivity : AppCompatActivity(), HasSupportFragmentInjector {
         })
 
         viewModel.reviewLiveData.observe(this, {
-            if(it == null || viewModel.reviewLiveData.value?.isEmpty() == true){
-                vc_empty_review.visibility = View.VISIBLE
-            }
+//            if(it == null || viewModel.reviewLiveData.value?.isEmpty() == true){
+//                vc_empty_review.visibility = View.VISIBLE
+//            }
             val list = listReview
             list.invalidate()
 
