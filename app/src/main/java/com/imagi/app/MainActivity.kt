@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             }
 
             R.id.nav_merchant -> {
-                val fragment = MarketFragment.newInstance()
+                val fragment = HomeFragment()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

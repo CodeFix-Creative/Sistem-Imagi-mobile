@@ -111,6 +111,11 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
         buttonReview = findViewById(R.id.buttonFeedbackToMarket)
         refresh = findViewById<SwipeRefreshLayout>(R.id.refresh)
 
+        if(dbServices.user.role == "Customer"){
+            buttonEdit.visibility = View.GONE
+            vc_add_product.visibility = View.GONE
+        }
+
         if(intent.extras != null)
         {
             val bundle = intent.extras
@@ -371,13 +376,18 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                         }
                         .create().show()
                 }) {
-                    val intent = Intent(this, ActivityProductDetail::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("id", viewModel.storeDetailLiveData.value?.toko_id.toString())
-                    bundle.putString("id_product", it.id_barang.toString())
-                    bundle.putString("unit", it.satuan.toString())
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+                    if(dbServices.user.role == "Pedagang") {
+                        val intent = Intent(this, ActivityProductDetail::class.java)
+                        val bundle = Bundle()
+                        bundle.putString(
+                            "id",
+                            viewModel.storeDetailLiveData.value?.toko_id.toString()
+                        )
+                        bundle.putString("id_product", it.id_barang.toString())
+                        bundle.putString("unit", it.satuan.toString())
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+                    }
                 }
             }
 
