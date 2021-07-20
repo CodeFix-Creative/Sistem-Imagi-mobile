@@ -54,26 +54,22 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         Timber.d("PANGGIL_STORE_")
         Timber.d("PANGGIL_STORE_${viewModel.localMarkerLiveData.value?.size}")
-        val zoomLevel = 14.0f
+        val zoomLevel = 11.0f
         viewModel.data?.forEach { localMarker ->
             val marker = localMarker.latitude?.let { it1 -> localMarker.longitude?.let { it2 -> LatLng(it1, it2) } }
-            googleMap.addMarker(MarkerOptions().position(marker).title("${localMarker.name}"))
+            googleMap.addMarker(MarkerOptions().position(marker).title("${localMarker.id}"))
             Timber.d("PANGGIL_STORE_${localMarker.name}")
-            googleMap.setOnMarkerClickListener(markerClick(localMarker))
+            googleMap.setOnMarkerClickListener{
+
+                val bundle = Bundle()
+                bundle.putString("id", it.title)
+                val intent = Intent(activity, DetailMarket::class.java)
+                intent.putExtras(bundle)
+                startActivity(intent)
+                true
+            }
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, zoomLevel))
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker, zoomLevel))
-        }
-    }
-
-    private fun markerClick(localMarker : LocalMarker): GoogleMap.OnMarkerClickListener? {
-        return GoogleMap.OnMarkerClickListener {
-            Timber.d("ID_TOKO_${localMarker.id}")
-            val bundle = Bundle()
-            bundle.putString("id", localMarker.id)
-            val intent = Intent(activity, DetailMarket::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
-            true
         }
     }
 
