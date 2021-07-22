@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.nfc.FormatException
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -44,6 +45,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_store_merhcnat.fab
 import kotlinx.android.synthetic.main.activity_store_merhcnat.vc_dialog_form
 import kotlinx.android.synthetic.main.activity_store_merhcnat.view.*
+import kotlinx.android.synthetic.main.detail_market_fragment.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -150,7 +152,13 @@ class StoreMerchantRetail : Fragment() , HasSupportFragmentInjector {
                     myInflatedView.vc_merchant_phone.text.toString(),
                     myInflatedView.vc_merchant_address.text.toString()
                 )){
+                if(vc_merchant_lat.text.toString()!=""){
+                    this.latitude = vc_merchant_lat.text.toString().toDoubleOrNull()
+                }
 
+                if(vc_merchant_long.text.toString()!=""){
+                    this.longitude = vc_merchant_long.text.toString().toDoubleOrNull()
+                }
                 var map = HashMap<String, RequestBody>()
                 toRequestBody(id)?.let { it1 -> map.put("pedagang_id", it1) }
                 map["nama_toko"] = toRequestBody(myInflatedView.vc_merchant_name.text.toString())

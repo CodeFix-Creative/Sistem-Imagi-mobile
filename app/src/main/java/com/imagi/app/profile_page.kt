@@ -124,6 +124,7 @@ class ProfilePage : Fragment() {
         return myInflatedView
     }
 
+
     fun toRequestBody(value: String): RequestBody {
         return RequestBody.create(MediaType.parse("text/plain"), value)
     }
@@ -204,6 +205,12 @@ class ProfilePage : Fragment() {
                     .into(currentView.userImage)
             }
 
+        })
+
+        viewModel.code.observe(viewLifecycleOwner, {
+            if(viewModel.code.value == 200){
+                activity?.let { it1 -> AppUtils.showAlert(it1, "Data user berhasil disimpan") }
+            }
         })
 
     }

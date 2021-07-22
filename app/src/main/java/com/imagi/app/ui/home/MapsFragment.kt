@@ -56,7 +56,12 @@ class MapsFragment : Fragment() {
         Timber.d("PANGGIL_STORE_${viewModel.localMarkerLiveData.value?.size}")
         val zoomLevel = 11.0f
         viewModel.data?.forEach { localMarker ->
-            val marker = localMarker.latitude?.let { it1 -> localMarker.longitude?.let { it2 -> LatLng(it1, it2) } }
+            var marker = LatLng(-34.0, 151.0)
+            try {
+                marker = localMarker.latitude?.let { it1 -> localMarker.longitude?.let { it2 -> LatLng(it1, it2) } }!!
+            }catch (e:Exception) {
+
+            }
             googleMap.addMarker(MarkerOptions().position(marker).title("${localMarker.id}"))
             Timber.d("PANGGIL_STORE_${localMarker.name}")
             googleMap.setOnMarkerClickListener{

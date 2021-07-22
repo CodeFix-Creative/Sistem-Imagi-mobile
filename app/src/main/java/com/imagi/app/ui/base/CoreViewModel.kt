@@ -324,6 +324,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         dataManager.putProfile(token, content, file)
             .subscribe({ result->
                 isShowLoader.value = false
+                this.code.value = result.code()
                 if(result.isSuccessful){
                     Timber.d("SUCCESS_PUT_DATA_USER")
                     val res = result?.body()
@@ -349,6 +350,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
         dataManager.putProfileWithoutImage(token, content)
             .subscribe({ result->
                 isShowLoader.value = false
+                this.code.value = result.code()
                 if(result.isSuccessful){
                     Timber.d("SUCCESS_PUT_DATA_USER")
                     val res = result?.body()

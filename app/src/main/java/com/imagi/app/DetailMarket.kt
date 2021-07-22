@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.nfc.FormatException
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -224,10 +225,17 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                 )){
 
                 if(vc_merchant_lat.text.toString()!=""){
-                    this.latitude = vc_merchant_lat.text.toString().toDouble()
+                    try{
+                        fun String.fullTrim() = trim().replace("\uFEFF", "")
+                        this.latitude = vc_merchant_lat.text.toString().fullTrim().toDoubleOrNull()
+                    }catch (e:FormatException){
+                        AppUtils.showAlert(this, "Mohon memasukkan format latitude yang sesuai")
+                    }
+
                 }
+
                 if(vc_merchant_long.text.toString()!=""){
-                    this.longitude = vc_merchant_long.text.toString().toDouble()
+                    this.longitude = vc_merchant_long.text.toString().toDoubleOrNull()
                 }
 
                 var map = HashMap<String, RequestBody>()

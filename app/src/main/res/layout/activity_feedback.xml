@@ -40,9 +40,10 @@
                     android:layout_marginBottom="16dp"/>
             </LinearLayout>
             <TextView
+                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/give_feedback"
+                android:text="Ulasan"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textFontWeight="24"
