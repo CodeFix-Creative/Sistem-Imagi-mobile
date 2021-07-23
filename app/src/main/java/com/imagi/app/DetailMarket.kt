@@ -146,6 +146,16 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
 
         buttonEdit.setOnClickListener {
             this.onEdit = true
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        Timber.d("ONSTART")
+                        Timber.d("GET_LAST_LOCATION : ${location.latitude}")
+                        Timber.d("GET_LAST_LOCATION : ${location.longitude}")
+                        this.latitude = location?.latitude
+                        this.longitude = location?.longitude
+                    }
+                }
             vc_dialog_form.visibility = View.VISIBLE
             vc_add_product.visibility = View.GONE
             et_merchant_name.setText(viewModel.storeDetailLiveData.value?.nama_toko)
@@ -224,44 +234,44 @@ class DetailMarket : AppCompatActivity(), HasSupportFragmentInjector {
                     vc_merchant_address.text.toString()
                 )){
 
-                if(vc_merchant_lat.text.toString()!=""){
-                    try{
-                        fun String.fullTrim() = trim().replace("\uFEFF", "")
-                        this.latitude = vc_merchant_lat.text.toString().fullTrim().toDoubleOrNull()
-                    }catch (e:FormatException){
-                        AppUtils.showAlert(this, "Mohon memasukkan format latitude yang sesuai")
-                    }
-
+                if (!TextUtils.isEmpty(vc_merchant_lat.text.toString().trim())) {
+                    this.latitude = vc_merchant_lat.text.toString().toDoubleOrNull()
                 }
 
-                if(vc_merchant_long.text.toString()!=""){
+                if (!TextUtils.isEmpty(vc_merchant_long.text.toString().trim())) {
                     this.longitude = vc_merchant_long.text.toString().toDoubleOrNull()
                 }
-
-                var map = HashMap<String, RequestBody>()
-                toRequestBody(id)?.let { it1 -> map.put("pedagang_id", it1) }
-                map["nama_toko"] = toRequestBody(et_merchant_name.text.toString().trim())
-                map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString().trim())
-                map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString().trim())
-                map["latitude"] = toRequestBody("$latitude")
-                map["longitude"] = toRequestBody("$longitude")
-                map["facebook"] = toRequestBody("-")
-                map["twitter"] = toRequestBody("-")
-                map["instagram"] = toRequestBody("-")
-                map["website"] = toRequestBody("-")
-                if(imageUri!=null) {
-                    val file = File(imageUri?.path)
-                    body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
-                }
-
-                Timber.d("GAMBAR :")
-                Timber.d("DATA_LONGITUDE : $longitude")
-                if (body != null) {
-                    viewModel.putStore(
-                        dbServices.findBearerToken(), id, map, body!!
+                if (latitude == null || longitude == null) {
+                    AppUtils.showAlert(
+                        this,
+                        "Mohon melengkapi data latitude dan longtitude dengan data yang sesuai"
                     )
-                } else{
-                    viewModel.putStoreWithoutImage(dbServices.findBearerToken(), id, map)
+                }else {
+                    var map = HashMap<String, RequestBody>()
+                    toRequestBody(id)?.let { it1 -> map.put("pedagang_id", it1) }
+                    map["nama_toko"] = toRequestBody(et_merchant_name.text.toString().trim())
+                    map["no_telp"] = toRequestBody(vc_merchant_phone.text.toString().trim())
+                    map["alamat_toko"] = toRequestBody(vc_merchant_address.text.toString().trim())
+                    map["latitude"] = toRequestBody("$latitude")
+                    map["longitude"] = toRequestBody("$longitude")
+                    map["facebook"] = toRequestBody("-")
+                    map["twitter"] = toRequestBody("-")
+                    map["instagram"] = toRequestBody("-")
+                    map["website"] = toRequestBody("-")
+                    if (imageUri != null) {
+                        val file = File(imageUri?.path)
+                        body = imageUri?.let { it1 -> prepareFilePart(file.name, it1) }
+                    }
+
+                    Timber.d("GAMBAR :")
+                    Timber.d("DATA_LONGITUDE : $longitude")
+                    if (body != null) {
+                        viewModel.putStore(
+                            dbServices.findBearerToken(), id, map, body!!
+                        )
+                    } else {
+                        viewModel.putStoreWithoutImage(dbServices.findBearerToken(), id, map)
+                    }
                 }
             }
         }
