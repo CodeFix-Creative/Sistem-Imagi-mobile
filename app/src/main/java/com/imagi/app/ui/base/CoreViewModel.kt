@@ -136,8 +136,8 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                         storeLiveData.value = res.data
                         for(it in res.data) {
                             data.add(LocalMarker(
-                                latitude = it.latitude?.toDouble(),
-                                longitude = it.longitude?.toDouble(),
+                                latitude = it.latitude?.toDoubleOrNull(),
+                                longitude = it.longitude?.toDoubleOrNull(),
                                 name = it.nama_toko,
                                 id = it.toko_id.toString()
                             ))
