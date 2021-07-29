@@ -15,6 +15,25 @@
         android:scaleType="centerCrop"
         />
 
+    <View
+        android:id="@+id/overlay_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparants2"
+        />
+
+    <TextView
+        android:id="@+id/tv_front"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Si PasTrad"
+        android:textStyle="bold"
+        android:textSize="28dp"/>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_centerVertical="true"

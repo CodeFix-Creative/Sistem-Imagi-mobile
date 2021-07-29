@@ -16,12 +16,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.google.maps.android.SphericalUtil
 import com.imagi.app.MainActivity
 import com.imagi.app.MenuMerchant
 import com.imagi.app.R
 import com.imagi.app.model.UserLogin
-import com.imagi.app.model.UserResponse
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
@@ -32,7 +33,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
+import java.text.DecimalFormat
 import javax.inject.Inject
+
 
 class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
@@ -64,10 +67,16 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         viewModel.isShowLoader.value = false
-//        username.setText("customer@gmail.com")
-//        password.setText("pass1234")
+        username.setText("customer@gmail.com")
+        password.setText("pass1234")
 //        username.setText("pedagang@gmail.com")
 //        password.setText("Pedagang123")
+
+//        var start = LatLng(-8.3405383, 115.09195);
+//        var end = LatLng(-8.642392, 115.285369);
+//        var distance = SphericalUtil.computeDistanceBetween(start, end)
+//        Timber.d("JARAK_TEMPUH : $distance")
+//        calculationByDistance(start, end)
 
         try {
             this.supportActionBar!!.hide()
@@ -215,9 +224,9 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     .apply()
                 Log.d("DATA_USER", "${Gson().toJson(it)}")
             })
-            if(dbServices.user.role == "Pedagang"){
+            if (dbServices.user.role == "Pedagang") {
                 goToMenuPageMerchant()
-            }else {
+            } else {
                 goToMenuPage()
             }
             finish()
@@ -235,6 +244,32 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 loading?.visibility = View.GONE
             }
         })
+    }
+
+    fun calculationByDistance(StartP: LatLng, EndP: LatLng): Double {
+        val Radius = 6371 // radius of earth in Km
+        val lat1 = StartP.latitude
+        val lat2 = EndP.latitude
+        val lon1 = StartP.longitude
+        val lon2 = EndP.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + (Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2)))
+        val c = 2 * Math.asin(Math.sqrt(a))
+        val valueResult = Radius * c
+        val km = valueResult / 1
+        val newFormat = DecimalFormat("####")
+        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
+        val meter = valueResult % 1000
+        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
+        Log.i(
+            "Radius Value", "" + valueResult + "   KM  " + kmInDec
+                    + " Meter   " + meterInDec
+        )
+        return Radius * c
     }
 
 //    private fun showLoginFailed(@StringRes errorString: Int) {

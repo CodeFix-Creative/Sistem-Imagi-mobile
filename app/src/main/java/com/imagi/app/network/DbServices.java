@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imagi.app.model.User;
+import com.imagi.app.model.UserLocation;
 import com.imagi.app.util.Constant;
 
 
@@ -33,6 +35,21 @@ public class DbServices {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_TOKEN_USER, 0);
                 return sharedPreferences.getString(Constant.SP_TOKEN, null);
     }
+
+    public UserLocation getLocation() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
+        String result = "";
+        if(sharedPreferences.contains(Constant.SP_LOCATION)){
+            result = sharedPreferences.getString(Constant.SP_LOCATION, null);
+            return new Gson().fromJson(result, UserLocation.class);
+        }else{
+            UserLocation userLocation = new UserLocation("-8.3405383", "115.09195");
+            return userLocation;
+        }
+
+    }
+
+
 
     public String findBearerToken(){
         return "Bearer " + findToken();

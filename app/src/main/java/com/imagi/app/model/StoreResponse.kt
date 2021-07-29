@@ -34,6 +34,9 @@ data class Store (
     @field:SerializedName("foto")
     val foto: String? = null,
 
+    @field:SerializedName("distance")
+    var distance: Double? = null
+
 
 )
 

@@ -10,6 +10,9 @@ data class Product(
     @field:SerializedName("nama_barang")
     val nama_barang: String? = null,
 
+    @field:SerializedName("nama_toko")
+    val nama_toko: String? = null,
+
     @field:SerializedName("id_barang")
     val id_barang: Int? = null,
 
@@ -21,6 +24,17 @@ data class Product(
 
     @field:SerializedName("created_at")
     val created_at: String? = null,
+
+    @field:SerializedName("latitude")
+    val latitude: String? = null,
+
+    @field:SerializedName("longitude")
+    val longitude: String? = null,
+
+    @field:SerializedName("distance")
+    val distance: Double? = null,
+
+
 
 )
 

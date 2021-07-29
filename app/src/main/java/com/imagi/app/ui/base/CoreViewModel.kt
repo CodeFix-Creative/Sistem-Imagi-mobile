@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import com.imagi.app.model.*
 import com.imagi.app.network.DataManager
 import com.imagi.app.util.AppUtils
@@ -28,6 +30,8 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     val code: MutableLiveData<Int> = MutableLiveData()
     val localMarkerLiveData: MutableLiveData<List<LocalMarker>> = MutableLiveData()
     var data: ArrayList<LocalMarker> = ArrayList<LocalMarker>()
+    var dataStore: ArrayList<Store> = ArrayList<Store>()
+    var dataProduct: ArrayList<Product> = ArrayList<Product>()
     @Suppress("CheckResult")
     fun getProfile(token:String, id:String){
         isShowLoader.value = true
@@ -112,6 +116,58 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                     if(res?.code == 200){
                         storeLiveData.value = res.data
                     }
+                    Timber.d("JUMLAH_TOKO ${result.body()?.data?.size}")
+                    Timber.d("JUMLAH_TOKO ${storeLiveData.value}")
+                }else{
+                    errorMessage.value = "["+result.code()+"] sedang terjadi kendala. Cek kembali nanti"
+                }
+            },
+                { error->
+                    isShowLoader.value = false
+                    errorMessage.value = error?.message
+            })
+    }
+
+    @Suppress("CheckResult")
+    fun getStoreCustomer(token:String, startPosition:LatLng?){
+        isShowLoader.value = true
+        Timber.d("GET_DATA_STORE")
+        dataManager.getStore(token)
+            .subscribe ({ result ->
+                isShowLoader.value = false
+                if(result.isSuccessful){
+                    Timber.d("SUCCESS_GET_STORE")
+                    val res = result.body()
+                    if(res?.code == 200){
+                        for(it in res.data){
+                            var latLong = LatLng(-8.3405389,115.0919509)
+                            if(it.latitude!="null"){
+                                latLong =
+                                    it.longitude?.let { it1 -> it.latitude?.let { it2 -> LatLng(it2.toDouble(), it1.toDouble()) } }!!
+                            }
+                            dataStore.add(
+                                Store(
+                                toko_id = it.toko_id,
+                                    nama_toko = it.nama_toko,
+                                    alamat_toko = it.alamat_toko,
+                                    latitude = it.latitude,
+                                    longitude = it.longitude,
+                                    no_telp = it.no_telp,
+                                    status = it.status,
+                                    pedagang = it.pedagang,
+                                    path_foto = it.path_foto,
+                                    foto = it.foto,
+                                    distance = SphericalUtil.computeDistanceBetween(startPosition, latLong)
+
+                            ))
+
+                            this.dataStore.sortBy {
+                                it.distance
+                            }
+                            storeLiveData.postValue(dataStore)
+                        }
+                    }
+                    storeLiveData.value?.sortedBy { it.distance }
                     Timber.d("JUMLAH_TOKO ${result.body()?.data?.size}")
                     Timber.d("JUMLAH_TOKO ${storeLiveData.value}")
                 }else{
@@ -289,7 +345,7 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
     }
 
     @Suppress("CheckResult")
-    fun getGlobalSearch(token:String, query: String, queryMin:String?, queryMax:String?,){
+    fun getGlobalSearch(token:String, query: String, queryMin:String?, queryMax:String?,startPosition:LatLng?){
         isShowLoader.value = true
         Timber.d("GET_DATA_MERCHANT")
         dataManager.getProductSearch(token, query, queryMin, queryMax)
@@ -302,7 +358,27 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                     val res = result.body()
 
                     if(res?.code == 200){
-                        this.productLiveData.value = res?.data
+                        for(it in res.data!!){
+                            var latLong = LatLng(-8.3405389,115.0919509)
+                            if(it.latitude!="null"){
+                                latLong = it.longitude?.let { it1 -> it.latitude?.let { it2 -> LatLng(it2.toDouble(), it1.toDouble()) } }!!
+                            }
+                            dataProduct.add(
+                                Product(
+                                    id = it.id,
+                                    nama_barang = it.nama_barang,
+                                    id_barang = it.id_barang,
+                                    harga_rp = it.harga_rp,
+                                    satuan = it.satuan,
+                                    created_at = it.created_at,
+                                    latitude = it.latitude,
+                                    longitude = it.longitude,
+                                    nama_toko = it.nama_toko,
+                                    distance = SphericalUtil.computeDistanceBetween(startPosition, latLong)
+                                )
+                            )
+                        }
+                        this.productLiveData.postValue(dataProduct)
                     }
 
                 }else{

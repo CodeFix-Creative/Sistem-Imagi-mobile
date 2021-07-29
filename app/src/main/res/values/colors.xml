@@ -8,10 +8,12 @@
     <color name="teal">#3d9c5b</color>
     <color name="black">#FF000000</color>
     <color name="blackSoft">#FF404040</color>
+    <color name="blackSoft2">#FFb3b3b3</color>
     <color name="greySoft">#FF808080</color>
     <color name="blue">#3586cc</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparants">#84040404</color>
+    <color name="transparants2">#84040401</color>
     <color name="transparantsImage">#b1b3b4FF</color>
     <color name="primaryColor">#FC9449</color>
     <color name="red">#f54260</color>

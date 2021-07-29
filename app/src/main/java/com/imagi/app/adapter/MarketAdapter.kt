@@ -31,7 +31,7 @@ class MarketAdapter(val market: List<Store>, private val type:String, private va
         val item = market[position]
 
         holder.itemView.marketName.text = item.nama_toko
-        holder.itemView.marketAddress.text = item.alamat_toko
+        holder.itemView.marketAddress.text = "${item.alamat_toko} ${item.distance?.div(1000)?.toInt()}"
         Glide.with(holder.itemView)
             .load(Uri.parse("${item.path_foto}"))
             .placeholder(R.drawable.market_2)

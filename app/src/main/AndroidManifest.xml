@@ -22,7 +22,7 @@
         android:name=".ImagiApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Si PasTrad"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -77,7 +77,7 @@
 
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="SIG Pasar Trandisional">
+            android:label="Sistem Informasi Pasar Tradisional">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

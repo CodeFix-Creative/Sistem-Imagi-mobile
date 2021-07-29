@@ -9,8 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.imagi.app.R
 import com.imagi.app.adapter.ProductAdapter
+import com.imagi.app.adapter.ProductSearchAdapter
 import com.imagi.app.network.DbServices
 import com.imagi.app.ui.base.CoreViewModel
 import com.imagi.app.util.AppUtils
@@ -63,6 +65,10 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
         btnSearch =  findViewById(R.id.vc_btn_search)
         btnSearchAll = findViewById(R.id.vc_btn_searchAll)
 
+        var position = dbServices.location
+        var startPosition = position.latitude?.let { position.longitude?.let { it1 -> LatLng(it.toDouble(), it1.toDouble()) } }
+
+
         btnSearch.setOnClickListener {
             if(vc_minPrice.text!=null){
                 this.minPrice = vc_minPrice.text.toString()
@@ -75,7 +81,8 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 dbServices.findBearerToken(),
                 textSearch.text.toString(),
                 minPrice,
-                maxPrice
+                maxPrice,
+                startPosition
             )
         }
 
@@ -91,7 +98,8 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 dbServices.findBearerToken(),
                 textSearch.text.toString(),
                 minPrice,
-                maxPrice
+                maxPrice,
+                startPosition
             )
         }
 
@@ -128,7 +136,7 @@ class SearchActivityPage : AppCompatActivity(), HasSupportFragmentInjector {
                 val listResult = list
                 listResult.invalidate()
 
-                val adapters = ProductAdapter(it, "", {}) {}
+                val adapters = ProductSearchAdapter(it, "", {}) {}
 
                 listResult.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
                 adapters.notifyDataSetChanged()

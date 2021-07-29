@@ -17,6 +17,7 @@ import com.imagi.app.ui.base.CoreViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import androidx.lifecycle.*
+import com.google.android.gms.maps.model.LatLng
 import com.imagi.app.ui.merchent.SearchActivityPage
 import com.imagi.app.util.AppUtils
 import timber.log.Timber
@@ -69,8 +70,11 @@ class MarketFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         dbServices = DbServices(getContext())
 
+        var position = dbServices.location
+        var startPosition = position.latitude?.let { position.longitude?.let { it1 -> LatLng(it.toDouble(), it1.toDouble()) } }
+
         try {
-            viewModel.getStore(dbServices.findBearerToken())
+            viewModel.getStoreCustomer(dbServices.findBearerToken(), startPosition)
 
         }catch (e:Exception){
             Timber.d("Error : ${e.message}")

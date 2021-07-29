@@ -28,6 +28,9 @@ data class User(
     @field:SerializedName("no_telp")
     var no_telp: String? = null,
 
+    @field:SerializedName("distance")
+    var distance: Double? = null,
+
     @field:SerializedName("id_customer")
     var id_customer: String? = null,
 
