@@ -10,6 +10,8 @@ import com.imagi.app.model.User;
 import com.imagi.app.model.UserLocation;
 import com.imagi.app.util.Constant;
 
+import timber.log.Timber;
+
 
 public class DbServices {
 
@@ -20,14 +22,8 @@ public class DbServices {
     }
 
     public void logout() {
-//        mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE)
-//                .edit().putString(Constant.SP_USER, null).apply();
-//
-//        mContext.getSharedPreferences(Constant.SP_TOKEN_USER, Context.MODE_PRIVATE)
-//                .edit()
-//                .putString(Constant.SP_TOKEN, null).apply();
-        mContext.deleteSharedPreferences(Constant.SP_TOKEN_USER);
-        mContext.deleteSharedPreferences(Constant.SP_NAME);
+
+        mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE).edit().clear().apply();
 
     }
 
@@ -37,12 +33,15 @@ public class DbServices {
     }
 
     public UserLocation getLocation() {
+        Timber.d("GET_LOCATION_LOCAL");
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
         String result = "";
         if(sharedPreferences.contains(Constant.SP_LOCATION)){
+            Timber.d("GET_CURRENT_LOCATION");
             result = sharedPreferences.getString(Constant.SP_LOCATION, null);
             return new Gson().fromJson(result, UserLocation.class);
         }else{
+            Timber.d("GET_DEFAULT_LOCATION");
             UserLocation userLocation = new UserLocation("-8.3405383", "115.09195");
             return userLocation;
         }
