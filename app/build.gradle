@@ -22,7 +22,7 @@ android {
 
     buildTypes {
         debug{
-            buildConfigField "String", "SERVER_URL", '"http://192.168.43.88:8000/api/v1/"'
+            buildConfigField "String", "SERVER_URL", '"http://192.168.1.19:8000/api/v1/"'
         }
         release {
             minifyEnabled false

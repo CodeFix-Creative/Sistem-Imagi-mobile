@@ -141,9 +141,9 @@ class CoreViewModel @Inject constructor(private val dataManager: DataManager) : 
                     if(res?.code == 200){
                         for(it in res.data){
                             var latLong = LatLng(-8.3405389,115.0919509)
-                            if(it.latitude!="null"){
+                            if(it.latitude!="null" && it.latitude != null){
                                 latLong =
-                                    it.longitude?.let { it1 -> it.latitude?.let { it2 -> LatLng(it2.toDouble(), it1.toDouble()) } }!!
+                                    it.longitude?.let { it1 -> it.latitude?.let { it2 -> LatLng(it2.toDouble(), it1.toDouble()) }!! }!!
                             }
                             dataStore.add(
                                 Store(

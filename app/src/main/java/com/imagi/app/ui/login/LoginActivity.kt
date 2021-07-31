@@ -67,8 +67,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoreViewModel::class.java)
         viewModel.isShowLoader.value = false
-        username.setText("customer@gmail.com")
-        password.setText("pass1234")
+//        username.setText("customer@gmail.com")
+//        password.setText("pass1234")
 //        username.setText("pedagang@gmail.com")
 //        password.setText("Pedagang123")
 
